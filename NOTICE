@@ -1,0 +1,80 @@
+NEXUS - Post-Quantum Secure Messaging Infrastructure
+Copyright (c) 2024-2026 said885 <frensh5@proton.me>
+All Rights Reserved where applicable.
+
+This product includes the following components:
+
+1. nexus-crypto (Post-Quantum Cryptographic Library)
+   Licensed under Apache License 2.0
+   See LICENSE-CRYPTO for full terms.
+
+2. nexus-relay (Zero-Knowledge Message Relay Server)
+   Licensed under GNU Affero General Public License v3.0
+   See LICENSE-RELAY for full terms.
+
+IMPORTANT INTELLECTUAL PROPERTY NOTICE
+======================================
+
+The NEXUS protocol design, the zero-knowledge relay architecture,
+the hybrid KEM construction (Kyber1024 + X25519 via HKDF-SHA3-512),
+the post-quantum Double Ratchet extension, and all associated protocol
+specifications are original works authored by said885.
+
+All rights not explicitly granted by the applicable license are reserved.
+
+The name "NEXUS", the protocol specification documents, and the formal
+verification models (TLA+) included in this repository are Copyright (c)
+2024-2026 said885 and may not be used to endorse or promote derivative
+products without explicit written permission.
+
+PATENT NOTICE
+=============
+
+No patent license is granted by this notice. The author reserves all
+rights to seek patent protection for novel methods, algorithms, and
+protocol constructions contained in this work. Any use of patentable
+subject matter in this codebase does not constitute an implied patent
+license except where explicitly stated in the applicable source license
+(Apache-2.0 Section 3 grants a limited patent license for nexus-crypto).
+
+TRADEMARK NOTICE
+================
+
+"NEXUS", "NEXUS Relay", "NEXUS Crypto", and the NEXUS protocol name
+are unregistered trademarks of said885. Use of these marks in derivative
+works, forks, or competing products requires prior written authorization.
+
+THIRD-PARTY COMPONENTS
+=======================
+
+This software depends on the following third-party libraries (non-exhaustive):
+
+- pqcrypto (Post-Quantum Cryptography): Apache-2.0 / MIT
+- x25519-dalek: BSD-3-Clause
+- ed25519-dalek: BSD-3-Clause
+- chacha20poly1305: Apache-2.0 / MIT
+- hkdf / sha2 / sha3: Apache-2.0 / MIT
+- tokio: MIT
+- axum: MIT
+- sqlx: Apache-2.0 / MIT
+- redis: BSD-3-Clause
+
+All third-party components retain their original copyright and license
+terms. See the respective crate documentation for details.
+
+ATTRIBUTION REQUIREMENTS
+=========================
+
+Any use, distribution, or derivative work based on NEXUS must:
+
+1. Retain all copyright notices in source files.
+2. Include this NOTICE file in any redistribution.
+3. Clearly attribute said885 as the original author.
+4. Not use the NEXUS name to imply endorsement without permission.
+5. Comply with all terms of the applicable license (AGPL-3.0 or Apache-2.0).
+
+For commercial licensing, private deployments, or acquisition inquiries:
+Contact: frensh5@proton.me
+
+DATE OF FIRST PUBLICATION: 2024
+JURISDICTION: International (Berne Convention)

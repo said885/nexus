@@ -197,15 +197,15 @@ jobs:
       - name: Check results
         run: |
           if [[ "${{ needs.quality.result }}" == "failure" ]]; then
-            echo "❌ Code quality checks failed"
+            echo " Code quality checks failed"
             exit 1
           fi
           if [[ "${{ needs.security.result }}" == "failure" ]]; then
-            echo "❌ Security audit failed"
+            echo " Security audit failed"
             exit 1
           fi
           if [[ "${{ needs.test.result }}" == "failure" ]]; then
-            echo "❌ Tests failed"
+            echo " Tests failed"
             exit 1
           fi
-          echo "✅ All CI checks passed"
+          echo " All CI checks passed"

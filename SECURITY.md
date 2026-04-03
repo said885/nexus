@@ -50,14 +50,14 @@ We ask that you do not publicly disclose the vulnerability for **30 days** to al
 
 NEXUS was audited for:
 
-- ✅ **Cryptographic Correctness** — Kyber1024, Dilithium5, X3DH, Double Ratchet
-- ✅ **Memory Safety** — 100% Rust, no unsafe code in hot paths
-- ✅ **Side-Channel Resistance** — Constant-time operations, zeroize on sensitive data
-- ✅ **Forward Secrecy** — Verified via TLA+ formal models
-- ✅ **Metadata Privacy** — Sealed Sender implementation audited
-- ✅ **Database Security** — Row-Level Security (RLS), encrypted columns, audit logs
-- ✅ **API Security** — Rate limiting, CORS, CSRF protection, input validation
-- ✅ **Infrastructure** — TLS 1.3, certificate pinning, secrets management
+-  **Cryptographic Correctness** — Kyber1024, Dilithium5, X3DH, Double Ratchet
+-  **Memory Safety** — 100% Rust, no unsafe code in hot paths
+-  **Side-Channel Resistance** — Constant-time operations, zeroize on sensitive data
+-  **Forward Secrecy** — Verified via TLA+ formal models
+-  **Metadata Privacy** — Sealed Sender implementation audited
+-  **Database Security** — Row-Level Security (RLS), encrypted columns, audit logs
+-  **API Security** — Rate limiting, CORS, CSRF protection, input validation
+-  **Infrastructure** — TLS 1.3, certificate pinning, secrets management
 
 See [SECURITY_AUDIT_COMPLETE.md](SECURITY_AUDIT_COMPLETE.md) for the full report.
 

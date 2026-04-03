@@ -1,3 +1,21 @@
+// Copyright (c) 2026 said885 <frensh5@proton.me>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+//
+// This file is part of NEXUS Relay Server.
+//
+// NEXUS Relay Server is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// NEXUS Relay Server is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU Affero General Public License for more details.
+//
+// You should have received a copy of the GNU Affero General Public License
+// along with NEXUS Relay Server. If not, see <https://www.gnu.org/licenses/>.
+
 #![allow(missing_docs, dead_code)]
 
 // Fine-grained permissions & access control management
@@ -239,16 +257,15 @@ impl AccessControlService {
     ) -> bool {
         // Check direct access entries
         for entry in self.access_entries.values() {
-            if entry.subject_id == user_id && entry.resource_id == resource_id {
-                if entry.permissions.contains(permission) {
-                    // Check if entry is expired
-                    if let Some(expires_at) = entry.expires_at {
-                        if expires_at > Utc::now() {
-                            return true;
-                        }
-                    } else {
+            if entry.subject_id == user_id && entry.resource_id == resource_id
+                && entry.permissions.contains(permission) {
+                // Check if entry is expired
+                if let Some(expires_at) = entry.expires_at {
+                    if expires_at > Utc::now() {
                         return true;
                     }
+                } else {
+                    return true;
                 }
             }
         }

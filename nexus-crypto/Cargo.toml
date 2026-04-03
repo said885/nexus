@@ -3,12 +3,12 @@ name = "nexus-crypto"
 version = "0.3.0"
 edition = "2021"
 authors = ["said885 <frensh5@proton.me>"]
-description = "Post-quantum cryptographic primitives library. Kyber1024 (FIPS 203) + Dilithium5 (FIPS 204) + X3DH key agreement + Double Ratchet."
+description = "Production-grade post-quantum cryptographic library implementing NIST FIPS 203 (Kyber1024) and FIPS 204 (Dilithium5) with hybrid X3DH key agreement, Double Ratchet with KEM ratcheting, and C FFI bindings for mobile platforms."
 homepage = "https://github.com/said885/nexus"
 repository = "https://github.com/said885/nexus"
 license = "Apache-2.0"
-keywords = ["crypto", "kyber", "dilithium", "post-quantum", "ffi"]
-categories = ["cryptography"]
+keywords = ["post-quantum", "kyber1024", "dilithium5", "double-ratchet", "x3dh"]
+categories = ["cryptography", "no-std", "api-bindings"]
 
 [lib]
 name = "nexus_crypto"

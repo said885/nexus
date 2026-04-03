@@ -1,13 +1,13 @@
 # NEXUS v0.3.0 - Complete Installation & Deployment Guide
 
-**Status:** ✅ Production Ready  
+**Status:**  Production Ready  
 **Date:** April 3, 2026  
 **Build:** 6.1MB optimized binary  
 **Tests:** 175 unit tests passing, 0 warnings
 
 ---
 
-## 🚀 Quick Start (5 minutes)
+##  Quick Start (5 minutes)
 
 ### Prerequisites
 ```bash
@@ -59,81 +59,81 @@ curl http://localhost:3000/               # Should return HTML
 
 ---
 
-## 📊 Architecture
+##  Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                    NEXUS v0.3.0                             │
-├─────────────────────────────────────────────────────────────┤
-│                                                             │
-│  ┌─────────────┐  ┌──────────────┐  ┌──────────────┐      │
-│  │  Web UI     │  │  Desktop     │  │   Mobile     │      │
-│  │  (React)    │  │  (Tauri)     │  │  (iOS/And)   │      │
-│  └──────┬──────┘  └────────┬─────┘  └──────┬───────┘      │
-│         │                  │               │               │
-│         └──────────────────┼───────────────┘               │
-│                            │                                │
-│                    ┌───────▼─────────┐                     │
-│                    │                 │                     │
-│    ┌──────────────▶│   NGINX         │◀──────────┐         │
-│    │               │  (TLS 1.3)      │           │         │
-│    │               │  (Reverse Proxy)│           │         │
-│    │               └────┬────────────┘           │         │
-│    │                    │                         │         │
-│    │         ┌──────────┼─────────────┐          │         │
-│    │         │          │             │          │         │
-│  ┌─▼─────────▼┐  ┌─────▼──────┐  ┌──┴───────┐  │         │
-│  │   Relay    │  │   Web      │  │          │  │         │
-│  │  (Rust     │  │  Frontend  │  │          │  │    .env 
-│  │  Axum)     │  │  (React)   │  │          │  │         │
-│  └─┬──────────┘  └────────────┘  │          │  │         │
-│    │                              │          │  │         │
-│  ┌─▼────────────────────────────┬─▼──────────┐ │         │
-│  │                              │            │ │         │
-│  │ ┌──────────┐ ┌──────────┐   │            │ │         │
-│  │ │PostgreSQL│ │  Redis   │   │            │ │         │
-│  │ │(E2E Enc) │ │  Cache   │   │            │ │         │
-│  │ └──────────┘ └──────────┘   │            │ │         │
-│  │                              │            │ │         │
-│  └──────────────────────────────┴────────────┘ │         │
-│                                                │          │
-│  ┌────────────────┬──────────────┬────────────┘│         │
-│  │                │              │             │         │
-│  ▼                ▼              ▼             ▼         │
-│┌────────────┐ ┌────────────┐ ┌────────────┬──────────┐ │
-││ Prometheus │ │  Grafana   │ │   Logs     │ Alerting │ │
-│└────────────┘ └────────────┘ └────────────┴──────────┘ │
-│                                                        │
-└────────────────────────────────────────────────────────┘
+
+                    NEXUS v0.3.0                             
+
+                                                             
+            
+    Web UI         Desktop          Mobile           
+    (React)        (Tauri)         (iOS/And)         
+            
+                                                         
+                        
+                                                            
+                                         
+                                                          
+       NGINX                  
+                     (TLS 1.3)                          
+                     (Reverse Proxy)                    
+                                       
+                                                          
+                                
+                                                       
+                 
+     Relay         Web                             
+    (Rust         Frontend                    .env 
+    Axum)         (React)                          
+                           
+                                                       
+            
+                                                      
+                             
+   PostgreSQL   Redis                            
+   (E2E Enc)    Cache                            
+                             
+                                                      
+            
+                                                          
+           
+                                                      
+                                                      
+   
+ Prometheus    Grafana       Logs      Alerting  
+   
+                                                        
+
 ```
 
 ---
 
-## 🔒 Security Features
+##  Security Features
 
 ### Cryptography
-- ✅ **Post-Quantum:** Kyber1024 + X25519 hybrid KEM
-- ✅ **Digital Signatures:** Dilithium5 + Ed25519 hybrid
-- ✅ **Message Encryption:** ChaCha20-Poly1305 AEAD
-- ✅ **Key Exchange:** X3DH (Extended Triple Diffie-Hellman)
-- ✅ **Forward Secrecy:** Double Ratchet algorithm
+-  **Post-Quantum:** Kyber1024 + X25519 hybrid KEM
+-  **Digital Signatures:** Dilithium5 + Ed25519 hybrid
+-  **Message Encryption:** ChaCha20-Poly1305 AEAD
+-  **Key Exchange:** X3DH (Extended Triple Diffie-Hellman)
+-  **Forward Secrecy:** Double Ratchet algorithm
 
 ### Infrastructure
-- ✅ **TLS 1.3:** Mandatory for all connections
-- ✅ **Rate Limiting:** 100 req/min per IP, 1000 req/hour per user
-- ✅ **Database Encryption:** AES-256-GCM at rest
-- ✅ **Access Control:** Role-based (RBAC)
-- ✅ **Monitoring:** Prometheus + Grafana dashboards
+-  **TLS 1.3:** Mandatory for all connections
+-  **Rate Limiting:** 100 req/min per IP, 1000 req/hour per user
+-  **Database Encryption:** AES-256-GCM at rest
+-  **Access Control:** Role-based (RBAC)
+-  **Monitoring:** Prometheus + Grafana dashboards
 
 ### Compliance
-- ✅ **GDPR:** Full compliance (right to erasure, data portability, etc.)
-- ✅ **HIPAA:** BAA-ready security controls
-- ✅ **SOC 2 Type II:** Operational security measures
-- ✅ **ISO 27001:** Information security standards
+-  **GDPR:** Full compliance (right to erasure, data portability, etc.)
+-  **HIPAA:** BAA-ready security controls
+-  **SOC 2 Type II:** Operational security measures
+-  **ISO 27001:** Information security standards
 
 ---
 
-## 📦 Components
+##  Components
 
 ###  Backend (Rust Relay Server)
 
@@ -164,11 +164,11 @@ curl http://localhost:3000/               # Should return HTML
 - Responsive: Mobile-friendly design
 
 **Features:**
-- 🔐 End-to-end encrypted messaging
+-  End-to-end encrypted messaging
 - 🟢 Online status indicator
-- ✓ Message delivery receipts
-- 📋 Contact verification
-- ⚙️ User settings & security
+-  Message delivery receipts
+-  Contact verification
+-  User settings & security
 
 ### Database (PostgreSQL 16)
 
@@ -180,10 +180,10 @@ curl http://localhost:3000/               # Should return HTML
 - audit_logs: 7-year compliance records
 
 **Security:**
-- ✅ Row-level security policies
-- ✅ Encrypted connections required
-- ✅ Automated TTL expiration
-- ✅ Transaction logging (WAL)
+-  Row-level security policies
+-  Encrypted connections required
+-  Automated TTL expiration
+-  Transaction logging (WAL)
 
 ### Caching (Redis 7)
 
@@ -194,13 +194,13 @@ curl http://localhost:3000/               # Should return HTML
 - Prekey bundle caching
 
 **Security:**
-- ✅ Password-protected access
-- ✅ Network-isolated
-- ✅ Automatic data expiration
+-  Password-protected access
+-  Network-isolated
+-  Automatic data expiration
 
 ---
 
-## 🧪 Testing & Quality
+##  Testing & Quality
 
 ### Unit Tests
 ```bash
@@ -218,9 +218,9 @@ k6 run nexus-relay/loadtest/k6-load-test.js \
 ```
 
 **Expected Results:**
-- ✅ <500ms P95 latency
-- ✅ >99.5% success rate
-- ✅ <5% error rate
+-  <500ms P95 latency
+-  >99.5% success rate
+-  <5% error rate
 
 ### Security Audit
 ```bash
@@ -236,7 +236,7 @@ cargo clippy --all-targets -- -D warnings
 
 ---
 
-## 📖 Configuration
+##  Configuration
 
 ### Environment Variables
 
@@ -300,7 +300,7 @@ services:
 
 ---
 
-## 🔧 Maintenance
+##  Maintenance
 
 ### Database Backups
 
@@ -357,7 +357,7 @@ groups:
 
 ---
 
-##  📋 Deployment Checklist
+##   Deployment Checklist
 
 ### Pre-Deployment
 - [ ] Security audit completed & approved
@@ -391,7 +391,7 @@ groups:
 
 ---
 
-## 🔐 Security Hardening
+##  Security Hardening
 
 ### SSL/TLS Configuration
 
@@ -439,7 +439,7 @@ sudo ufw enable
 
 ---
 
-## 🆘 Troubleshooting
+##  Troubleshooting
 
 ### Service won't start
 
@@ -482,7 +482,7 @@ docker-compose -f docker-compose.prod.yml restart relay
 
 ---
 
-## 📞 Support
+##  Support
 
 **Documentation:** See [NEXUS_DOCUMENTATION_INDEX.md](NEXUS_DOCUMENTATION_INDEX.md)
 
@@ -494,11 +494,11 @@ docker-compose -f docker-compose.prod.yml restart relay
 
 ---
 
-## 📄 License
+##  License
 
 NEXUS is released under the [Your License Here]
 
-## 🙏 Acknowledgments
+##  Acknowledgments
 
 Built with:
 - Rust (Axum, Tokio, SQLx)
@@ -511,10 +511,10 @@ Built with:
 
 **Version:** 0.3.0  
 **Last Updated:** April 3, 2026  
-**Status:** ✅ Production Ready
+**Status:**  Production Ready
 
 **Sign-Off:**
-- Engineering: ✅ Approved
-- Security: ✅ Approved  
-- Compliance: ✅ Approved
-- Executive: ✅ Approved
+- Engineering:  Approved
+- Security:  Approved  
+- Compliance:  Approved
+- Executive:  Approved

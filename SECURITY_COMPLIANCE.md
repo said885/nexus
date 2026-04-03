@@ -2,7 +2,7 @@
 
 ## Compliance Roadmap
 
-### GDPR Compliance ✅
+### GDPR Compliance 
 - **Data Minimization**: No user data stored on relay
 - **Right to Erasure**: Messages auto-deleted after TTL
 - **Data Portability**: Export format available
@@ -17,10 +17,10 @@
 ### FIPS 140-3 (Cryptographic Standards)
 - **Status**: Using NIST-standardized algorithms
 - **Details**:
-  - Kyber1024 (FIPS 203) ✅
-  - Dilithium5 (FIPS 204) ✅
-  - ChaCha20-Poly1305 (approved) ✅
-  - HKDF-SHA3 (approved) ✅
+  - Kyber1024 (FIPS 203) 
+  - Dilithium5 (FIPS 204) 
+  - ChaCha20-Poly1305 (approved) 
+  - HKDF-SHA3 (approved) 
 
 ### SOC 2 Type II
 - **Status**: Audit scheduled Q2 2026

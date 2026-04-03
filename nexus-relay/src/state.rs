@@ -1,3 +1,21 @@
+// Copyright (c) 2026 said885 <frensh5@proton.me>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+//
+// This file is part of NEXUS Relay Server.
+//
+// NEXUS Relay Server is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// NEXUS Relay Server is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU Affero General Public License for more details.
+//
+// You should have received a copy of the GNU Affero General Public License
+// along with NEXUS Relay Server. If not, see <https://www.gnu.org/licenses/>.
+
 #![allow(missing_docs, dead_code)]
 
 use axum::extract::ws::Message;
@@ -36,19 +54,14 @@ pub const MAX_GROUP_MEMBERS: usize = 256;
 // User status
 // ---------------------------------------------------------------------------
 
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Default)]
 pub enum UserStatus {
     Online,
     Away,
     DoNotDisturb,
+    #[default]
     Offline,
     Invisible,
-}
-
-impl Default for UserStatus {
-    fn default() -> Self {
-        Self::Offline
-    }
 }
 
 // ---------------------------------------------------------------------------
@@ -516,7 +529,7 @@ impl AppState {
 
         let hour_ago = unix_now() - 3600;
         self.calls.retain(|_, call| match call.status {
-            CallStatus::Ended | CallStatus::Missed => call.ended_at.map_or(true, |t| t > hour_ago),
+            CallStatus::Ended | CallStatus::Missed => call.ended_at.is_none_or(|t| t > hour_ago),
             _ => true,
         });
 

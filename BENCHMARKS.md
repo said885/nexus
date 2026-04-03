@@ -48,10 +48,10 @@ Benchmarked on 4-core Intel system:
 
 ## Security Audits
 
-- NIST Post-Quantum Standard Compliance: ✓ Verified
-- Formal Verification: ✓ TLA+ specifications available
-- Code Review: ✓ Community-backed
-- Vulnerability Reporting: ✓ Responsible disclosure process
+- NIST Post-Quantum Standard Compliance:  Verified
+- Formal Verification:  TLA+ specifications available
+- Code Review:  Community-backed
+- Vulnerability Reporting:  Responsible disclosure process
 
 ## Conclusion
 

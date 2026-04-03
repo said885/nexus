@@ -1,63 +1,64 @@
-# NEXUS Commercial Licensing & Enterprise Solutions
+# NEXUS Commercial Licensing and Enterprise Solutions
 
-**The World's Most Secure Quantum-Resistant Messaging Infrastructure**
+**Production-grade post-quantum encrypted messaging infrastructure for government, defense, and enterprise.**
 
-NEXUS is a production-grade, NIST-compliant cryptographic protocol and relay system designed for the post-quantum era. Our codebase is 100% memory-safe Rust with **zero compiler warnings** and 175+ automated tests, ensuring a "Grade A+" security and reliability standard.
-
----
-
-## 💎 Enterprise Value
-
-For organizations requiring total data sovereignty and long-term confidentiality (50+ years), NEXUS provides:
-
-1. **Post-Quantum Security**: Implementation of **Kyber1024** and **Dilithium5** (NIST FIPS 203/204), protecting your communications from future quantum-computer attacks.
-2. **Zero-Knowledge Relay**: A stateless, high-performance relay server architecture that knows nothing about your users or their conversations.
-3. **Rust Engineering Excellence**: 22,000+ lines of high-quality, audit-ready Rust code with no legacy debt.
-4. **Stateless Scalability**: Designed to handle millions of concurrent users using asynchronous I/O (Tokio/Axum), Redis, and PostgreSQL.
+NEXUS is a NIST FIPS 203/204 compliant cryptographic messaging platform built in 22,000+ lines of pure Rust with zero compiler warnings, 175+ automated tests, and formal TLA+ verification. Designed for organizations requiring long-term confidentiality (50+ years) against quantum computing threats.
 
 ---
 
-## 🏛️ Deployment & Licensing Options
+## Enterprise Value Proposition
 
-### 1. Dual-Licensing Model
-NEXUS is primarily published under **AGPL-3.0** (Relay) and **Apache-2.0** (Crypto Library). 
-For enterprises that cannot use AGPL code in their stacks, we offer **Commercial Proprietary Licenses**.
+For regulated industries, defense contractors, and government agencies:
 
-| License Type | Ideal For | Rights & Support | Price (Est.) |
-| :--- | :--- | :--- | :--- |
-| **Open Source** | Developers, OSS Projects | Community support, Copyleft | $0 (Free) |
-| **Enterprise Lite** | Small Tech Teams (10-50 users) | Proprietary use, Basic support | $5,000 / year |
-| **Enterprise Pro** | Large Scale (50-250 users) | High-availability setup, Priority support | $25,000 / year |
-| **Government/Global** | National Security / Critical Infra | Source-code escrow, Custom audits | **$250k - $5M+** |
-
-### 2. Full Intellectual Property (IP) Acquisition
-The complete NEXUS source code, protocols, domains, and trademarks are available for **Global Acquisition**. 
-This is an ideal solution for a technology giant (Cisco, Apple, Google, Microsoft) or a national defense organization seeking to own a sovereign secure messaging standard.
-
-**Valuation Assessment Range**: $15M - $500M+ (based on current PQC market projections).
+1. **Post-Quantum Security**: Kyber1024 (FIPS 203) key encapsulation and Dilithium5 (FIPS 204) digital signatures protect communications against harvest-now-decrypt-later attacks.
+2. **Zero-Knowledge Architecture**: Stateless relay server with sealed sender — no message content, no metadata, no user identity stored server-side.
+3. **Audit-Ready Codebase**: 100% memory-safe Rust, zero warnings under strict clippy, no unsafe blocks, no third-party runtime dependencies for cryptographic operations.
+4. **Horizontal Scalability**: Tokio/Axum async runtime, PostgreSQL row-level security, Redis pub/sub, Kubernetes-native deployment. 50,000+ messages/second throughput.
 
 ---
 
-## 🚀 Professional Services
+## Licensing and Deployment Options
 
-We offer expert consulting for NEXUS deployment:
+### Licensing Model
 
-- **Custom Cryptographic Audits**: $150/hour
-- **Custom Protocol Extensions**: $200/hour
-- **Security Engineering & Training**: $1,000/day
-- **Hardenened Infrastructure Deployment**: $10,000+ per engagement
+NEXUS is dual-licensed: **AGPL-3.0** (Relay Server) and **Apache-2.0** (Crypto Library).
+For organizations requiring proprietary deployment, commercial licenses are available.
+
+| License Tier | Target | Includes | Annual Price |
+|---|---|---|---|
+| **Open Source** | Developers, research, OSS projects | Community support, copyleft terms | Free |
+| **Enterprise Lite** | Teams (10-50 users) | Proprietary use, email support | $5,000/year |
+| **Enterprise Pro** | Organizations (50-500 users) | HA deployment, priority support, SLA | $25,000/year |
+| **Government / Defense** | National security, critical infrastructure | Source escrow, custom audit, on-premise | $250,000+ |
+
+### Full Intellectual Property Acquisition
+
+Complete transfer of all NEXUS assets: source code, cryptographic protocols, documentation, patents, trademarks, and domain rights.
+
+Suitable for technology companies or defense organizations seeking to own a sovereign post-quantum messaging standard.
+
+**Valuation range**: $15M-$500M+ (based on post-quantum cryptography market projections by McKinsey and Gartner).
 
 ---
 
-## 📩 Commercial Inquiries
+## Professional Services
 
-To discuss licensing, private audits, or acquisition, please contact:
+| Service | Rate |
+|---|---|
+| Cryptographic Security Audit | $150/hour |
+| Custom Protocol Development | $200/hour |
+| Security Engineering Training | $1,000/day |
+| Production Infrastructure Deployment | $10,000+ per engagement |
 
-**Author**: said885  
-**Email**: frensh5@proton.me  
-**Github**: https://github.com/said885  
+---
 
-**Bitcoin Donation (Support the project)**: `bc1qglsmc82fe5axxhe2gjlwpaflpklm4mh236cjqv`
+## Contact
+
+**Author**: said885
+**Email**: frensh5@proton.me
+**GitHub**: https://github.com/said885
+
+**BTC**: `bc1qglsmc82fe5axxhe2gjlwpaflpklm4mh236cjqv`
 
 ---
 

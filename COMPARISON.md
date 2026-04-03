@@ -4,17 +4,17 @@
 
 | Feature | NEXUS | Signal | Matrix | Wire | Telegram |
 |:--------|:-----:|:------:|:------:|:----:|:--------:|
-| **E2EE Messaging** | ✓ | ✓ | ✓ | ✓ | ✓ |
-| **Post-Quantum KEM** | ✓ Kyber1024 | ✗ | ✗ | ✗ | ✗ |
-| **Post-Quantum Sig** | ✓ Dilithium5 | ✗ | ✗ | ✗ | ✗ |
-| **Forward Secrecy** | ✓ Enhanced | ✓ | ✓ | ✓ | ✓ |
-| **Sealed Sender** | ✓ | ✓ | ✗ | ✓ | ✗ |
-| **Zero-Knowledge Relay** | ✓ | ✓ Limited | ✗ | ✗ | ✗ |
-| **Memory-Safe Impl** | ✓ 100% Rust | ✗ C/C++ | ✗ C/Python | ✗ Swift | ✗ C++ |
-| **Open Source** | ✓ AGPL-3.0 | ✓ GPLv3 | ✓ AGPLv3 | ✓ GPLv3 | ✗ Proprietary |
+| **E2EE Messaging** |  |  |  |  |  |
+| **Post-Quantum KEM** |  Kyber1024 |  |  |  |  |
+| **Post-Quantum Sig** |  Dilithium5 |  |  |  |  |
+| **Forward Secrecy** |  Enhanced |  |  |  |  |
+| **Sealed Sender** |  |  |  |  |  |
+| **Zero-Knowledge Relay** |  |  Limited |  |  |  |
+| **Memory-Safe Impl** |  100% Rust |  C/C++ |  C/Python |  Swift |  C++ |
+| **Open Source** |  AGPL-3.0 |  GPLv3 |  AGPLv3 |  GPLv3 |  Proprietary |
 | **Code Warnings** | 0 | Unknown | Unknown | Unknown | Unknown |
-| **Formal Verification** | ✓ TLA+ | ✗ | ✗ | ✗ | ✗ |
-| **NIST-Compliant** | ✓ Certified | ✗ | ✗ | ✗ | ✗ |
+| **Formal Verification** |  TLA+ |  |  |  |  |
+| **NIST-Compliant** |  Certified |  |  |  |  |
 
 ## Unique Selling Propositions (USPs)
 
@@ -49,9 +49,9 @@
 
 | Year | Security Model | NEXUS Status | Others Status |
 |:-----|:---------------:|:------------:|:-------------:|
-| **2026-2030** | Classical Crypto | ✓ Safe | ✓ Safe |
-| **2030-2040** | Quantum Threat | ✓ **Protected** | ✗ Vulnerable |
-| **2040+** | Full Quantum Era | ✓ **Native** | ✗ Broken |
+| **2026-2030** | Classical Crypto |  Safe |  Safe |
+| **2030-2040** | Quantum Threat |  **Protected** |  Vulnerable |
+| **2040+** | Full Quantum Era |  **Native** |  Broken |
 
 ## Adoption Barriers & Solutions
 
@@ -67,10 +67,10 @@
 
 ## Industry Recognition
 
-- ✓ Built on NIST FIPS 203 (Kyber) and FIPS 204 (Dilithium)
-- ✓ Follows Signal Protocol design principles
-- ✓ Compatible with existing messaging infrastructure
-- ✓ Ready for government/military procurement
+-  Built on NIST FIPS 203 (Kyber) and FIPS 204 (Dilithium)
+-  Follows Signal Protocol design principles
+-  Compatible with existing messaging infrastructure
+-  Ready for government/military procurement
 
 ## Pricing Model
 

@@ -1,3 +1,18 @@
+// Copyright (c) 2026 said885 <frensh5@proton.me>
+// SPDX-License-Identifier: Apache-2.0
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 //! PQ Double Ratchet for NEXUS.
 //!
 //! Combines:
@@ -202,19 +217,19 @@ impl RatchetSession {
         shared_secret: &[u8; 64],
         remote_identity: &IdentityPublicKey,
     ) -> Result<Self> {
-        let mut rng = OsRng;
+        let rng = OsRng;
 
         // Derive initial root and chain keys from shared_secret.
         let mut root_key = [0u8; 32];
         root_key.copy_from_slice(&shared_secret[..32]);
 
         // Generate our DH ratchet key.
-        let dh_self = X25519StaticSecret::random_from_rng(&mut rng);
+        let dh_self = X25519StaticSecret::random_from_rng(rng);
         let dh_self_pub = X25519PublicKey::from(&dh_self);
 
         // Use remote's KEM key as the initial remote KEM key.
         let kem_remote = Some(HybridPublicKey {
-            kyber: remote_identity.kem.kyber.clone(),
+            kyber: remote_identity.kem.kyber,
             x25519: remote_identity.kem.x25519,
         });
 
@@ -252,7 +267,7 @@ impl RatchetSession {
         // Bob reuses his identity KEM X25519 as the initial DH ratchet key.
         // In a real deployment this would be a dedicated prekey, but we use identity
         // here to match the symmetric setup with init_sender.
-        let dh_self = X25519StaticSecret::random_from_rng(&mut rng);
+        let dh_self = X25519StaticSecret::random_from_rng(rng);
         let dh_self_pub = X25519PublicKey::from(&dh_self);
 
         let kem_self = Some(HybridKeyPair::generate(&mut rng));
@@ -286,14 +301,14 @@ impl RatchetSession {
             .ok_or(NexusError::NoSession)?;
 
         // Determine whether to include a KEM ratchet step in this message.
-        let do_kem_ratchet = self.send_msg_n % RATCHET_KEM_INTERVAL == 0
+        let do_kem_ratchet = self.send_msg_n.is_multiple_of(RATCHET_KEM_INTERVAL)
             && self.kem_remote.is_some();
 
         let (kem_public, kem_ciphertext_bytes) = if do_kem_ratchet {
             // Generate a new KEM key pair for the next epoch.
             let new_kem_kp = HybridKeyPair::generate(&mut rng);
             let kem_pk_bytes_for_header = HybridPublicKey {
-                kyber: new_kem_kp.public.kyber.clone(),
+                kyber: new_kem_kp.public.kyber,
                 x25519: new_kem_kp.public.x25519,
             };
 
@@ -479,7 +494,7 @@ impl RatchetSession {
 
     /// Perform a DH (and optionally KEM) ratchet step upon receiving a new DH key.
     fn perform_dh_ratchet(&mut self, header: &RatchetHeader) -> Result<()> {
-        let mut rng = OsRng;
+        let rng = OsRng;
 
         self.prev_send_count = self.send_msg_n;
         self.send_msg_n = 0;
@@ -506,13 +521,13 @@ impl RatchetSession {
         // If the header carries a new KEM public key, record it.
         if let Some(ref kem_pk) = header.kem_public {
             self.kem_remote = Some(HybridPublicKey {
-                kyber: kem_pk.kyber.clone(),
+                kyber: kem_pk.kyber,
                 x25519: kem_pk.x25519,
             });
         }
 
         // Generate a new DH key for the sending ratchet.
-        let new_dh = X25519StaticSecret::random_from_rng(&mut rng);
+        let new_dh = X25519StaticSecret::random_from_rng(rng);
         let new_dh_pub = X25519PublicKey::from(&new_dh);
         let dh_out2 = new_dh.diffie_hellman(&header.dh_public);
         let (new_rk3, send_ck) = kdf_rk(&self.root_key, dh_out2.as_bytes());

@@ -1,3 +1,21 @@
+// Copyright (c) 2026 said885 <frensh5@proton.me>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+//
+// This file is part of NEXUS Relay Server.
+//
+// NEXUS Relay Server is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// NEXUS Relay Server is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU Affero General Public License for more details.
+//
+// You should have received a copy of the GNU Affero General Public License
+// along with NEXUS Relay Server. If not, see <https://www.gnu.org/licenses/>.
+
 #![allow(missing_docs, dead_code)]
 
 // Voice & Video Call Encryption (DTLS-SRTP for WebRTC)
@@ -90,7 +108,7 @@ pub(crate) enum AudioCodec {
     #[serde(rename = "g729")]
     G729 { bitrate: u32 }, // 8 kbps
     #[serde(rename = "aac")]
-    AAC { bitrate: u32 }, // 8-320 kbps
+    Aac { bitrate: u32 }, // 8-320 kbps
 }
 
 /// Supported video codecs with PFS
@@ -308,7 +326,7 @@ impl CallManager {
         let initiator_calls = self
             .user_calls
             .entry(initiator_id.clone())
-            .or_insert_with(Vec::new);
+            .or_default();
         if initiator_calls.len() >= self.max_concurrent_calls_per_user {
             return Err("Max concurrent calls reached".to_string());
         }
@@ -323,7 +341,7 @@ impl CallManager {
         self.calls.insert(call_id.clone(), session.clone());
         self.user_calls
             .entry(initiator_id)
-            .or_insert_with(Vec::new)
+            .or_default()
             .push(call_id);
 
         Ok(session)

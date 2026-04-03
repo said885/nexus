@@ -3,88 +3,88 @@
 ## System Architecture (v0.2.0)
 
 ```
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                         NEXUS Global Infrastructure                         │
-├─────────────────────────────────────────────────────────────────────────────┤
-│                                                                             │
-│  ┌──────────────────┐  ┌──────────────────┐  ┌──────────────────┐          │
-│  │   Web Client     │  │  Mobile Clients  │  │  Desktop App     │          │
-│  │   (React/PWA)    │  │  (iOS/Android)   │  │  (Tauri/Electron)│          │
-│  └────────┬─────────┘  └────────┬─────────┘  └────────┬─────────┘          │
-│           │                     │                     │                    │
-│           └─────────────────────┼─────────────────────┘                    │
-│                                 ▼                                          │
-│           ┌───────────────────────────────────────┐                       │
-│           │     TLS 1.3 / WebSocket Secure        │                       │
-│           │   (Certificate Pinning on Mobile)     │                       │
-│           └────┬────────────────────────────┬──────┘                      │
-│                │                            │                             │
-│     ┌──────────▼──────────┐      ┌──────────▼──────────┐                 │
-│     │  Load Balancer      │      │  WAF / DDoS Guard   │                 │
-│     │  (Nginx/Caddy)      │      │  (Cloudflare/AWS)   │                 │
-│     └──────────┬──────────┘      └──────────┬──────────┘                 │
-│                │                            │                             │
-│                └────────────────┬───────────┘                             │
-│                                 ▼                                          │
-│    ┌────────────────────────────────────────────────────────┐            │
-│    │           NEXUS Relay Cluster (Auto-scaled)            │            │
-│    │                                                         │            │
-│    │   ┌─────────────┐  ┌─────────────┐  ┌─────────────┐   │            │
-│    │   │ Relay Pod 1 │  │ Relay Pod 2 │  │ Relay Pod N │   │            │
-│    │   │  (Stateless)│  │  (Stateless)│  │  (Stateless)│   │            │
-│    │   └──────┬──────┘  └──────┬──────┘  └──────┬──────┘   │            │
-│    │          │                │                │           │            │
-│    │          └────────────────┼────────────────┘           │            │
-│    │                           ▼                             │            │
-│    │     ┌─────────────────────────────────────┐            │            │
-│    │     │   Distributed Cache (Redis/Memcached)           │            │
-│    │     │   - Session state                   │            │            │
-│    │     │   - Rate limit counters             │            │            │
-│    │     │   - Prekey cache                    │            │            │
-│    │     └─────────────────────────────────────┘            │            │
-│    │                                                         │            │
-│    │           ┌───────────────────────────┐                │            │
-│    │           │ Message Queue (RabbitMQ)  │                │            │
-│    │           │ - Offline message storage │                │            │
-│    │           │ - Delivery confirmation   │                │            │
-│    │           │ - Retry logic             │                │            │
-│    │           └───────────────────────────┘                │            │
-│    └────────────────────┬───────────────────────────────────┘            │
-│                         │                                                │
-│    ┌────────────────────▼───────────────────────────────────┐            │
-│    │         Federation Network                             │            │
-│    │  ┌──────────────┐    ┌──────────────┐    ┌──────────┐ │            │
-│    │  │ Relay Region1│◄──►│ Relay Region2│◄──►│Region N  │ │            │
-│    │  │  (NA)        │    │ (EU)         │    │  (APAC) │ │            │
-│    │  └──────────────┘    └──────────────┘    └──────────┘ │            │
-│    └────────────────────┬───────────────────────────────────┘            │
-│                         │                                                │
-│    ┌────────────────────▼───────────────────────────────────┐            │
-│    │         Storage Layer                                  │            │
-│    │  ┌──────────────────────────────────────────────┐     │            │
-│    │  │  PostgreSQL (Encryption at rest + TDE)       │     │            │
-│    │  │  - Identity keys                             │     │            │
-│    │  │  - Prekey bundles                            │     │            │
-│    │  │  - Audit logs                                │     │            │
-│    │  └──────────────────────────────────────────────┘     │            │
-│    │  ┌──────────────────────────────────────────────┐     │            │
-│    │  │  TimescaleDB (Metrics & Monitoring)          │     │            │
-│    │  │  - Performance metrics                       │     │            │
-│    │  │  - Security events                           │     │            │
-│    │  │  - User analytics (anonymized)               │     │            │
-│    │  └──────────────────────────────────────────────┘     │            │
-│    └────────────────────┬───────────────────────────────────┘            │
-│                         │                                                │
-│                         ▼                                                │
-│    ┌────────────────────────────────────────────────────────┐            │
-│    │      Monitoring & Operations                           │            │
-│    │  ┌────────────────┐  ┌──────────────┐  ┌────────────┐ │            │
-│    │  │   Prometheus   │  │   Grafana    │  │   ELK      │ │            │
-│    │  │   (Metrics)    │  │   (Dashboards)  │(Logs)     │ │            │
-│    │  └────────────────┘  └──────────────┘  └────────────┘ │            │
-│    └────────────────────────────────────────────────────────┘            │
-│                                                                             │
-└─────────────────────────────────────────────────────────────────────────────┘
+
+                         NEXUS Global Infrastructure                         
+
+                                                                             
+                
+     Web Client         Mobile Clients      Desktop App               
+     (React/PWA)        (iOS/Android)       (Tauri/Electron)          
+                
+                                                                         
+                               
+                                                                           
+                                  
+                TLS 1.3 / WebSocket Secure                               
+              (Certificate Pinning on Mobile)                            
+                                 
+                                                                         
+                            
+       Load Balancer              WAF / DDoS Guard                    
+       (Nginx/Caddy)              (Cloudflare/AWS)                    
+                            
+                                                                         
+                                             
+                                                                           
+                
+               NEXUS Relay Cluster (Auto-scaled)                        
+                                                                         
+                          
+        Relay Pod 1    Relay Pod 2    Relay Pod N                
+         (Stateless)    (Stateless)    (Stateless)               
+                          
+                                                                     
+                                     
+                                                                        
+                                 
+            Distributed Cache (Redis/Memcached)                       
+            - Session state                                           
+            - Rate limit counters                                     
+            - Prekey cache                                            
+                                 
+                                                                         
+                                           
+                Message Queue (RabbitMQ)                              
+                - Offline message storage                             
+                - Delivery confirmation                               
+                - Retry logic                                         
+                                           
+                
+                                                                         
+                
+             Federation Network                                         
+                           
+       Relay Region1 Relay Region2Region N               
+        (NA)             (EU)               (APAC)              
+                           
+                
+                                                                         
+                
+             Storage Layer                                              
+                       
+        PostgreSQL (Encryption at rest + TDE)                        
+        - Identity keys                                              
+        - Prekey bundles                                             
+        - Audit logs                                                 
+                       
+                       
+        TimescaleDB (Metrics & Monitoring)                           
+        - Performance metrics                                        
+        - Security events                                            
+        - User analytics (anonymized)                                
+                       
+                
+                                                                         
+                                                                         
+                
+          Monitoring & Operations                                       
+                       
+         Prometheus        Grafana         ELK                   
+         (Metrics)         (Dashboards)  (Logs)                  
+                       
+                
+                                                                             
+
 ```
 
 ---
@@ -93,33 +93,33 @@
 
 ```
 Alice (Sender)                          Bob (Receiver)
-    │                                      │
-    ├─ Generate ephemeral key pair         │
-    ├─ X3DH with Bob's prekey bundle       │
-    │    └─ Hybrid KEM (Kyber + X25519)    │
-    │    └─ Derive shared secret (64 bytes)│
-    │                                      │
-    ├─ Initialize double ratchet           │
-    │    └─ Root key derivation (HKDF)     │
-    │    └─ Chain keys for forward secrecy │
-    │                                      │
-    ├─ Encrypt message                     │
-    │    ├─ ChaCha20-Poly1305 AEAD        │
-    │    ├─ Nonce generation (random)      │
-    │    └─ Authentication tag             │
-    │                                      │
-    ├─ Wrap in sealed envelope             │
-    │    ├─ No sender metadata             │
-    │    ├─ Hash-based routing             │
-    │    └─ Timestamp + TTL               │
-    │                                      │
-    ├─ Send over TLS to relay             ─► Receive message
-    │                                      │
-    │                              ├─ Verify AEAD tag
-    │                              ├─ Decrypt with shared key
-    │                              ├─ Update chain key
-    │                              ├─ Ratchet send chain
-    │                              └─ Display plaintext
+                                          
+     Generate ephemeral key pair         
+     X3DH with Bob's prekey bundle       
+         Hybrid KEM (Kyber + X25519)    
+         Derive shared secret (64 bytes)
+                                          
+     Initialize double ratchet           
+         Root key derivation (HKDF)     
+         Chain keys for forward secrecy 
+                                          
+     Encrypt message                     
+         ChaCha20-Poly1305 AEAD        
+         Nonce generation (random)      
+         Authentication tag             
+                                          
+     Wrap in sealed envelope             
+         No sender metadata             
+         Hash-based routing             
+         Timestamp + TTL               
+                                          
+     Send over TLS to relay              Receive message
+                                          
+                                   Verify AEAD tag
+                                   Decrypt with shared key
+                                   Update chain key
+                                   Ratchet send chain
+                                   Display plaintext
 ```
 
 ---
@@ -163,8 +163,8 @@ Global Capacity:   EU: 500K + NA: 500K + APAC: 500K = 1.5M concurrent users
 ### Backup Strategy
 ```
 Local Backup (Hourly)        Regional Backup (Daily)       Offsite Backup (Weekly)
-     ▼                              ▼                              ▼
-  SSD NVMe            ──────►  S3 / Cloud Storage    ──────►  Offsite Vault (encrypted)
+                                                                 
+  SSD NVMe              S3 / Cloud Storage      Offsite Vault (encrypted)
   Encrypted                    Geo-redundant                   Air-gapped
   On-site                      Encrypted at rest              GPG signed
 ```
@@ -206,16 +206,16 @@ Layer 5: Storage
 
 ```
 GDPR                 SOC 2 Type II        ISO/IEC 27001
-├─ Data minimization ├─ Security controls ├─ Risk management
-├─ Right to erasure  ├─ Availability      ├─ Incident response
-├─ DPA signed        ├─ Confidentiality   ├─ Access control
-└─ Transparency      └─ Integrity         └─ Compliance audits
+ Data minimization  Security controls  Risk management
+ Right to erasure   Availability       Incident response
+ DPA signed         Confidentiality    Access control
+ Transparency       Integrity          Compliance audits
 
 FIPS 140-3           Common Criteria      eIDAS (EU)
-├─ Kyber 1024        ├─ Crypto validation ├─ Digital ID
-├─ Dilithium 5       ├─ EAL4 target       ├─ Qualified signature
-├─ ChaCha20-Poly     └─ Formal methods    └─ Trusted services
-└─ HKDF-SHA3
+ Kyber 1024         Crypto validation  Digital ID
+ Dilithium 5        EAL4 target        Qualified signature
+ ChaCha20-Poly      Formal methods     Trusted services
+ HKDF-SHA3
 ```
 
 ---
@@ -225,14 +225,14 @@ FIPS 140-3           Common Criteria      eIDAS (EU)
 Key metrics monitored 24/7:
 
 ```
-📊 Real-time Metrics
-  ├─ Messages/sec: ▓▓▓▓▓▓▓▓▓░ 8,450
-  ├─ Connected clients: ▓▓▓▓▓▓▓▓▓░ 425,000
-  ├─ Avg latency: ▓▓▓░░░░░░░ 28ms
-  ├─ Error rate: ░░░░░░░░░░ 0.01%
-  ├─ Cache hit rate: ▓▓▓▓▓▓▓▓▓░ 94%
-  ├─ Database connections: ▓▓▓▓░░░░░░ 4,200 / 10,000
-  └─ TLS handshakes/sec: ▓▓░░░░░░░░ 150
+ Real-time Metrics
+   Messages/sec:  8,450
+   Connected clients:  425,000
+   Avg latency:  28ms
+   Error rate:  0.01%
+   Cache hit rate:  94%
+   Database connections:  4,200 / 10,000
+   TLS handshakes/sec:  150
 ```
 
 ---

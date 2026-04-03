@@ -1,95 +1,68 @@
-# NEXUS: Post-Quantum Secure Messaging Protocol
+# NEXUS — Post-Quantum Encrypted Messaging Infrastructure
 
-**The World's Production-Grade Quantum-Resistant End-to-End Encrypted Messaging Platform**
+**Production-grade quantum-resistant end-to-end encrypted messaging protocol. NIST FIPS 203/204 compliant. 22,000 lines of pure Rust. Zero warnings. Zero unsafe. Zero compromises.**
 
-[![Rust CI](https://img.shields.io/github/actions/workflow/status/said885/nexus/rust-ci.yml?branch=main&label=CI&style=flat-square)](https://github.com/said885/nexus/actions)
+[![Build](https://img.shields.io/github/actions/workflow/status/said885/nexus/master-ci.yml?branch=main&label=build&style=flat-square)](https://github.com/said885/nexus/actions)
 [![License AGPL](https://img.shields.io/badge/relay-AGPL--3.0-blue?style=flat-square)](LICENSE-RELAY)
 [![License Apache](https://img.shields.io/badge/crypto-Apache--2.0-green?style=flat-square)](LICENSE-CRYPTO)
-[![Rust 1.75+](https://img.shields.io/badge/rust-1.75%2B-orange?style=flat-square)](https://www.rust-lang.org/)
-[![Warnings: 0](https://img.shields.io/badge/warnings-0-brightgreen?style=flat-square)](./GITHUB_PUBLICATION_READY.md)
-[![Tests: 175+](https://img.shields.io/badge/tests-175%2B-brightgreen?style=flat-square)](./nexus-relay/tests)
-[![Code Quality: Grade A+](https://img.shields.io/badge/quality-Grade%20A%2B-brightgreen?style=flat-square)]()
-[![NIST Compliant](https://img.shields.io/badge/NIST-FIPS%20203%20%2F%20204-purple?style=flat-square)]()
+[![Rust](https://img.shields.io/badge/rust-1.75%2B-orange?style=flat-square)](https://www.rust-lang.org/)
+[![Clippy](https://img.shields.io/badge/clippy-0%20warnings-brightgreen?style=flat-square)]()
+[![Tests](https://img.shields.io/badge/tests-175%2B%20passing-brightgreen?style=flat-square)](./nexus-relay/tests)
+[![NIST](https://img.shields.io/badge/NIST-FIPS%20203%20%2F%20204-purple?style=flat-square)]()
 
-**Status**: Production Ready | **Version**: 0.3.0 (Stable) | **Maintained**: Active | **Author**: said885
-
----
-
-## 💎 Commercial & Global Acquisition Status
-
-NEXUS is a **high-value cryptographic asset** ready for:
-- [x] **Enterprise Licensing**: Commercial licenses for proprietary closed-source deployment.
-- [x] **Intellectual Property Sale**: Full acquisition of the sovereign secure messaging standard.
-- [x] **Quantum-Resistant Infrastructure**: NIST-compliant FIPS 203/204 ready for production.
-
-For licensing, commercial audits, or total acquisition, see [COMMERCIAL.md](COMMERCIAL.md) or contact **said885** via `frensh5@proton.me`.
+**Version** 0.3.0 (Stable) | **Status** Production Ready | **Author** [said885](https://github.com/said885)
 
 ---
 
-## Keywords for Global Discovery
+## Enterprise Licensing and Acquisition
 
-**Cryptography**: `cryptography`, `cryptographic-primitives`, `crypto`, `post-quantum-cryptography`, `post-quantum`, `pqc`, `quantum-resistant`, `quantum-safe`, `quantum-secure`
+NEXUS is available for commercial licensing, private deployment, and full IP acquisition.
 
-**Algorithms**: `kyber`, `kyber1024`, `dilithium`, `dilithium5`, `fips-203`, `fips-204`, `nist-standards`, `nist-fips`, `key-exchange`, `digital-signatures`, `x25519`, `ed25519`, `chacha20-poly1305`
+- **Enterprise License**: Proprietary closed-source deployment rights starting at $5,000/year.
+- **Government and Defense**: Sovereign messaging infrastructure, source-code escrow, custom audits.
+- **Full IP Acquisition**: Complete transfer of source code, protocols, patents, and trademarks.
 
-**Protocols**: `e2ee`, `end-to-end-encryption`, `messaging-protocol`, `secure-messaging`, `message-encryption`, `forward-secrecy`, `double-ratchet`, `x3dh`, `sealed-sender`, `zero-knowledge-relay`
-
-**Architecture**: `rust-security`, `memory-safe`, `stateless-server`, `distributed-system`, `microservices`, `websocket`, `async-io`, `high-performance`
-
-**Categories**: `privacy`, `privacy-preserving`, `privacy-focused`, `security`, `information-security`, `cybersecurity`, `data-protection`, `encryption`, `authentication`
-
-**Use Cases**: `secure-communication`, `metadata-privacy`, `government-communication`, `enterprise-security`, `healthcare-hipaa`, `financial-security`, `critical-infrastructure`, `compliance`
-
-**Technology**: `rust`, `rust-lang`, `tokio`, `axum`, `postgresql`, `redis`, `prometheus`, `kubernetes`, `docker`, `wasm`, `ffi`, `android`, `ios`, `swift`, `kotlin`
-
-**Standards**: `agpl-3.0`, `apache-2.0`, `open-source`, `open-source-software`, `nist-standard`, `compliance`, `gdpr-compliant`, `hipaa-compliant`, `sox-compliant`
+Contact **frensh5@proton.me** | See [COMMERCIAL.md](COMMERCIAL.md) for pricing and terms.
 
 ---
 
 ## The Problem
 
-Every mainstream messaging platform (Signal, WhatsApp, Telegram, Matrix) will become **cryptographically broken** when quantum computers arrive in 10-30 years. Attackers are **already recording encrypted messages today** using "harvest-now-decrypt-later" attacks that will decrypt them in the future.
+Every mainstream messaging platform — Signal, WhatsApp, Telegram, Matrix — relies on classical cryptography that will be broken by quantum computers. The NSA, ANSSI, and BSI have all published timelines: credible quantum threats within 15-20 years.
 
-NIST finalized post-quantum standards in 2022-2024. **NEXUS is the only production-ready platform built from day one to be quantum-resistant.**
+Attackers are already executing **harvest-now-decrypt-later** campaigns, recording encrypted traffic today to decrypt it when quantum hardware matures.
+
+NIST finalized post-quantum standards (FIPS 203, FIPS 204) in 2024. NEXUS is the only production-ready messaging platform built entirely on these standards.
 
 ---
 
 ## The Solution
 
-**NEXUS** is the world's first enterprise-grade, fully open-source messaging platform with:
+NEXUS is a complete post-quantum messaging infrastructure:
 
-✓ **NIST-Standardized Post-Quantum Cryptography** (Kyber1024 FIPS 203, Dilithium5 FIPS 204)  
-✓ **Zero Compiler Warnings** (unprecedented code quality)  
-✓ **100% Memory-Safe Rust** (no buffer overflows, no use-after-free)  
-✓ **Zero-Knowledge Relay Architecture** (server cannot see messages or metadata)  
-✓ **175+ Tests** (>80% coverage on critical modules)  
-✓ **Formal Verification** (TLA+ specifications for cryptographic correctness)  
-✓ **Production Ready** (deployed immediately to government and enterprise)  
-✓ **Dual Licensed** (AGPL-3.0 server + Apache-2.0 crypto library)  
-
+- **NIST FIPS 203/204**: Kyber1024 key encapsulation + Dilithium5 digital signatures
+- **Hybrid Cryptography**: Classical (X25519, Ed25519) + post-quantum in every operation
+- **Zero-Knowledge Relay**: The server never sees message content, sender identity, or metadata
+- **Forward Secrecy**: Double Ratchet protocol with quantum-resistant KEM ratcheting
+- **100% Rust**: Memory-safe, zero unsafe blocks, zero compiler warnings
+- **175+ Automated Tests**: Comprehensive coverage with formal TLA+ specifications
+- **Dual Licensed**: AGPL-3.0 (server) + Apache-2.0 (crypto library for proprietary use)  
 
 
-## Overview
 
-**NEXUS** is the world's first production-grade, fully open-source quantum-resistant messaging platform built in Rust. It implements NIST-standardized post-quantum cryptography (Kyber1024 FIPS 203, Dilithium5 FIPS 204) with zero compiler warnings and 175+ tests.
+## Comparison
 
-### The Problem NEXUS Solves
-
-Every mainstream messaging platform (Signal, WhatsApp, Matrix, Telegram) uses classical encryption that will shatter when quantum computers arrive. Harvest-now-decrypt-later attacks are already happening—attackers are recording encrypted messages today to decrypt them in 10-20 years.
-
-NIST finalized post-quantum standards in 2022-2024. NEXUS is built for a world where quantum threats are real.
-
-### What Makes NEXUS Different
-
-| Feature | NEXUS | Signal | WhatsApp | Matrix |
-|---------|:-----:|:------:|:-------:|:------:|
-| **PQ Key Exchange** (Kyber1024) | ✓ | ✗ | ✗ | ✗ |
-| **PQ Signatures** (Dilithium5) | ✓ | ✗ | ✗ | ✗ |
-| **Zero-Knowledge Relay** | ✓ | ✗ | ✗ | ✗ |
-| **100% Rust** | ✓ | ✗ | ✗ | ✗ |
-| **0 Compiler Warnings** | ✓ | ? | ? | ? |
-| **NIST-Compliant** | ✓ | ✗ | ✗ | ✗ |
-| **Open Source Core** | ✓ | ✓ | ✗ | ✓ |
+| Capability | NEXUS | Signal | WhatsApp | Matrix |
+|---|:---:|:---:|:---:|:---:|
+| Post-Quantum Key Exchange (Kyber1024) | Yes | No | No | No |
+| Post-Quantum Signatures (Dilithium5) | Yes | No | No | No |
+| Zero-Knowledge Relay | Yes | No | No | No |
+| 100% Memory-Safe (Rust) | Yes | No | No | No |
+| Zero Compiler Warnings | Yes | Unknown | Unknown | Unknown |
+| NIST FIPS 203/204 Compliant | Yes | No | No | No |
+| Sealed Sender | Yes | Yes | No | No |
+| Forward Secrecy | Yes | Yes | Yes | Yes |
+| Open Source | Yes | Yes | No | Yes |
 
 ## Key Features
 
@@ -101,23 +74,7 @@ NIST finalized post-quantum standards in 2022-2024. NEXUS is built for a world w
 - Production Grade: 20,000+ lines of tested code with zero compiler warnings
 - Multi-Platform: Web, Desktop (Tauri), Android (Kotlin), iOS (Swift)
 
-Comparison with other platforms:
-
-Feature Comparison:
-- End-to-End Encryption: NEXUS (yes), Signal (yes), Matrix (yes)
-- Post-Quantum Key Exchange: NEXUS (Kyber1024 + X25519), Signal (no), Matrix (no)
-- Post-Quantum Signatures: NEXUS (Dilithium5 + Ed25519), Signal (no), Matrix (no)
-- Forward Secrecy: NEXUS (yes), Signal (yes), Matrix (yes)
-- Sealed Sender: NEXUS (yes), Signal (yes), Matrix (no)
-- Zero-Knowledge Relay: NEXUS (yes), Signal (no), Matrix (no)
-- Memory-Safe Language: NEXUS (100% Rust), Signal (no), Matrix (no)
-- Zero Compiler Warnings: NEXUS (verified), Signal (?), Matrix (?)
-
 ---
-
-## Why NEXUS?
-
-
 
 ## Architecture
 
@@ -294,24 +251,24 @@ Repository structure:
 
 ```
 nexus/
-├── nexus-relay/            Rust relay server
-│   ├── src/                42 modules, 15,500 lines
-│   ├── tests/              Integration tests
-│   ├── migrations/         PostgreSQL schemas
-│   ├── formal/             TLA+ specifications
-│   ├── k8s/                Kubernetes manifests
-│   └── monitoring/         Prometheus and Grafana configs
-├── nexus-crypto/           Post-quantum crypto library
-│   ├── src/                9 modules, 2,400 lines
-│   └── tests/              Cryptographic test suite
-├── nexus-web/              React web client
-│   └── src/                4,100 lines TypeScript/React
-├── nexus-desktop/          Tauri desktop client (in progress)
-├── nexus-android/          Kotlin Android client (in progress)
-├── nexus-ios/              Swift iOS client (in progress)
-├── monitoring/             Shared monitoring configurations
-├── migrations/             Database migration scripts
-└── Cargo.toml              Workspace configuration
+ nexus-relay/            Rust relay server
+    src/                42 modules, 15,500 lines
+    tests/              Integration tests
+    migrations/         PostgreSQL schemas
+    formal/             TLA+ specifications
+    k8s/                Kubernetes manifests
+    monitoring/         Prometheus and Grafana configs
+ nexus-crypto/           Post-quantum crypto library
+    src/                9 modules, 2,400 lines
+    tests/              Cryptographic test suite
+ nexus-web/              React web client
+    src/                4,100 lines TypeScript/React
+ nexus-desktop/          Tauri desktop client (in progress)
+ nexus-android/          Kotlin Android client (in progress)
+ nexus-ios/              Swift iOS client (in progress)
+ monitoring/             Shared monitoring configurations
+ migrations/             Database migration scripts
+ Cargo.toml              Workspace configuration
 ```
 
 ## Monitoring and Observability
@@ -364,15 +321,15 @@ We respond within 24 hours for critical issues and follow responsible disclosure
 
 See SECURITY.md for the full vulnerability reporting policy.
 
-## Support the Project
+## Support and Contact
 
-NEXUS is an independent project dedicated to protecting privacy in the quantum era.
+NEXUS is developed and maintained by **said885**.
 
-- **Developer**: said885 ([@said885](https://github.com/said885))
-- **Contact**: [frensh5@proton.me](mailto:frensh5@proton.me)
-- **Donation BTC**: `bc1qglsmc82fe5axxhe2gjlwpaflpklm4mh236cjqv`
+- **GitHub**: [github.com/said885](https://github.com/said885)
+- **Email**: [frensh5@proton.me](mailto:frensh5@proton.me)
+- **BTC**: `bc1qglsmc82fe5axxhe2gjlwpaflpklm4mh236cjqv`
 
-For commercial licenses, enterprise support, and consulting, please contact our team.
+For commercial licensing, enterprise deployment, or acquisition inquiries, see [COMMERCIAL.md](COMMERCIAL.md).
 
 ---
 

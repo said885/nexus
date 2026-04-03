@@ -94,4 +94,4 @@ This Code of Conduct is adapted from:
 
 ---
 
-**With sincere appreciation for everyone who makes NEXUS welcoming.** 💜
+**With sincere appreciation for everyone who makes NEXUS welcoming.** 

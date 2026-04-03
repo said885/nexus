@@ -1,3 +1,18 @@
+// Copyright (c) 2026 said885 <frensh5@proton.me>
+// SPDX-License-Identifier: Apache-2.0
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 //! Identity key management for NEXUS.
 //!
 //! Each identity bundles:
@@ -47,10 +62,10 @@ impl IdentityKeyPair {
     /// Derive the public portion of this identity.
     pub fn public_key(&self) -> IdentityPublicKey {
         IdentityPublicKey {
-            signing_pq: self.signing.public.clone(),
+            signing_pq: self.signing.public,
             signing_classic: self.signing_classic.verifying_key(),
             kem: HybridPublicKey {
-                kyber: self.kem.public.kyber.clone(),
+                kyber: self.kem.public.kyber,
                 x25519: self.kem.public.x25519,
             },
         }

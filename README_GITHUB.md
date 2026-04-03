@@ -20,15 +20,15 @@ NEXUS is a quantum-resistant messaging platform built with modern cryptography s
 
 ```
 nexus/
-├── nexus-relay/          Server component (Rust, Axum/Tokio)
-├── nexus-crypto/         Cryptographic library (Rust, FFI-compatible)
-├── nexus-web/            Web client (TypeScript/React)
-├── nexus-desktop/        Desktop application (Tauri)
-├── nexus-android/        Android client (Kotlin)
-├── nexus-ios/            iOS client (Swift)
-├── monitoring/           Prometheus & Grafana configs
-├── migrations/           PostgreSQL schema migrations
-└── docs/                 Technical documentation
+ nexus-relay/          Server component (Rust, Axum/Tokio)
+ nexus-crypto/         Cryptographic library (Rust, FFI-compatible)
+ nexus-web/            Web client (TypeScript/React)
+ nexus-desktop/        Desktop application (Tauri)
+ nexus-android/        Android client (Kotlin)
+ nexus-ios/            iOS client (Swift)
+ monitoring/           Prometheus & Grafana configs
+ migrations/           PostgreSQL schema migrations
+ docs/                 Technical documentation
 ```
 
 ## Technology Stack

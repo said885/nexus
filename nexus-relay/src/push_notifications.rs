@@ -1,3 +1,21 @@
+// Copyright (c) 2026 said885 <frensh5@proton.me>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+//
+// This file is part of NEXUS Relay Server.
+//
+// NEXUS Relay Server is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// NEXUS Relay Server is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU Affero General Public License for more details.
+//
+// You should have received a copy of the GNU Affero General Public License
+// along with NEXUS Relay Server. If not, see <https://www.gnu.org/licenses/>.
+
 #![allow(missing_docs, dead_code)]
 
 // Encrypted push notifications with end-to-end encryption
@@ -26,7 +44,7 @@ pub(crate) enum PushPlatform {
     #[serde(rename = "fcm")]
     Firebase,  // Firebase Cloud Messaging (Android, Web)
     #[serde(rename = "apns")]
-    APNS,      // Apple Push Notification service (iOS, macOS)
+    Apns,      // Apple Push Notification service (iOS, macOS)
     #[serde(rename = "web")]
     WebPush,   // Web Push API
 }
@@ -238,7 +256,7 @@ impl PushNotificationManager {
 
         self.user_tokens
             .entry(user_id)
-            .or_insert_with(Vec::new)
+            .or_default()
             .push(token_id.clone());
 
         Ok(token_id)

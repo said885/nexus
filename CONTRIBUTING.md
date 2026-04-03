@@ -2,6 +2,18 @@
 
 Thank you for your interest in contributing to NEXUS! We believe great security software is built by communities. Whether you're fixing a bug, adding a feature, or improving documentation, your contribution matters.
 
+## Contributor License Agreement (CLA)
+
+Before your first contribution can be merged, you must sign the
+[Contributor License Agreement](CLA.md). This protects both you and the
+project by ensuring intellectual property rights are clearly defined.
+
+Include the following in your pull request description:
+
+> I have read the NEXUS Contributor License Agreement and I agree to its
+> terms. My contributions are my original work and I have the right to
+> submit them under the project license.
+
 ## Code of Conduct
 
 Please read and follow our [Code of Conduct](CODE_OF_CONDUCT.md) in all interactions.
@@ -332,14 +344,14 @@ cd nexus-web && npm run doc
 
 ### Some Dos and Don'ts
 
-✅ **Do:**
+ **Do:**
 - Report security issues privately (see [SECURITY.md](SECURITY.md))
 - Add tests for security-critical code
 - Use constant-time comparisons for secrets
 - Zeroize sensitive memory
 - Document threat assumptions
 
-❌ **Don't:**
+ **Don't:**
 - Commit secrets (API keys, passwords, tokens)
 - Use `unsafe` without justification
 - Ignore compiler warnings
@@ -366,11 +378,11 @@ Every PR runs:
 
 A maintainer will review:
 
-- ✅ Code quality and style
-- ✅ Cryptographic correctness (for crypto changes)
-- ✅ Performance impact
-- ✅ Documentation completeness
-- ✅ Test coverage
+-  Code quality and style
+-  Cryptographic correctness (for crypto changes)
+-  Performance impact
+-  Documentation completeness
+-  Test coverage
 
 ---
 
@@ -402,4 +414,4 @@ By contributing to NEXUS, you agree that your contributions will be licensed und
 
 ---
 
-**Thank you for making NEXUS better!** 🚀
+**Thank you for making NEXUS better!** 

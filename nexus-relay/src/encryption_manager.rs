@@ -1,3 +1,21 @@
+// Copyright (c) 2026 said885 <frensh5@proton.me>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+//
+// This file is part of NEXUS Relay Server.
+//
+// NEXUS Relay Server is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// NEXUS Relay Server is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU Affero General Public License for more details.
+//
+// You should have received a copy of the GNU Affero General Public License
+// along with NEXUS Relay Server. If not, see <https://www.gnu.org/licenses/>.
+
 #![allow(missing_docs, dead_code)]
 
 //! End-to-end encryption verification & management
@@ -82,8 +100,8 @@ impl EncryptionManager {
                 // 32 bytes for ChaCha20
                 let mut key = vec![0u8; 32];
                 // In production, use getrandom
-                for i in 0..32 {
-                    key[i] = (i as u8).wrapping_mul(17); // Placeholder
+                for (i, item) in key.iter_mut().enumerate().take(32) {
+                    *item = (i as u8).wrapping_mul(17); // Placeholder
                 }
                 key
             }

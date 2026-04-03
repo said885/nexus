@@ -125,13 +125,13 @@ Patches (0.x.z): Weekly (critical security fixes)
 
 Reviewers must verify:
 
-- ✅ Code compiles with 0 warnings
-- ✅ All tests pass
-- ✅ Follows project style guide
-- ✅ No hardcoded secrets
-- ✅ No performance degradation
-- ✅ Documentation updated
-- ✅ Cryptographic soundness (for crypto PRs)
+-  Code compiles with 0 warnings
+-  All tests pass
+-  Follows project style guide
+-  No hardcoded secrets
+-  No performance degradation
+-  Documentation updated
+-  Cryptographic soundness (for crypto PRs)
 
 ### Approval
 

@@ -1,3 +1,21 @@
+// Copyright (c) 2026 said885 <frensh5@proton.me>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+//
+// This file is part of NEXUS Relay Server.
+//
+// NEXUS Relay Server is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// NEXUS Relay Server is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU Affero General Public License for more details.
+//
+// You should have received a copy of the GNU Affero General Public License
+// along with NEXUS Relay Server. If not, see <https://www.gnu.org/licenses/>.
+
 #![allow(missing_docs, dead_code)]
 
 //! User account management with 2FA and recovery
@@ -42,8 +60,8 @@ pub(crate) struct UserAccount {
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 pub(crate) enum TwoFAMethod {
-    TOTP,           // Time-based One-Time Password
-    SMS,            // SMS text message
+    Totp,           // Time-based One-Time Password
+    Sms,            // SMS text message
     Email,          // Email code
     Authenticator,  // Authenticator app
 }
@@ -136,7 +154,7 @@ impl UserAccount {
 
     /// Enable 2FA
     pub(crate) fn enable_2fa(&mut self, method: TwoFAMethod, secret: String) -> Result<Vec<String>, String> {
-        if method != TwoFAMethod::TOTP && method != TwoFAMethod::SMS && method != TwoFAMethod::Email {
+        if method != TwoFAMethod::Totp && method != TwoFAMethod::Sms && method != TwoFAMethod::Email {
             return Err("Invalid 2FA method".to_string());
         }
 
@@ -422,7 +440,7 @@ mod tests {
             "hash123".to_string(),
         );
 
-        let codes = account.enable_2fa(TwoFAMethod::TOTP, "secret123".to_string());
+        let codes = account.enable_2fa(TwoFAMethod::Totp, "secret123".to_string());
         assert!(codes.is_ok());
         assert!(account.two_fa_enabled);
         assert_eq!(account.backup_codes.len(), 8);

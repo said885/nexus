@@ -1,6 +1,6 @@
 # NEXUS Relay - Production Deployment Guide
 
-## 🚀 Quick Start (Development)
+##  Quick Start (Development)
 
 ### 1. Prerequisites
 ```bash
@@ -56,7 +56,7 @@ curl http://localhost:3000/health
 
 ---
 
-## 🏗️ Production Deployment
+##  Production Deployment
 
 ### 1. Kubernetes Deployment
 
@@ -176,7 +176,7 @@ appendfsync everysec
 
 ---
 
-## 🔐 Security Hardening
+##  Security Hardening
 
 ### 1. Network Security
 ```bash
@@ -225,7 +225,7 @@ resources:
 
 ---
 
-## 🧪 Testing & Validation
+##  Testing & Validation
 
 ### 1. Unit Tests
 ```bash
@@ -258,7 +258,7 @@ kubectl get pods -n nexus -w
 
 ---
 
-## 📊 Observability
+##  Observability
 
 ### 1. Health Checks
 ```bash
@@ -298,7 +298,7 @@ journalctl -u nexus-relay -f
 
 ---
 
-## 🔄 Maintenance & Updates
+##  Maintenance & Updates
 
 ### 1. Rolling Updates
 ```bash
@@ -331,7 +331,7 @@ certbot renew --dns-cloudflare
 
 ---
 
-## 🚨 Troubleshooting
+##  Troubleshooting
 
 ### Service won't start
 ```bash
@@ -370,7 +370,7 @@ redis-cli info stats | grep evicted
 
 ---
 
-## 📞 Support & Escalation
+##  Support & Escalation
 
 For production support:
 - **Security Issues**: security@nexus-messaging.io

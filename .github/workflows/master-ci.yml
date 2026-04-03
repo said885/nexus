@@ -149,9 +149,9 @@ jobs:
           if grep -r "md5\|MD5\|sha1\|SHA1\|DES\|RC4" \
             --include="*.rs" --include="*.toml" \
             nexus-crypto/ nexus-relay/ nexus-web/ 2>/dev/null; then
-            echo "⚠ WARNING: Potentially weak crypto found - review needed"
+            echo " WARNING: Potentially weak crypto found - review needed"
           else
-            echo "✓ No obvious weak cryptographic algorithms detected"
+            echo " No obvious weak cryptographic algorithms detected"
           fi
 
       - name: Verify NIST compliance
@@ -305,7 +305,7 @@ jobs:
     steps:
       - name: Determine overall status
         run: |
-          echo "📊 NEXUS CI/CD Pipeline Results"
+          echo " NEXUS CI/CD Pipeline Results"
           echo "================================"
           echo "Lint Check: ${{ needs.lint.result }}"
           echo "Build & Test: ${{ needs.test.result }}"
@@ -318,7 +318,7 @@ jobs:
           echo "================================"
           
           if [ "${{ needs.lint.result }}" = "success" ] && [ "${{ needs.test.result }}" = "success" ]; then
-            echo "✅ Core Pipeline: PASSED"
+            echo " Core Pipeline: PASSED"
           else
-            echo "❌ Core Pipeline: FAILED"
+            echo " Core Pipeline: FAILED"
           fi

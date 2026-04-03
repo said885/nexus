@@ -12,13 +12,13 @@ NEXUS is a **post-quantum secure, end-to-end encrypted messaging platform** desi
 
 ### Key Features
 
-✅ **Post-Quantum Cryptography** — Hybrid KEMs protect against future quantum computers  
-✅ **Zero-Knowledge Design** — Relay never inspects message contents  
-✅ **End-to-End Encryption** — X3DH + Double Ratchet for perfect forward secrecy  
-✅ **Federation Ready** — Inter-relay communication protocol  
-✅ **Scalable Architecture** — Designed for millions of concurrent users  
-✅ **Observable** — Comprehensive monitoring, tracing, and logging  
-✅ **Secure by Default** — Cryptographically verified protocols  
+ **Post-Quantum Cryptography** — Hybrid KEMs protect against future quantum computers  
+ **Zero-Knowledge Design** — Relay never inspects message contents  
+ **End-to-End Encryption** — X3DH + Double Ratchet for perfect forward secrecy  
+ **Federation Ready** — Inter-relay communication protocol  
+ **Scalable Architecture** — Designed for millions of concurrent users  
+ **Observable** — Comprehensive monitoring, tracing, and logging  
+ **Secure by Default** — Cryptographically verified protocols  
 
 ---
 
@@ -38,36 +38,36 @@ NEXUS is a **post-quantum secure, end-to-end encrypted messaging platform** desi
 
 **Architecture**:
 ```
-┌─────────────────────────────────────────┐
-│         WebSocket Connections            │
-│   (100k+ concurrent, per machine)       │
-└──────────────────┬──────────────────────┘
-                   │
-        ┌──────────┼──────────┐
-        │          │          │
-   ┌────▼──┐  ┌────▼──┐  ┌───▼───┐
-   │Handler│  │Handler│  │Handler│
-   │Thread │  │Thread │  │Thread │
-   └────┬──┘  └────┬──┘  └───┬───┘
-        │          │          │
-        └──────────┼──────────┘
-                   │
-        ┌──────────▼──────────┐
-        │   Message Router    │
-        │  (rate limiting,    │
-        │   validation,       │
-        │   offload)          │
-        └──────────┬──────────┘
-                   │
-        ┌──────────┴──────────┐
-        │                     │
-   ┌────▼──┐          ┌──────▼────┐
-   │PostgreSQL        │   Redis    │
-   │(persistent)      │(cache/     │
-   │                  │ queue)     │
-   └─────────┬────────┴──────┬─────┘
-             │               │
-             └───────────────┘
+
+         WebSocket Connections            
+   (100k+ concurrent, per machine)       
+
+                   
+        
+                            
+       
+   Handler  Handler  Handler
+   Thread   Thread   Thread 
+       
+                            
+        
+                   
+        
+           Message Router    
+          (rate limiting,    
+           validation,       
+           offload)          
+        
+                   
+        
+                             
+             
+   PostgreSQL           Redis    
+   (persistent)      (cache/     
+                      queue)     
+   
+                            
+             
 ```
 
 **Database Schema**:
@@ -304,51 +304,51 @@ Double Ratchet:
 
 ### Single-Region (HA)
 ```
-                          ┌─────────────────┐
-                          │   Cloudflare    │
-                          │   (DDoS + WAF)  │
-                          └────────┬────────┘
-                                   │
-                    ┌──────────────┼──────────────┐
-                    │              │              │
-              ┌─────▼──┐      ┌────▼────┐   ┌────▼────┐
-              │ Relay  │      │ Relay   │   │ Relay   │
-              │  Pod 1 │      │  Pod 2  │   │  Pod 3  │
-              └─────┬──┘      └────┬────┘   └────┬────┘
-                    │              │              │
-                    └──────────────┼──────────────┘
-                                   │
-                    ┌──────────────┼──────────────┐
-                    │              │              │
-              ┌─────▼──┐      ┌────▼────┐   ┌────▼────┐
-              │ Postgres│      │ Redis   │   │  Vault  │
-              │(primary)│      │(cache)  │   │(secrets)│
-              └─────┬──┘      └────┬────┘   └────┬────┘
-                    │              │              │
-                    └──────────────┼──────────────┘
-                                   │
-                         ┌─────────▼──────────┐
-                         │  Backup/Snapshot   │
-                         │   (S3 Glacier)     │
-                         └────────────────────┘
+                          
+                             Cloudflare    
+                             (DDoS + WAF)  
+                          
+                                   
+                    
+                                                
+                       
+               Relay         Relay       Relay   
+                Pod 1         Pod 2       Pod 3  
+                       
+                                                
+                    
+                                   
+                    
+                                                
+                       
+               Postgres       Redis        Vault  
+              (primary)      (cache)     (secrets)
+                       
+                                                
+                    
+                                   
+                         
+                           Backup/Snapshot   
+                            (S3 Glacier)     
+                         
 ```
 
 ### Multi-Region (Disaster Recovery)
 ```
 Region 1 (Primary)          Region 2 (Failover)
-┌─────────────────────┐    ┌─────────────────────┐
-│  NEXUS Relay Cluster│───▶│  NEXUS Relay Cluster│
-│  (10+ nodes, 100k+) │    │  (5+ nodes, 50k)    │
-│  PostgreSQL Primary │    │  PostgreSQL Replica │
-│  Redis Primary      │    │  Redis Replica      │
-└─────────────────────┘    └─────────────────────┘
-        │                           │
-        └───────────┬───────────────┘
-                    │
-          ┌─────────▼──────────┐
-          │  Global Load Balancer
-          │  (GeoDNS + GeoIP)
-          └────────────────────┘
+    
+  NEXUS Relay Cluster  NEXUS Relay Cluster
+  (10+ nodes, 100k+)       (5+ nodes, 50k)    
+  PostgreSQL Primary       PostgreSQL Replica 
+  Redis Primary            Redis Replica      
+    
+                                   
+        
+                    
+          
+            Global Load Balancer
+            (GeoDNS + GeoIP)
+          
 ```
 
 ---
@@ -357,14 +357,14 @@ Region 1 (Primary)          Region 2 (Failover)
 
 | Metric | Target | Current |
 |--------|--------|---------|
-| WebSocket latency (p99) | <100ms | ✅ ~50ms |
-| Message delivery | <1s (online) | ✅ ~100ms |
-| TLS handshake | <100ms | ✅ ~80ms |
-| X3DH exchange | <200ms | ✅ ~150ms |
-| Concurrent connections | 1M+ | ✅ 100k+ per node |
-| Message throughput | 100k msg/sec | ✅ 50k msg/sec |
-| CPU per message | <1ms | ✅ ~0.5ms |
-| Memory per client | <10KB | ✅ ~5KB |
+| WebSocket latency (p99) | <100ms |  ~50ms |
+| Message delivery | <1s (online) |  ~100ms |
+| TLS handshake | <100ms |  ~80ms |
+| X3DH exchange | <200ms |  ~150ms |
+| Concurrent connections | 1M+ |  100k+ per node |
+| Message throughput | 100k msg/sec |  50k msg/sec |
+| CPU per message | <1ms |  ~0.5ms |
+| Memory per client | <10KB |  ~5KB |
 
 ---
 

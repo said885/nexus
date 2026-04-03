@@ -1,3 +1,18 @@
+// Copyright (c) 2026 said885 <frensh5@proton.me>
+// SPDX-License-Identifier: Apache-2.0
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 /// Comprehensive security tests for NEXUS crypto library.
 ///
 /// This module tests:
@@ -7,9 +22,8 @@
 ///  - Double ratchet forward secrecy
 ///  - Secure memory handling
 ///  - Proper zeroization of sensitive data
-
 #[cfg(test)]
-mod security_tests {
+mod tests {
     use crate::*;
     use rand::rngs::OsRng;
 
@@ -75,12 +89,12 @@ mod security_tests {
         let bob_bundle = x3dh::PreKeyBundle {
             identity_key: bob.public_key(),
             signed_prekey: hybrid_kem::HybridPublicKey {
-                kyber: bob_spk.public.kyber.clone(),
+                kyber: bob_spk.public.kyber,
                 x25519: bob_spk.public.x25519,
             },
             signed_prekey_sig: bob.sign(&bob_spk.public.to_bytes()).unwrap(),
             one_time_prekey: Some(hybrid_kem::HybridPublicKey {
-                kyber: bob_otpk.public.kyber.clone(),
+                kyber: bob_otpk.public.kyber,
                 x25519: bob_otpk.public.x25519,
             }),
             one_time_prekey_id: Some(1u32),
@@ -116,12 +130,12 @@ mod security_tests {
         let bob_bundle = x3dh::PreKeyBundle {
             identity_key: bob.public_key(),
             signed_prekey: hybrid_kem::HybridPublicKey {
-                kyber: bob_spk.public.kyber.clone(),
+                kyber: bob_spk.public.kyber,
                 x25519: bob_spk.public.x25519,
             },
             signed_prekey_sig: bob.sign(&bob_spk.public.to_bytes()).unwrap(),
             one_time_prekey: Some(hybrid_kem::HybridPublicKey {
-                kyber: bob_otpk.public.kyber.clone(),
+                kyber: bob_otpk.public.kyber,
                 x25519: bob_otpk.public.x25519,
             }),
             one_time_prekey_id: Some(1u32),
@@ -278,12 +292,12 @@ mod security_tests {
         let bob_bundle = x3dh::PreKeyBundle {
             identity_key: bob.public_key(),
             signed_prekey: hybrid_kem::HybridPublicKey {
-                kyber: bob_spk.public.kyber.clone(),
+                kyber: bob_spk.public.kyber,
                 x25519: bob_spk.public.x25519,
             },
             signed_prekey_sig: bob.sign(&bob_spk.public.to_bytes()).unwrap(),
             one_time_prekey: Some(hybrid_kem::HybridPublicKey {
-                kyber: bob_otpk.public.kyber.clone(),
+                kyber: bob_otpk.public.kyber,
                 x25519: bob_otpk.public.x25519,
             }),
             one_time_prekey_id: Some(1u32),

@@ -1,0 +1,71 @@
+NEXUS Patent Grant and Reservation Notice
+==========================================
+
+Effective Date: April 3, 2026
+Author: said885 <frensh5@proton.me>
+
+SCOPE
+=====
+
+This notice applies to the following original works contained in the
+NEXUS project repository:
+
+1. The NEXUS Hybrid KEM construction combining Kyber1024 (NIST FIPS 203)
+   with X25519 key exchange via HKDF-SHA3-512 key derivation.
+
+2. The NEXUS Post-Quantum Double Ratchet extension integrating KEM-based
+   ratcheting with classical Diffie-Hellman ratcheting.
+
+3. The NEXUS Zero-Knowledge Relay architecture for metadata-private
+   message routing without server-side content or relationship knowledge.
+
+4. The NEXUS Sealed Sender protocol for anonymous message submission
+   with post-quantum authentication.
+
+5. The NEXUS Envelope Encryption scheme for multi-layer message protection
+   with forward secrecy guarantees.
+
+6. All formal verification models (TLA+ specifications) for the X3DH
+   and Double Ratchet protocols as implemented in NEXUS.
+
+PATENT LICENSE GRANTS
+=====================
+
+For nexus-crypto (Apache-2.0):
+   Section 3 of the Apache License 2.0 grants a patent license to
+   all users and distributors of the nexus-crypto library. This grant
+   covers patent claims necessarily infringed by the contribution
+   itself or by the combination of the contribution with the work.
+
+For nexus-relay (AGPL-3.0):
+   The AGPL-3.0 does not contain an express patent grant. Users of
+   nexus-relay must independently assess their patent exposure.
+   Commercial patent licenses are available upon request.
+
+RESERVATION OF RIGHTS
+=====================
+
+The author reserves all rights to:
+
+1. File patent applications covering the novel methods described above.
+2. Enforce such patents against parties who do not comply with the
+   applicable open-source license terms.
+3. Grant or withhold commercial patent licenses at sole discretion.
+4. Pursue legal action against unauthorized commercial exploitation
+   that does not comply with the AGPL-3.0 copyleft requirements.
+
+The defensive patent pledge: The author commits to not asserting
+patents against any party that is in full compliance with the
+applicable NEXUS license terms (AGPL-3.0 for relay, Apache-2.0 for
+crypto). This pledge is revocable only if the compliant party
+initiates patent litigation against the author or the NEXUS project.
+
+COMMERCIAL LICENSING
+====================
+
+Organizations requiring a patent license without copyleft obligations
+(AGPL-3.0) may obtain a commercial license. Contact:
+
+   frensh5@proton.me
+
+Terms are negotiated individually based on deployment scale and use case.

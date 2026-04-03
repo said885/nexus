@@ -136,7 +136,7 @@ jobs:
           ! grep -r "md5\|MD5\|sha1\|SHA1\|DES\|RC4" \
             --include="*.rs" --include="*.toml" --include="*.kt" --include="*.tsx" \
             nexus-crypto/ nexus-relay/ nexus-android/ nexus-web/ || true
-          echo "✓ No obvious weak crypto detected"
+          echo " No obvious weak crypto detected"
 
   # ============================================================================
   # SECRETS SCANNING
@@ -164,10 +164,10 @@ jobs:
     steps:
       - name: Generate security badge
         run: |
-          echo "🔒 Security Audit Summary"
-          echo "✓ Dependency audit: ${{ needs.cargo-audit.result }}"
-          echo "✓ OWASP check: ${{ needs.dependency-check.result }}"
-          echo "✓ Container scan: ${{ needs.container-scan.result }}"
-          echo "✓ SAST analysis: ${{ needs.sast.result }}"
-          echo "✓ Crypto compliance: ${{ needs.crypto-compliance.result }}"
-          echo "✓ Secrets scan: ${{ needs.secrets.result }}"
+          echo " Security Audit Summary"
+          echo " Dependency audit: ${{ needs.cargo-audit.result }}"
+          echo " OWASP check: ${{ needs.dependency-check.result }}"
+          echo " Container scan: ${{ needs.container-scan.result }}"
+          echo " SAST analysis: ${{ needs.sast.result }}"
+          echo " Crypto compliance: ${{ needs.crypto-compliance.result }}"
+          echo " Secrets scan: ${{ needs.secrets.result }}"

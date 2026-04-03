@@ -58,6 +58,13 @@ Related to #(issue number)
 - [ ] No new dependencies introduced (or justified)
 - [ ] Security implications reviewed
 
+## Intellectual Property
+
+- [ ] I have read and agree to the [Contributor License Agreement](../../CLA.md)
+- [ ] My contribution is my original work
+- [ ] All copyright headers are present in new files
+- [ ] SPDX-License-Identifier is included in new source files
+
 ## Performance
 
 - [ ] No performance degradation
