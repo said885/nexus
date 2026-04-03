@@ -1,0 +1,155 @@
+version: '3.9'
+
+services:
+  # PostgreSQL Database with Full-Disk Encryption Support
+  postgres:
+    image: postgres:16-alpine
+    container_name: nexus-postgres
+    environment:
+      POSTGRES_DB: nexus
+      POSTGRES_USER: nexus
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-ChangeMe!Secure123}
+      POSTGRES_INITDB_ARGS: "-c shared_preload_libraries=pgcrypto"
+    ports:
+      - "5432:5432"
+    volumes:
+      - nexus-db:/var/lib/postgresql/data
+      - ./migrations:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U nexus"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - nexus-network
+    restart: unless-stopped
+
+  # Redis Cache with Password
+  redis:
+    image: redis:7-alpine
+    container_name: nexus-redis
+    command: redis-server --requirepass "${REDIS_PASSWORD:-ChangeMe!Redis123}" --maxmemory 2gb --maxmemory-policy allkeys-lru
+    ports:
+      - "6379:6379"
+    volumes:
+      - nexus-redis:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD:-ChangeMe!Redis123}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - nexus-network
+    restart: unless-stopped
+
+  # NEXUS Relay Server
+  relay:
+    build:
+      context: ./nexus-relay
+      dockerfile: Dockerfile.prod
+    container_name: nexus-relay
+    environment:
+      NEXUS_LISTEN: "0.0.0.0:8443"
+      RUST_LOG: "info"
+      DATABASE_URL: "postgresql://nexus:${DB_PASSWORD:-ChangeMe!Secure123}@postgres:5432/nexus"
+      REDIS_URL: "redis://:${REDIS_PASSWORD:-ChangeMe!Redis123}@redis:6379"
+      TLS_CERT: "/app/certs/server.crt"
+      TLS_KEY: "/app/certs/server.key"
+      MAX_CONNECTIONS: "50000"
+      MESSAGE_TTL: "604800"
+    ports:
+      - "8443:8443"
+    volumes:
+      - ./certs:/app/certs:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - nexus-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "-k", "https://localhost:8443/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Web Frontend
+  web:
+    build:
+      context: ./nexus-web
+      dockerfile: Dockerfile
+    container_name: nexus-web
+    environment:
+      VITE_API_URL: "https://relay:8443"
+      NODE_ENV: "production"
+    ports:
+      - "3000:80"
+    depends_on:
+      - relay
+    networks:
+      - nexus-network
+    restart: unless-stopped
+
+  # Nginx Reverse Proxy
+  nginx:
+    image: nginx:alpine
+    container_name: nexus-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./certs:/etc/nginx/certs:ro
+    depends_on:
+      - relay
+      - web
+    networks:
+      - nexus-network
+    restart: unless-stopped
+
+  # Prometheus Monitoring
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: nexus-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./monitoring/rules.yml:/etc/prometheus/rules.yml:ro
+      - nexus-prometheus:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention.time=30d'
+    networks:
+      - nexus-network
+    restart: unless-stopped
+
+  # Grafana Dashboards
+  grafana:
+    image: grafana/grafana:latest
+    container_name: nexus-grafana
+    ports:
+      - "3001:3000"
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD:-admin}
+      GF_USERS_ALLOW_SIGN_UP: 'false'
+    volumes:
+      - nexus-grafana:/var/lib/grafana
+    depends_on:
+      - prometheus
+    networks:
+      - nexus-network
+    restart: unless-stopped
+
+volumes:
+  nexus-db:
+  nexus-redis:
+  nexus-prometheus:
+  nexus-grafana:
+
+networks:
+  nexus-network:
+    driver: bridge

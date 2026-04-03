@@ -1,0 +1,77 @@
+# NEXUS Threat Detection Alerts
+# Real-time behavioral anomaly detection
+# Alerts for signature failures, replay attacks, brute force, rate limiting
+
+groups:
+  - name: nexus_threat_detection
+    interval: 10s
+    rules:
+      # CRITICAL: Signature verification failures
+      - alert: SignatureVerificationFailures
+        expr: rate(nexus_signature_failures_total[5m]) > 0.5
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "High signature verification failure rate"
+          description: "{{ $value }} signature failures per second detected"
+
+      # CRITICAL: Replay attack detection
+      - alert: ReplayAttackDetected
+        expr: increase(nexus_replay_attempts_total[1m]) >= 2
+        for: 30s
+        labels:
+          severity: critical
+        annotations:
+          summary: "Replay attack detected"
+          description: "{{ $value }} replay attempts detected in last minute"
+
+      # WARNING: Authentication brute force
+      - alert: AuthenticationBruteForce
+        expr: rate(nexus_auth_failures_total[5m]) > 0.2
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Authentication brute force attempt"
+          description: "{{ $value }} auth failures per second - possible brute force"
+
+      # WARNING: High threat level clients
+      - alert: HighThreatClients
+        expr: nexus_high_threat_clients > 5
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Multiple high-threat clients detected"
+          description: "{{ $value }} clients at high threat level"
+
+      # CRITICAL: Critical threat level clients
+      - alert: CriticalThreatClients
+        expr: nexus_critical_threat_clients >= 1
+        for: 30s
+        labels:
+          severity: critical
+        annotations:
+          summary: "CRITICAL THREAT: Compromised client detected"
+          description: "{{ $value }} client(s) at critical threat level - immediate isolation recommended"
+
+      # WARNING: IPs blocked due to threats
+      - alert: IPsBlocked
+        expr: nexus_blocked_ips_total > 3
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Multiple IPs blocked for suspicious behavior"
+          description: "{{ $value }} IPs currently blocked"
+
+      # INFO: Suspicious activity
+      - alert: SuspiciousActivity
+        expr: nexus_suspicious_clients > 10
+        for: 5m
+        labels:
+          severity: info
+        annotations:
+          summary: "Multiple suspicious clients detected"
+          description: "{{ $value }} clients showing suspicious behavior"

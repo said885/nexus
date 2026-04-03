@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NEXUS Messenger</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Loading state -->
+    <div class="setup-screen">
+      <div class="setup-container">
+        <div class="logo-icon">🔒</div>
+        <h1>NEXUS Messenger</h1>
+        <p>Loading...</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Tauri invoke wrapper
+    const { invoke } = window.__TAURI__ || { invoke: async () => {} };
+
+    // App state
+    const state = {
+      connected: false,
+      identityHash: null,
+      conversations: [],
+      messages: new Map(),
+      currentChat: null,
+      groups: [],
+      currentGroup: null,
+    };
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        const hasIdentity = await invoke('has_identity');
+        if (hasIdentity) {
+          const hash = await invoke('get_identity_hash');
+          state.identityHash = hash;
+          showMainScreen();
+        } else {
+          showSetupScreen();
+        }
+        connectToRelay();
+      } catch (e) {
+        showSetupScreen();
+      }
+    });
+
+    function showSetupScreen() {
+      document.getElementById('app').innerHTML = `
+        <div class="setup-screen">
+          <div class="setup-container">
+            <div class="logo-icon">🔒</div>
+            <h1>NEXUS Messenger</h1>
+            <p>Post-Quantum Secure Messaging</p>
+            <div class="setup-form">
+              <button id="generate-btn" class="btn btn-primary">Generate Identity</button>
+              <p class="setup-info">This creates your post-quantum cryptographic identity</p>
+            </div>
+            <div class="setup-status" id="status"></div>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('generate-btn').onclick = async () => {
+        const status = document.getElementById('status');
+        status.innerHTML = '<span class="spinner"></span> Generating...';
+        try {
+          const hash = await invoke('generate_identity');
+          state.identityHash = hash;
+          status.innerHTML = '<div class="success">✓ Identity generated!</div>';
+          setTimeout(showMainScreen, 1000);
+        } catch (e) {
+          status.innerHTML = '<div class="error">Error: ' + e + '</div>';
+        }
+      };
+    }
+
+    function showMainScreen() {
+      document.getElementById('app').innerHTML = `
+        <div class="main-screen">
+          <div class="sidebar">
+            <div class="sidebar-header">
+              <div class="user-info">
+                <div class="user-avatar">🔒</div>
+                <div class="user-details">
+                  <div class="user-name">NEXUS User</div>
+                  <div class="user-hash">${state.identityHash?.slice(0,8) || '???'}...</div>
+                </div>
+              </div>
+              <div class="connection-status ${state.connected?'connected':'disconnected'}"></div>
+            </div>
+            <div class="sidebar-tabs">
+              <button class="tab active" data-tab="chats">Chats</button>
+              <button class="tab" data-tab="groups">Groups</button>
+            </div>
+            <div class="conversations-list" id="conv-list">
+              <div class="empty-state">
+                <div class="empty-icon">💬</div>
+                <p>No conversations</p>
+                <button class="btn btn-secondary" id="new-chat">Start Chat</button>
+              </div>
+            </div>
+            <div class="groups-list" id="group-list" style="display:none">
+              <div class="empty-state">
+                <div class="empty-icon">👥</div>
+                <p>No groups</p>
+                <button class="btn btn-secondary" id="new-group">Create Group</button>
+              </div>
+            </div>
+          </div>
+          <div class="chat-area" id="chat-area">
+            <div class="chat-placeholder">
+              <div class="placeholder-icon">💬</div>
+              <h2>Select a conversation</h2>
+            </div>
+          </div>
+        </div>
+      `;
+
+      // Tab switching
+      document.querySelectorAll('.tab').forEach(t => {
+        t.onclick = () => {
+          document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+          t.classList.add('active');
+          const tab = t.dataset.tab;
+          document.getElementById('conv-list').style.display = tab==='chats'?'block':'none';
+          document.getElementById('group-list').style.display = tab==='groups'?'block':'none';
+        };
+      });
+
+      document.getElementById('new-chat')?.addEventListener('click', showNewChatModal);
+      document.getElementById('new-group')?.addEventListener('click', showNewGroupModal);
+    }
+
+    function showNewChatModal() {
+      const overlay = document.createElement('div');
+      overlay.className = 'modal-overlay';
+      overlay.innerHTML = `
+        <div class="modal">
+          <div class="modal-header"><h3>New Chat</h3><button class="close-btn">×</button></div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label>Recipient Hash</label>
+              <input type="text" id="recip-hash" maxlength="64" placeholder="64-char hex">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary cancel">Cancel</button>
+            <button class="btn btn-primary confirm">Start</button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(overlay);
+      overlay.querySelector('.close-btn').onclick = () => overlay.remove();
+      overlay.querySelector('.cancel').onclick = () => overlay.remove();
+      overlay.querySelector('.confirm').onclick = () => {
+        const h = document.getElementById('recip-hash').value;
+        if (h.length === 64) { createConversation(h); overlay.remove(); }
+      };
+    }
+
+    function showNewGroupModal() {
+      const overlay = document.createElement('div');
+      overlay.className = 'modal-overlay';
+      overlay.innerHTML = `
+        <div class="modal">
+          <div class="modal-header"><h3>Create Group</h3><button class="close-btn">×</button></div>
+          <div class="modal-body">
+            <div class="form-group"><label>Name</label><input type="text" id="g-name"></div>
+            <div class="form-group"><label>Description</label><textarea id="g-desc"></textarea></div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary cancel">Cancel</button>
+            <button class="btn btn-primary confirm">Create</button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(overlay);
+      overlay.querySelector('.close-btn').onclick = () => overlay.remove();
+      overlay.querySelector('.cancel').onclick = () => overlay.remove();
+      overlay.querySelector('.confirm').onclick = async () => {
+        const name = document.getElementById('g-name').value;
+        if (name.trim()) {
+          try {
+            await invoke('create_group', { name, description: document.getElementById('g-desc').value || null });
+            overlay.remove();
+          } catch(e) { alert(e); }
+        }
+      };
+    }
+
+    function createConversation(hash) {
+      const conv = { id: Date.now().toString(), participant: hash.slice(0,8)+'...', hash, lastMsg: null, unread: 0 };
+      state.conversations.push(conv);
+      state.messages.set(conv.id, []);
+      renderConversations();
+      selectConversation(conv);
+    }
+
+    function renderConversations() {
+      const list = document.getElementById('conv-list');
+      if (!state.conversations.length) {
+        list.innerHTML = '<div class="empty-state"><div class="empty-icon">💬</div><p>No conversations</p><button class="btn btn-secondary" id="new-chat">Start Chat</button></div>';
+        document.getElementById('new-chat')?.addEventListener('click', showNewChatModal);
+        return;
+      }
+      list.innerHTML = state.conversations.map(c => `
+        <div class="conversation-item ${state.currentChat===c.id?'active':''}" data-id="${c.id}">
+          <div class="conv-avatar">💬</div>
+          <div class="conv-info"><div class="conv-name">${c.participant}</div><div class="conv-preview">${c.lastMsg||'No messages'}</div></div>
+          ${c.unread?`<span class="badge">${c.unread}</span>`:''}
+        </div>
+      `).join('');
+      list.querySelectorAll('.conversation-item').forEach(el => {
+        el.onclick = () => selectConversation(state.conversations.find(c=>c.id===el.dataset.id));
+      });
+    }
+
+    function selectConversation(conv) {
+      state.currentChat = conv.id;
+      conv.unread = 0;
+      renderConversations();
+      const msgs = state.messages.get(conv.id)||[];
+      document.getElementById('chat-area').innerHTML = `
+        <div class="chat-header">
+          <div class="chat-header-info"><div class="chat-avatar">💬</div><div class="chat-details"><div class="chat-name">${conv.participant}</div></div></div>
+          <div class="chat-actions"><button class="btn-icon">📞</button><button class="btn-icon">📹</button></div>
+        </div>
+        <div class="messages-container" id="msgs">${msgs.map(m=>`<div class="message ${m.out?'outgoing':'incoming'}"><div class="message-content">${m.content}</div><div class="message-time">${new Date(m.time).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</div></div>`).join('')}</div>
+        <div class="chat-input"><input type="text" id="msg-input" placeholder="Type..."><button class="btn btn-primary" id="send-btn">Send</button></div>
+      `;
+      const container = document.getElementById('msgs');
+      container.scrollTop = container.scrollHeight;
+      const send = () => {
+        const input = document.getElementById('msg-input');
+        const content = input.value.trim();
+        if (!content) return;
+        const msg = { id: Date.now(), content, time: Date.now(), out: true };
+        const messages = state.messages.get(conv.id)||[];
+        messages.push(msg);
+        state.messages.set(conv.id, messages);
+        conv.lastMsg = content;
+        renderConversations();
+        selectConversation(conv);
+      };
+      document.getElementById('send-btn').onclick = send;
+      document.getElementById('msg-input').onkeypress = e => { if(e.key==='Enter') send(); };
+    }
+
+    async function connectToRelay() {
+      try {
+        await invoke('connect_to_relay', { url: 'ws://localhost:8443/ws' });
+        state.connected = true;
+      } catch(e) {
+        state.connected = false;
+        setTimeout(connectToRelay, 5000);
+      }
+      const el = document.querySelector('.connection-status');
+      if(el) el.className = 'connection-status '+(state.connected?'connected':'disconnected');
+    }
+  </script>
+</body>
+</html>

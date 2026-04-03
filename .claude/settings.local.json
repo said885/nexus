@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 -c \" import sys, json lines = sys.stdin.readlines\\(\\) for line in reversed\\(lines\\): try: obj = json.loads\\(line.strip\\(\\)\\) if obj.get\\('type'\\) == 'assistant': for c in obj.get\\('message', {}\\).get\\('content', []\\): if c.get\\('type'\\) == 'text' and len\\(c.get\\('text',''\\)\\) > 200: print\\(c['text'][:5000]\\) break break except: pass \")",
+      "Bash(cargo test:*)",
+      "Read(//tmp/**)",
+      "Bash(grep -E \"\\\\.rs$\")",
+      "Bash(cargo doc:*)",
+      "Bash(cargo build:*)",
+      "Bash(cargo check:*)"
+    ]
+  }
+}

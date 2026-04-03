@@ -1,0 +1,28 @@
+GNU AFFERO GENERAL PUBLIC LICENSE
+Version 3, 19 November 2007
+
+Copyright (C) 2026 said885 (frensh5@proton.me)
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+ADDITIONAL TERMS
+
+The NEXUS Relay Server (nexus-relay) is licensed under AGPL-3.0 to ensure
+that any modifications to the relay server software remain open-source.
+
+This prevents proprietary forks and ensures the security community can audit
+all deployed relay instances.
+
+See https://www.affero.org/oagpl.html for details on why AGPL matters for
+server software.

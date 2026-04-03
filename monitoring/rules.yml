@@ -1,0 +1,144 @@
+groups:
+  - name: nexus_relay_alerts
+    interval: 30s
+    rules:
+      # =========================================================================
+      # CRITICAL ALERTS
+      # =========================================================================
+
+      - alert: NexusRelayDown
+        expr: up{job="nexus-relay"} == 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "NEXUS Relay is down"
+          description: "NEXUS Relay instance has been unreachable for 2 minutes"
+
+      - alert: HighErrorRate
+        expr: rate(http_requests_total{job="nexus-relay",status=~"5.."}[5m]) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "High error rate (5xx) detected"
+          description: "Error rate is {{ $value | humanizePercentage }} of requests"
+
+      - alert: DatabaseConnectionFailure
+        expr: |
+          pg_up{job="postgres"} == 0 or
+          increase(pg_pool_exhausted_connections_total[5m]) > 10
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Database connectivity issue"
+          description: "PostgreSQL database is unreachable or connection pool exhausted"
+
+      - alert: RedisDown
+        expr: redis_up{job="redis"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Redis cache is down"
+          description: "Redis has been unreachable for 1 minute (no message queuing/caching)"
+
+      # =========================================================================
+      # HIGH PRIORITY ALERTS
+      # =========================================================================
+
+      - alert: HighMemoryUsage
+        expr: |
+          (node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) /
+          node_memory_MemTotal_bytes > 0.85
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High memory usage: {{ $value | humanizePercentage }}"
+          description: "Memory usage exceeds 85% threshold"
+
+      - alert: HighCPUUsage
+        expr: 100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High CPU usage: {{ $value }}%"
+          description: "CPU usage exceeds 80% for 10 minutes"
+
+      - alert: DiskSpaceLow
+        expr: |
+          (node_filesystem_avail_bytes{mountpoint="/"} /
+           node_filesystem_size_bytes{mountpoint="/"}) < 0.1
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Low disk space: {{ $value | humanizePercentage }}"
+          description: "Less than 10% disk space remaining"
+
+      - alert: HighLatency
+        expr: |
+          histogram_quantile(0.99, rate(http_request_duration_seconds_bucket[5m])) > 1.0
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High request latency (p99): {{ $value }}s"
+          description: "99th percentile latency exceeds 1 second"
+
+      - alert: MessageQueueBacklog
+        expr: |
+          redis_list_length{key="offline_queue"} > 10000
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Message queue backlog increasing"
+          description: "{{ $value }} messages pending delivery"
+
+      - alert: AuthenticationFailureRate
+        expr: |
+          rate(nexus_auth_failures_total[5m]) > 10
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High authentication failure rate: {{ $value }}/sec"
+          description: "Possible brute force attack or misconfiguration"
+
+      - alert: TLSCertificateExpiringSoon
+        expr: |
+          (tls_certificate_expiry_timestamp - time()) < 604800
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "TLS certificate expiring in {{ $value | humanizeDuration }}"
+          description: "Certificate for {{ $labels.instance }} expires soon"
+
+  - name: business_metrics
+    interval: 60s
+    rules:
+      - alert: UnusuallyLowConnectedClients
+        expr: |
+          nexus_connected_clients < 10 and
+          hour() >= 8 and hour() < 22
+        for: 30m
+        labels:
+          severity: info
+        annotations:
+          summary: "Unusually few connected clients: {{ $value }}"
+          description: "Expected active users during business hours"
+
+      - alert: HighDataTransferRate
+        expr: |
+          rate(nexus_bytes_transferred_total[5m]) > 1000000000
+        for: 10m
+        labels:
+          severity: info
+        annotations:
+          summary: "High data transfer rate: {{ $value | humanize }}B/sec"
+          description: "May indicate large file transfers or spam"

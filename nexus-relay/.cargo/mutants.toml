@@ -1,0 +1,53 @@
+# Mutation Testing Configuration for NEXUS
+# Using cargo-mutants for comprehensive mutation testing
+
+# Install: cargo install cargo-mutants
+
+# Run mutation tests:
+# cargo mutants --jobs 4 --timeout 60
+
+# Configuration
+[mutations]
+# Test all source files
+src/**/*.rs
+
+# Exclude generated code
+!src/generated/**
+
+# Exclude test files
+!**/*test*.rs
+
+# Exclude benchmarks
+!**/*bench*.rs
+
+[testing]
+# Test command
+command = ["cargo", "test", "--lib"]
+
+# Timeout per mutant (seconds)
+timeout = 60
+
+# Number of parallel jobs
+jobs = 4
+
+[output]
+# Output directory for results
+output_dir = "mutants_output"
+
+# Generate HTML report
+html_report = true
+
+[filters]
+# Only mutate these packages
+packages = ["nexus-relay"]
+
+# Exclude these patterns from mutation
+exclude = [
+    "println!",
+    "eprintln!",
+    "tracing::",
+    "log::",
+    "#[cfg(test)]",
+    "unimplemented!",
+    "todo!",
+]

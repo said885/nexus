@@ -1,0 +1,92 @@
+# NEXUS Relay Server - Prometheus Alerting Rules
+
+groups:
+  - name: nexus-relay-alerts
+    rules:
+      # High error rate
+      - alert: HighErrorRate
+        expr: rate(nexus_http_requests_total{status=~"5.."}[5m]) > 0.1
+        for: 5m
+        labels:
+          severity: critical
+          service: nexus-relay
+        annotations:
+          summary: "High error rate detected"
+          description: "Error rate is {{ $value }} errors/sec over the last 5 minutes"
+
+      # High latency
+      - alert: HighLatency
+        expr: histogram_quantile(0.95, rate(nexus_http_request_duration_seconds_bucket[5m])) > 1
+        for: 10m
+        labels:
+          severity: warning
+          service: nexus-relay
+        annotations:
+          summary: "High latency detected"
+          description: "95th percentile latency is {{ $value }}s"
+
+      # Memory usage high
+      - alert: HighMemoryUsage
+        expr: process_resident_memory_bytes{job="nexus-relay"} > 400 * 1024 * 1024
+        for: 5m
+        labels:
+          severity: warning
+          service: nexus-relay
+        annotations:
+          summary: "High memory usage"
+          description: "Memory usage is {{ $value | humanize }}"
+
+      # Too many connections
+      - alert: TooManyConnections
+        expr: nexus_connected_clients > 10000
+        for: 5m
+        labels:
+          severity: warning
+          service: nexus-relay
+        annotations:
+          summary: "High connection count"
+          description: "{{ $value }} clients connected"
+
+      # Server down
+      - alert: ServerDown
+        expr: up{job="nexus-relay"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: nexus-relay
+        annotations:
+          summary: "NEXUS Relay server is down"
+          description: "Server has been unreachable for more than 1 minute"
+
+      # Disk space low (if using persistent storage)
+      - alert: DiskSpaceLow
+        expr: node_filesystem_avail_bytes{mountpoint="/app/data"} / node_filesystem_size_bytes < 0.1
+        for: 5m
+        labels:
+          severity: warning
+          service: nexus-relay
+        annotations:
+          summary: "Low disk space"
+          description: "Less than 10% disk space remaining"
+
+      # High message queue
+      - alert: HighOfflineQueue
+        expr: nexus_offline_queue_size > 1000
+        for: 10m
+        labels:
+          severity: warning
+          service: nexus-relay
+        annotations:
+          summary: "Large offline message queue"
+          description: "{{ $value }} messages in offline queue"
+
+      # Rate limiting active
+      - alert: RateLimitingActive
+        expr: rate(nexus_rate_limited_requests_total[5m]) > 10
+        for: 5m
+        labels:
+          severity: info
+          service: nexus-relay
+        annotations:
+          summary: "Rate limiting active"
+          description: "{{ $value }} requests/sec being rate limited"

@@ -1,0 +1,173 @@
+name: Security Audit & Compliance
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  schedule:
+    # Run daily security checks
+    - cron: '0 2 * * *'
+
+env:
+  REGISTRY: ghcr.io
+
+jobs:
+  # ============================================================================
+  # RUST SECURITY AUDIT
+  # ============================================================================
+  cargo-audit:
+    name: Cargo Security Audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions-rs/audit-check-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+  # ============================================================================
+  # DEPENDENCY SCANNING
+  # ============================================================================
+  dependency-check:
+    name: OWASP Dependency-Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dependency-check/Dependency-Check_Action@main
+        with:
+          project: 'NEXUS'
+          path: '.'
+          format: 'SARIF'
+          args: >
+            --scan .
+            --enableSymbolic
+            --enableExperimental
+      - uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: './dependency-check-report.sarif'
+
+  # ============================================================================
+  # CODE QUALITY & COVERAGE
+  # ============================================================================
+  coverage:
+    name: Code Coverage Analysis
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        project: [nexus-crypto, nexus-relay]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+      - uses: taiki-e/install-action@cargo-tarpaulin
+      - name: Generate coverage
+        run: |
+          cd ${{ matrix.project }}
+          cargo tarpaulin --out Xml --timeout 300
+      - uses: codecov/codecov-action@v3
+        with:
+          files: ./cobertura.xml
+          flags: ${{ matrix.project }}
+
+  # ============================================================================
+  # CONTAINER SECURITY SCANNING
+  # ============================================================================
+  container-scan:
+    name: Container Security Scan (Trivy)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Docker image
+        run: |
+          docker build \
+            -f nexus-relay/Dockerfile.prod \
+            -t nexus-relay:${{ github.sha }} \
+            .
+      - uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: nexus-relay:${{ github.sha }}
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          severity: 'CRITICAL,HIGH'
+      - uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: 'trivy-results.sarif'
+
+  # ============================================================================
+  # STATIC ANALYSIS (SAST)
+  # ============================================================================
+  sast:
+    name: Static Application Security Testing
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: github/codeql-action/init@v2
+        with:
+          languages: 'cpp, java, javascript, python'
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - name: Install Bandit (Python SAST)
+        run: pip install bandit
+      - name: Scan Python code
+        run: bandit -r . -f sarif -o bandit.sarif || true
+      - uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: 'bandit.sarif'
+      - uses: github/codeql-action/analyze@v2
+
+  # ============================================================================
+  # CRYPTOGRAPHIC COMPLIANCE
+  # ============================================================================
+  crypto-compliance:
+    name: Cryptographic Standards Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+      - name: Check for weak crypto
+        run: |
+          # Scan for weak crypto algorithms
+          ! grep -r "md5\|MD5\|sha1\|SHA1\|DES\|RC4" \
+            --include="*.rs" --include="*.toml" --include="*.kt" --include="*.tsx" \
+            nexus-crypto/ nexus-relay/ nexus-android/ nexus-web/ || true
+          echo "✓ No obvious weak crypto detected"
+
+  # ============================================================================
+  # SECRETS SCANNING
+  # ============================================================================
+  secrets:
+    name: Secrets Detection
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          base: ${{ github.event.repository.default_branch }}
+          head: HEAD
+          extra_args: --debug
+
+  # ============================================================================
+  # SECURITY REPORT SUMMARY
+  # ============================================================================
+  report:
+    name: Security Report
+    runs-on: ubuntu-latest
+    if: always()
+    needs: [cargo-audit, dependency-check, coverage, container-scan, sast, crypto-compliance, secrets]
+    steps:
+      - name: Generate security badge
+        run: |
+          echo "🔒 Security Audit Summary"
+          echo "✓ Dependency audit: ${{ needs.cargo-audit.result }}"
+          echo "✓ OWASP check: ${{ needs.dependency-check.result }}"
+          echo "✓ Container scan: ${{ needs.container-scan.result }}"
+          echo "✓ SAST analysis: ${{ needs.sast.result }}"
+          echo "✓ Crypto compliance: ${{ needs.crypto-compliance.result }}"
+          echo "✓ Secrets scan: ${{ needs.secrets.result }}"

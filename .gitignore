@@ -1,0 +1,92 @@
+# Rust
+/target/
+Cargo.lock
+**/*.rs.bk
+*.pdb
+
+# Node
+node_modules/
+dist/
+build/
+*.tsbuildinfo
+npm-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+*.iml
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Secrets (never commit these!)
+*.key
+*.pem
+*.p12
+*.pfx
+privatekey.txt
+secrets.yaml
+
+# Test Coverage
+*.profraw
+*.profdata
+/coverage/
+*.lcov
+
+# Documentation
+/docs/generated/
+site/
+*.epub
+
+# Temporary Files
+.tmp/
+.cache/
+*.log
+*.bak
+
+# Media
+*.mp4
+*.mov
+*.wmv
+*.flv
+*.avi
+
+# Database Dumps
+*.sql
+*.dump
+*.backup
+!migrations/*.sql
+
+# Kubernetes
+kubeconfig
+*.kubeconfig
+
+# Docker
+.dockerignore
+
+# Load Testing
+results/
+*.csv
+
+# Build Artifacts (keep source)
+nexus-relay/target/
+nexus-crypto/target/
+nexus-web/dist/
+nexus-desktop/target/

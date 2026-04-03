@@ -1,0 +1,127 @@
+name: NEXUS Security & Build Pipeline
+on: [push, pull_request]
+
+jobs:
+  security-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          profile: minimal
+      
+      - name: Security Audit - Cargo audit
+        run: |
+          cargo install cargo-audit
+          cargo audit
+      
+      - name: Security Audit - Cargo deny
+        run: |
+          cargo install cargo-deny
+          cargo deny check
+      
+      - name: SAST - Clippy
+        run: cargo clippy --all-targets --all-features -- -D warnings
+
+  fuzzing:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly
+          profile: minimal
+      
+      - name: Install cargo-fuzz
+        run: cargo install cargo-fuzz
+      
+      - name: Fuzz crypto primitives (1 min)
+        run: |
+          cd nexus-crypto
+          cargo +nightly fuzz run hybrid_kem_fuzz -- -max_len=1024 -timeout=60
+
+  testing:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      
+      - name: Run crypto tests
+        run: cd nexus-crypto && cargo test --lib
+      
+      - name: Run relay tests
+        run: cd nexus-relay && cargo test --lib
+      
+      - name: Run integration tests
+        run: cargo test --test '*' --all
+      
+      - name: Code coverage
+        run: |
+          cargo install tarpaulin
+          cargo tarpaulin --out Xml --all
+      
+      - name: Upload coverage
+        uses: codecov/codecov-action@v3
+
+  build-release:
+    needs: [security-audit, fuzzing, testing]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      
+      - name: Build release binaries
+        run: |
+          cargo build --release -p nexus-relay
+          cargo build --release -p nexus-crypto
+      
+      - name: Build Docker image
+        run: |
+          docker build -t nexus-relay:latest .
+          docker save nexus-relay:latest > nexus-relay.tar
+      
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: release-binaries
+          path: |
+            nexus-relay/target/release/nexus-relay
+            nexus-crypto/target/release/libnexus_crypto.so
+
+  benchmark:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      
+      - name: Run benchmarks
+        run: |
+          cargo bench -p nexus-crypto --no-run
+          cargo bench -p nexus-relay --no-run
+
+  security-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Run OWASP dependency check
+        uses: dependency-check/Dependency-Check_Action@main
+        with:
+          project: 'NEXUS'
+          path: '.'
+          format: 'JSON'
+      
+      - name: Upload security reports
+        uses: actions/upload-artifact@v3
+        with:
+          name: security-reports
+          path: dependency-check-report.json

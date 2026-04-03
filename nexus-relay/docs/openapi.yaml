@@ -1,0 +1,624 @@
+openapi: 3.0.3
+info:
+  title: NEXUS Relay Server API
+  description: |
+    Post-Quantum Secure Messaging Relay Server API.
+    
+    The NEXUS relay server provides sealed-sender message delivery,
+    identity management, and call signaling for the NEXUS messaging protocol.
+    
+    ## Security
+    - All messages are end-to-end encrypted
+    - The server never sees message contents
+    - Sealed sender provides metadata privacy
+    
+    ## Rate Limiting
+    - API endpoints: 30 requests/second per IP
+    - WebSocket: 10 connections/second per IP
+    - Maximum 100 messages/minute per user
+  version: 0.2.1
+  contact:
+    name: NEXUS Team
+    email: api@nexus.example.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: https://nexus.example.com
+    description: Production server
+  - url: http://localhost:8443
+    description: Local development
+
+tags:
+  - name: Identity
+    description: User identity and prekey management
+  - name: Messages
+    description: Message sending and receiving
+  - name: Groups
+    description: Group chat management
+  - name: Calls
+    description: Voice and video call signaling
+  - name: System
+    description: System health and metrics
+
+paths:
+  /health:
+    get:
+      tags: [System]
+      summary: Health check endpoint
+      description: Returns server health status for load balancers and monitoring
+      operationId: healthCheck
+      responses:
+        '200':
+          description: Server is healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+        '503':
+          description: Server is unhealthy
+
+  /register:
+    post:
+      tags: [Identity]
+      summary: Register new identity
+      description: |
+        Register a new user identity with prekey bundle.
+        The identity key and signed prekey are required.
+        One-time prekeys are optional but recommended.
+      operationId: registerIdentity
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+      responses:
+        '201':
+          description: Identity registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Identity already registered
+        '429':
+          description: Rate limit exceeded
+
+  /prekeys/{recipient_hash}:
+    post:
+      tags: [Identity]
+      summary: Fetch prekey bundle
+      description: |
+        Fetch prekey bundle for a recipient.
+        One one-time prekey is consumed per request.
+      operationId: fetchPrekeys
+      parameters:
+        - name: recipient_hash
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: '^[a-f0-9]{64}$'
+          description: BLAKE3 hash of recipient's identity public key (64 hex chars)
+      responses:
+        '200':
+          description: Prekey bundle retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PreKeyBundle'
+        '404':
+          description: Recipient not found
+        '429':
+          description: Rate limit exceeded
+
+  /upload_prekeys:
+    post:
+      tags: [Identity]
+      summary: Upload additional one-time prekeys
+      description: Upload new one-time prekeys to replenish the pool
+      operationId: uploadPrekeys
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UploadPrekeysRequest'
+      responses:
+        '200':
+          description: Prekeys uploaded
+        '400':
+          description: Invalid request
+        '401':
+          description: Not authenticated
+
+  /ws:
+    get:
+      tags: [Messages]
+      summary: WebSocket connection
+      description: |
+        Establish WebSocket connection for real-time messaging.
+        
+        ### Connection Flow
+        1. Client connects to WebSocket
+        2. Server sends challenge nonce
+        3. Client sends Identify message with signed challenge
+        4. Server confirms identity
+        5. Client can send/receive messages
+        
+        ### Message Types
+        See WebSocket message schemas below.
+      operationId: websocketConnect
+      parameters:
+        - name: Upgrade
+          in: header
+          required: true
+          schema:
+            type: string
+            enum: [websocket]
+      responses:
+        '101':
+          description: Switching Protocols
+        '400':
+          description: Invalid WebSocket request
+        '429':
+          description: Connection limit exceeded
+
+  /api/v1/status:
+    get:
+      tags: [System]
+      summary: Server status
+      description: Returns detailed server status information
+      operationId: getServerStatus
+      responses:
+        '200':
+          description: Server status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerStatus'
+
+  /api/v1/stats:
+    get:
+      tags: [System]
+      summary: Server statistics
+      description: Returns server usage statistics
+      operationId: getServerStats
+      responses:
+        '200':
+          description: Server statistics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerStats'
+
+  /api/v1/groups:
+    post:
+      tags: [Groups]
+      summary: Create a group
+      description: Create a new group chat
+      operationId: createGroup
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateGroupRequest'
+      responses:
+        '201':
+          description: Group created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+        '400':
+          description: Invalid request
+
+  /api/v1/groups/{group_id}:
+    get:
+      tags: [Groups]
+      summary: Get group info
+      description: Get information about a group
+      operationId: getGroup
+      parameters:
+        - name: group_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Group information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+        '404':
+          description: Group not found
+
+  /api/v1/calls:
+    post:
+      tags: [Calls]
+      summary: Initiate a call
+      description: Start a voice or video call
+      operationId: initiateCall
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InitiateCallRequest'
+      responses:
+        '201':
+          description: Call initiated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallSession'
+
+  /api/v1/calls/{call_id}:
+    get:
+      tags: [Calls]
+      summary: Get call status
+      description: Get current status of a call
+      operationId: getCall
+      parameters:
+        - name: call_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Call status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallSession'
+        '404':
+          description: Call not found
+
+components:
+  schemas:
+    HealthResponse:
+      type: object
+      required: [status, timestamp, version]
+      properties:
+        status:
+          type: string
+          enum: [healthy, degraded, unhealthy]
+        timestamp:
+          type: string
+          format: date-time
+        version:
+          type: string
+        uptime_seconds:
+          type: integer
+
+    ErrorResponse:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: object
+          required: [code, message]
+          properties:
+            code:
+              type: string
+            status:
+              type: integer
+            message:
+              type: string
+
+    RegisterRequest:
+      type: object
+      required: [identity_key, signed_prekey, signed_prekey_signature]
+      properties:
+        identity_key:
+          type: string
+          format: byte
+          description: Base64-encoded identity public key
+        signed_prekey:
+          type: string
+          format: byte
+          description: Base64-encoded signed prekey public key
+        signed_prekey_signature:
+          type: string
+          format: byte
+          description: Base64-encoded signature of signed prekey
+        one_time_prekeys:
+          type: array
+          items:
+            type: string
+            format: byte
+          description: Base64-encoded one-time prekeys
+          maxItems: 100
+
+    RegisterResponse:
+      type: object
+      required: [recipient_hash, status]
+      properties:
+        recipient_hash:
+          type: string
+          pattern: '^[a-f0-9]{64}$'
+        status:
+          type: string
+
+    PreKeyBundle:
+      type: object
+      required: [identity_key, signed_prekey, signed_prekey_signature]
+      properties:
+        identity_key:
+          type: string
+          format: byte
+        signed_prekey:
+          type: string
+          format: byte
+        signed_prekey_signature:
+          type: string
+          format: byte
+        one_time_prekey:
+          type: string
+          format: byte
+          nullable: true
+
+    UploadPrekeysRequest:
+      type: object
+      required: [recipient_hash, one_time_prekeys]
+      properties:
+        recipient_hash:
+          type: string
+          pattern: '^[a-f0-9]{64}$'
+        one_time_prekeys:
+          type: array
+          items:
+            type: string
+            format: byte
+          maxItems: 100
+
+    ServerStatus:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [operational, degraded, maintenance]
+        version:
+          type: string
+        uptime_seconds:
+          type: integer
+        connected_clients:
+          type: integer
+
+    ServerStats:
+      type: object
+      properties:
+        connected_clients:
+          type: integer
+        registered_identities:
+          type: integer
+        queued_messages:
+          type: integer
+        active_groups:
+          type: integer
+        active_calls:
+          type: integer
+        online_users:
+          type: integer
+        total_messages:
+          type: integer
+        uptime_seconds:
+          type: integer
+
+    CreateGroupRequest:
+      type: object
+      required: [name]
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        description:
+          type: string
+          maxLength: 500
+
+    Group:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        owner:
+          type: string
+        members:
+          type: array
+          items:
+            type: string
+        admins:
+          type: array
+          items:
+            type: string
+        created_at:
+          type: integer
+        updated_at:
+          type: integer
+
+    InitiateCallRequest:
+      type: object
+      required: [recipient, call_type]
+      properties:
+        recipient:
+          type: string
+          pattern: '^[a-f0-9]{64}$'
+        call_type:
+          type: string
+          enum: [audio, video]
+
+    CallSession:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        initiator:
+          type: string
+        recipient:
+          type: string
+        call_type:
+          type: string
+          enum: [audio, video]
+        status:
+          type: string
+          enum: [ringing, active, ended, missed]
+        started_at:
+          type: integer
+        ended_at:
+          type: integer
+          nullable: true
+
+    # WebSocket Message Types
+    ClientMessage:
+      oneOf:
+        - $ref: '#/components/schemas/IdentifyMessage'
+        - $ref: '#/components/schemas/SendMessage'
+        - $ref: '#/components/schemas/FetchOfflineMessage'
+        - $ref: '#/components/schemas/PingMessage'
+
+    IdentifyMessage:
+      type: object
+      required: [type, recipient_hash, challenge_response]
+      properties:
+        type:
+          type: string
+          enum: [identify]
+        recipient_hash:
+          type: string
+        challenge_response:
+          type: string
+
+    SendMessage:
+      type: object
+      required: [type, recipient, sealed_content, ttl]
+      properties:
+        type:
+          type: string
+          enum: [send]
+        recipient:
+          type: string
+        sealed_content:
+          type: string
+        ttl:
+          type: integer
+          maximum: 604800
+        priority:
+          type: integer
+          enum: [0, 1, 2]
+
+    FetchOfflineMessage:
+      type: object
+      required: [type]
+      properties:
+        type:
+          type: string
+          enum: [fetch_offline]
+
+    PingMessage:
+      type: object
+      required: [type, nonce]
+      properties:
+        type:
+          type: string
+          enum: [ping]
+        nonce:
+          type: string
+
+    ServerMessage:
+      oneOf:
+        - $ref: '#/components/schemas/ChallengeMessage'
+        - $ref: '#/components/schemas/DeliverMessage'
+        - $ref: '#/components/schemas/OfflineMessagesMessage'
+        - $ref: '#/components/schemas/DeliveredMessage'
+        - $ref: '#/components/schemas/ErrorMessage'
+        - $ref: '#/components/schemas/PongMessage'
+
+    ChallengeMessage:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [challenge]
+        nonce:
+          type: string
+
+    DeliverMessage:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [deliver]
+        sealed_content:
+          type: string
+        received_at:
+          type: integer
+        sender_hash:
+          type: string
+
+    OfflineMessagesMessage:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [offline_messages]
+        messages:
+          type: array
+          items:
+            type: object
+            properties:
+              sealed_content:
+                type: string
+              received_at:
+                type: integer
+              priority:
+                type: integer
+
+    DeliveredMessage:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [delivered]
+        id:
+          type: string
+
+    ErrorMessage:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [error]
+        code:
+          type: integer
+        message:
+          type: string
+
+    PongMessage:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [pong]
+        nonce:
+          type: string
