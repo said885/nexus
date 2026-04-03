@@ -1,7 +1,14 @@
 [package]
 name = "nexus-relay"
-version = "0.1.0"
+version = "0.3.0"
 edition = "2021"
+authors = ["said885 <frensh5@proton.me>"]
+description = "Quantum-resistant zero-knowledge message relay server. Production-grade post-quantum cryptography with Kyber1024 and Dilithium5."
+homepage = "https://github.com/said885/nexus"
+repository = "https://github.com/said885/nexus"
+license = "AGPL-3.0"
+keywords = ["crypto", "post-quantum", "messaging", "security", "kyber1024"]
+categories = ["cryptography", "network-programming"]
 
 [[bin]]
 name = "nexus-relay"

@@ -1,0 +1,45 @@
+name: Generate API Documentation
+
+on:
+  push:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy-docs:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+      
+      - name: Build Documentation
+        run: cargo doc --no-deps --all --lib --document-private-items
+      
+      - name: Fix Permissions
+        run: |
+          chmod -c -R +rX "target/doc/" | while read line; do
+            echo "::info title=changed permissions::$line"
+          done
+      
+      - name: Upload to Pages
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: 'target/doc'
+      
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2

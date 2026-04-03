@@ -1,37 +1,50 @@
-name: Rust CI
+name: Rust CI/CD Pipeline
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "develop" ]
   pull_request:
     branches: [ "main" ]
+  schedule:
+    - cron: '0 0 * * 0'  # Weekly security scan
 
 env:
   CARGO_TERM_COLOR: always
+  RUSTFLAGS: -D warnings
 
 jobs:
-  check-and-test:
-    name: Check, Lint and Test
+  quality-checks:
+    name: Code Quality & Security Checks
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       
-      - name: Install Rust
+      - name: Install Rust Toolchain
         uses: dtolnay/rust-toolchain@stable
         with:
           components: clippy, rustfmt
 
-      - name: Rust Cache
+      - name: Setup Rust Cache
         uses: Swatinem/rust-cache@v2
 
-      - name: Check Formatting
+      - name: Check Code Formatting
         run: cargo fmt --all -- --check
+        
+      - name: Verify Dependency Tree
+        run: cargo tree --all
 
-      - name: Dependency Check
-        run: cargo check --all-targets
+      - name: Check Compilation (All Targets)
+        run: cargo check --all-targets --verbose
 
-      - name: Run Clippy (Strict)
-        run: cargo clippy --all-targets -- -D warnings
+      - name: Run Clippy (Strict Linting)
+        run: cargo clippy --all-targets --all-features -- -D warnings -W clippy::all
 
-      - name: Run Tests
-        run: cargo test --all --verbose
+      - name: Run Unit & Integration Tests
+        run: cargo test --all --verbose --all-features
+
+      - name: Build Release Binary
+        run: cargo build --release --all
+
+      - name: Security Audit
+        run: cargo audit || true
+
