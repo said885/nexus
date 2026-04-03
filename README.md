@@ -15,6 +15,17 @@
 
 ---
 
+## 💎 Commercial & Global Acquisition Status
+
+NEXUS is a **high-value cryptographic asset** ready for:
+- [x] **Enterprise Licensing**: Commercial licenses for proprietary closed-source deployment.
+- [x] **Intellectual Property Sale**: Full acquisition of the sovereign secure messaging standard.
+- [x] **Quantum-Resistant Infrastructure**: NIST-compliant FIPS 203/204 ready for production.
+
+For licensing, commercial audits, or total acquisition, see [COMMERCIAL.md](COMMERCIAL.md) or contact **said885** via `frensh5@proton.me`.
+
+---
+
 ## Keywords for Global Discovery
 
 **Cryptography**: `cryptography`, `cryptographic-primitives`, `crypto`, `post-quantum-cryptography`, `post-quantum`, `pqc`, `quantum-resistant`, `quantum-safe`, `quantum-secure`
