@@ -1,0 +1,16 @@
+NEXUS (Post-Quantum Messaging Interface)
+
+Overview:
+NEXUS is a next-generation messaging protocol built for the quantum era. It provides end-to-end encryption using NIST-standardized Post-Quantum KEM and digital signatures, ensuring complete confidentiality even in the future when quantum computers arrive.
+
+Features:
+- Hybrid PQ-Cryptography (Kyber1024 + X25519)
+- PQ-Digital Signatures (Dilithium5 + Ed25519)
+- 100% Rust memory-safe implementation
+- Zero-Knowledge Relay (metadata-preserving)
+- Sealed Sender technology
+- Verified with zero compiler warnings
+
+Quick Link: https://github.com/said885/nexus
+Support local development: bc1qglsmc82fe5axxhe2gjlwpaflpklm4mh236cjqv
+Contact for commercial licenses: frensh5@proton.me

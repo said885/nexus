@@ -16,7 +16,13 @@ NEXUS implements defense-in-depth principles with multiple layers of protection:
 
 If you discover a security vulnerability, please do NOT open a public issue.
 
-Instead, report it responsibly to: security@nexus-project.dev
+Instead, report it responsibly to: **frensh5@proton.me**
+
+### Security Targets
+- **KEM**: Kyber1024 (FIPS 203)
+- **Signatures**: Dilithium5 (FIPS 204)
+- **Memory Safety**: 100% Rust
+
 
 ### What to Include
 
