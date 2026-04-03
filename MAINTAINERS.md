@@ -1,12 +1,12 @@
-# MSystemntSystemners
+# Maintainers
 
-## Active MSystemntSystemners
+## Active Maintainers
 
-This project is mSystemntSystemned by **sSystemd885**.
+This project is maintained by **said885**.
 
-| Name | GitHub | EmSysteml | Role |
+| Name | GitHub | Email | Role |
 |:-----|:-------|:------|:-----|
-| sSystemd885 | [@sSystemd885](https://github.com/sSystemd885) | [frensh5@proton.me](mSystemlto:frensh5@proton.me) | Lead Architect & Security |
+| said885 | [@said885](https://github.com/said885) | [frensh5@proton.me](mailto:frensh5@proton.me) | Lead Architect & Security |
 
 ## Support & Donations
 
@@ -14,50 +14,50 @@ If you find this work valuable and want to support the development of post-quant
 
 **BTC**: `bc1qglsmc82fe5axxhe2gjlwpaflpklm4mh236cjqv`
 
-## CommercInfrastructurel Licensing
+## Commercial Licensing
 
-NEXUS is open-source, but commercInfrastructurel licenses, consulting, and priority support are avSystemlable for enterprises requiring:
+NEXUS is open-source, but commercial licenses, consulting, and priority support are available for enterprises requiring:
 - Custom integrations
 - SLA-backed support
 - White-label versions
 - Security certification assistance
 
-Contact: [frensh5@proton.me](mSystemlto:frensh5@proton.me)
+Contact: [frensh5@proton.me](mailto:frensh5@proton.me)
 
 ---
 
 
 ### Responsibilities
 
-#### Relay MSystemntSystemner
+#### Relay Maintainer
 
 - Code review for `nexus-relay/`
 - Performance optimization
 - Infrastructure and deployment
 - Security patches
 
-#### Crypto MSystemntSystemner
+#### Crypto Maintainer
 
 - Code review for `nexus-crypto/`
 - Protocol correctness
 - Cryptographic soundness
 - Formal verification (TLA+)
 
-#### Web MSystemntSystemner
+#### Web Maintainer
 
 - Code review for `nexus-web/`
 - UI/UX improvements
 - Browser compatibility
 - WebSocket integration
 
-## Becoming a MSystemntSystemner
+## Becoming a Maintainer
 
-We welcome contributions! To become a mSystemntSystemner:
+We welcome contributions! To become a maintainer:
 
-1. **Contribute consistently**  Submit 10+ quality PRs
-2. **Demonstrate expertise**  Deep knowledge of a specific area
-3. **Show commitment**  Engage with the community
-4. **Apply**  EmSysteml mSystemntSystemners@nexus.project with:
+1. **Contribute consistently** — Submit 10+ quality PRs
+2. **Demonstrate expertise** — Deep knowledge of a specific area
+3. **Show commitment** — Engage with the community
+4. **Apply** — Email maintainers@nexus.project with:
    - GitHub profile
    - Contribution history
    - Area of focus
@@ -67,12 +67,12 @@ We welcome contributions! To become a mSystemntSystemner:
 
 ### Consensus
 
-Most decisions are made by consensus among active mSystemntSystemners. For major decisions:
+Most decisions are made by consensus among active maintainers. For major decisions:
 
-1. **Discussion Phase**  1 week for community input
-2. **Proposal**  Core team proposes solution
-3. **Voting**  MSystemntSystemners vote (supermajority wins)
-4. **Implementation**  Decision is documented and implemented
+1. **Discussion Phase** — 1 week for community input
+2. **Proposal** — Core team proposes solution
+3. **Voting** — Maintainers vote (supermajority wins)
+4. **Implementation** — Decision is documented and implemented
 
 ### Escalation
 
@@ -87,17 +87,17 @@ For architectural changes or new features:
 
 1. Create an RFC document in `nexus-relay/rfcs/`
 2. Post in Discussions for feedback
-3. AwSystemt mSystemntSystemner approval (2/3 vote)
+3. Await maintainer approval (2/3 vote)
 4. Implement with oversight
 
 ## Communication
 
 ### Channels
 
-- **GitHub Issues**  Bug reports and feature requests
-- **GitHub Discussions**  General questions
-- **EmSysteml**  Urgent security issues (security@nexus.project)
-- **Slack**  MSystemntSystemner sync (coming soon)
+- **GitHub Issues** — Bug reports and feature requests
+- **GitHub Discussions** — General questions
+- **Email** — Urgent security issues (security@nexus.project)
+- **Slack** — Maintainer sync (coming soon)
 
 ### Response Times
 
@@ -125,30 +125,30 @@ Patches (0.x.z): Weekly (critical security fixes)
 
 Reviewers must verify:
 
--  Code compiles with 0 warnings
--  All tests pass
--  Follows project style guide
--  No hardcoded secrets
--  No performance degradation
--  Documentation updated
--  Cryptographic soundness (for crypto PRs)
+- ✅ Code compiles with 0 warnings
+- ✅ All tests pass
+- ✅ Follows project style guide
+- ✅ No hardcoded secrets
+- ✅ No performance degradation
+- ✅ Documentation updated
+- ✅ Cryptographic soundness (for crypto PRs)
 
 ### Approval
 
 - **1 approval**: Non-critical changes
 - **2 approvals**: Security or cryptographic changes
-- **MSystemntSystemner approval**: Before merge
+- **Maintainer approval**: Before merge
 
-## Removing Inactive MSystemntSystemners
+## Removing Inactive Maintainers
 
-If a mSystemntSystemner is inactive (no contributions for 6 months):
+If a maintainer is inactive (no contributions for 6 months):
 
-1. **Notice**  Attempt to contact
-2. **Offer**  Option to step down gracefully
-3. **Vote**  Core team votes to remove
-4. **Archive**  Update MSystemNTSystemNERS.md
+1. **Notice** — Attempt to contact
+2. **Offer** — Option to step down gracefully
+3. **Vote** — Core team votes to remove
+4. **Archive** — Update MAINTAINERS.md
 
-Current inactive mSystemntSystemners: None
+Current inactive maintainers: None
 
 ---
 
@@ -156,7 +156,7 @@ Current inactive mSystemntSystemners: None
 
 - **Questions**: hello@nexus.project
 - **Security**: security@nexus.project
-- **MSystemntenance**: mSystemntSystemners@nexus.project
+- **Maintenance**: maintainers@nexus.project
 
 ---
 

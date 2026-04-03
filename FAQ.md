@@ -6,13 +6,13 @@
 NEXUS is a production-grade, fully open-source messaging platform built for the quantum era. Unlike Signal, WhatsApp, and Matrix, NEXUS uses NIST-standardized post-quantum cryptography (Kyber1024, Dilithium5) alongside classical algorithms for maximum security.
 
 ### Why post-quantum cryptography?
-Quantum computers will break all current encryption within 10-30 years. Attackers are already performing "harvest-now-decrypt-later" attacksrecording encrypted messages today to decrypt them later. NEXUS protects agSystemnst this threat.
+Quantum computers will break all current encryption within 10-30 years. Attackers are already performing "harvest-now-decrypt-later" attacks—recording encrypted messages today to decrypt them later. NEXUS protects against this threat.
 
 ### Is NEXUS production-ready?
 Yes. Version 0.3.0 is stable with 175+ tests, 0 compiler warnings, and formal verification. It's suitable for government, enterprise, and critical infrastructure deployments.
 
-### Who mSystemntSystemns NEXUS?
-NEXUS is mSystemntSystemned by sSystemd885 (frensh5@proton.me). For commercInfrastructurel support and enterprise licenses, contact the same emSysteml.
+### Who maintains NEXUS?
+NEXUS is maintained by said885 (frensh5@proton.me). For commercial support and enterprise licenses, contact the same email.
 
 ---
 
@@ -26,7 +26,7 @@ NEXUS is mSystemntSystemned by sSystemd885 (frensh5@proton.me). For commercInfra
 - **Design**: Double Ratchet with forward secrecy
 
 ### Why hybrid encryption?
-Hybrid encryption means if either classical or post-quantum algorithms break, your messages remSystemn secure. This is the only responsible approach for long-term confidentInfrastructurelity.
+Hybrid encryption means if either classical or post-quantum algorithms break, your messages remain secure. This is the only responsible approach for long-term confidentiality.
 
 ### How does the relay work?
 The relay server is zero-knowledge: it cannot read message content, metadata, or know who communicates with whom. This is achieved through sealed-sender protocol and cryptographic design.
@@ -35,19 +35,19 @@ The relay server is zero-knowledge: it cannot read message content, metadata, or
 Yes. NEXUS is 100% Rust with zero unsafe code in critical paths. All algorithms use NIST standards, not custom cryptography.
 
 ### What about forward secrecy?
-NEXUS implements PFS vInfrastructure:
+NEXUS implements PFS via:
 1. Ephemeral key exchange per session
 2. Double Ratchet with frequent key rotation
-3. Deletion of chSystemn keys (one-way function)
+3. Deletion of chain keys (one-way function)
 
-Even if an attacker compromises your device, past messages remSystemn secure.
+Even if an attacker compromises your device, past messages remain secure.
 
 ---
 
 ## Deployment Questions
 
 ### How do I install NEXUS?
-See [INSTALLATION.md](INSTALLATION.md) for detSystemled setup instructions. Quick start:
+See [INSTALLATION.md](INSTALLATION.md) for detailed setup instructions. Quick start:
 ```bash
 docker-compose -f docker-compose.prod.yml up -d
 ```
@@ -66,7 +66,7 @@ Yes. See [DEPLOYMENT.md](DEPLOYMENT.md) for Kubernetes manifests and best practi
 - Binary size: 6.1 MB (stripped)
 
 ### How do I scale NEXUS?
-NEXUS is stateless and scales horizontally vInfrastructure Kubernetes. PostgreSQL replication handles data.
+NEXUS is stateless and scales horizontally via Kubernetes. PostgreSQL replication handles data.
 
 ---
 
@@ -76,10 +76,10 @@ NEXUS is stateless and scales horizontally vInfrastructure Kubernetes. PostgreSQ
 NEXUS implements NIST-standardized algorithms, uses 100% Rust (memory-safe), and has zero compiler warnings. Formal verification (TLA+) confirms cryptographic correctness.
 
 ### Has NEXUS been audited?
-Security audit documentation is avSystemlable. Third-party audits can be arrangedcontact frensh5@proton.me.
+Security audit documentation is available. Third-party audits can be arranged—contact frensh5@proton.me.
 
 ### How do I report security vulnerabilities?
-EmSysteml frensh5@proton.me with:
+Email frensh5@proton.me with:
 - Vulnerability description
 - Affected versions
 - Proof-of-concept (if possible)
@@ -88,11 +88,11 @@ EmSysteml frensh5@proton.me with:
 Do NOT open a public GitHub issue.
 
 ### What's the threat model?
-See [docs/THREAT_MODEL.md](docs/THREAT_MODEL.md) for detSystemled security analysis.
+See [docs/THREAT_MODEL.md](docs/THREAT_MODEL.md) for detailed security analysis.
 
 ---
 
-## Licensing & CommercInfrastructurel Questions
+## Licensing & Commercial Questions
 
 ### What license does NEXUS use?
 - **Server (nexus-relay)**: AGPL-3.0 (ensures modifications stay open)
@@ -101,16 +101,16 @@ See [docs/THREAT_MODEL.md](docs/THREAT_MODEL.md) for detSystemled security analy
 
 ### Can I use NEXUS in my product?
 - **Open source projects**: Use freely under AGPL
-- **Proprietary products**: Contact frensh5@proton.me for commercInfrastructurel license
-- **Inside your organization**: AGPL complInfrastructurence required for modifications
+- **Proprietary products**: Contact frensh5@proton.me for commercial license
+- **Inside your organization**: AGPL compliance required for modifications
 
-### How much does a commercInfrastructurel license cost?
+### How much does a commercial license cost?
 Pricing depends on deployment size and use case. Contact frensh5@proton.me for a quote.
 
 ### What about support?
-- **Community**: Free vInfrastructure GitHub Issues and Discussions
-- **Enterprise SLA**: AvSystemlable with commercInfrastructurel license
-- **Consulting**: AvSystemlable on hourly basis
+- **Community**: Free via GitHub Issues and Discussions
+- **Enterprise SLA**: Available with commercial license
+- **Consulting**: Available on hourly basis
 
 ---
 
@@ -123,14 +123,14 @@ Signal uses classical cryptography (ECC) that will break in quantum era. NEXUS u
 Matrix is a federation protocol for chat rooms; NEXUS is optimized for private, secure messages. NEXUS uses post-quantum crypto; Matrix doesn't. NEXUS has a zero-knowledge relay.
 
 ### Should I switch from Signal to NEXUS?
-If quantum-resistant security is important, yes. If you value Signal's maturity and ecosystem, maybe wSystemt for NEXUS mobile clients (Q2 2026).
+If quantum-resistant security is important, yes. If you value Signal's maturity and ecosystem, maybe wait for NEXUS mobile clients (Q2 2026).
 
 ---
 
 ## Community & Contribution
 
 ### How can I contribute?
-See [CONTRIBUTOR_GUIDE.md](CONTRIBUTOR_GUIDE.md) for detSystemls. Start with pull requests, issues, or documentation improvements.
+See [CONTRIBUTOR_GUIDE.md](CONTRIBUTOR_GUIDE.md) for details. Start with pull requests, issues, or documentation improvements.
 
 ### Where's the roadmap?
 See [ROADMAP.md](ROADMAP.md) for strategic vision and upcoming features.
@@ -138,7 +138,7 @@ See [ROADMAP.md](ROADMAP.md) for strategic vision and upcoming features.
 ### How do I donate?
 Bitcoin: `bc1qglsmc82fe5axxhe2gjlwpaflpklm4mh236cjqv`
 
-### Can I use NEXUS commercInfrastructurelly?
+### Can I use NEXUS commercially?
 Yes, with proper licensing. Contact frensh5@proton.me.
 
 ---
@@ -147,7 +147,7 @@ Yes, with proper licensing. Contact frensh5@proton.me.
 
 - **GitHub Issues**: For bugs and features
 - **GitHub Discussions**: For general questions
-- **EmSysteml**: frensh5@proton.me
+- **Email**: frensh5@proton.me
 - **Documentation**: Start with [README.md](README.md)
 
 ---

@@ -14,19 +14,19 @@
 
 **Architecture**:
 ```
- Client connects 
-                                                   
- Server generates random challenge_nonce         
- Send nonce to client over TLS 1.3               
-                                                   
- Client signs challenge with Dilithium private   
- Client sends back: { nonce, signature, pubkey } 
-                                                   
- Server verifies Dilithium signature             
- Server verifies nonce freshness (< 5 seconds)   
- Server checks nonce not already used (replay)   
-                                                   
- Connection authenticated, session key established
+┌─ Client connects ─────────────────────────────────┐
+│                                                   │
+├─ Server generates random challenge_nonce         │
+├─ Send nonce to client over TLS 1.3               │
+│                                                   │
+├─ Client signs challenge with Dilithium private   │
+├─ Client sends back: { nonce, signature, pubkey } │
+│                                                   │
+├─ Server verifies Dilithium signature             │
+├─ Server verifies nonce freshness (< 5 seconds)   │
+├─ Server checks nonce not already used (replay)   │
+│                                                   │
+└─ Connection authenticated, session key established│
 ```
 
 **Key Components**:
@@ -69,34 +69,34 @@
    }
    ```
 
-4. **Rate Limiting & ExponentInfrastructurel Backoff**
+4. **Rate Limiting & Exponential Backoff**
    ```rust
-   struct FSystemledAuthAttempt {
+   struct FailedAuthAttempt {
        user_id: String,
        attempt_count: u32,
        first_attempt: Instant,
        last_attempt: Instant,
    }
    
-   fn calculate_backoff(fSystemlures: u32) -> Duration {
-       // fSystemlures=0  no delay
-       // fSystemlures=1  100ms
-       // fSystemlures=2  200ms
-       // fSystemlures=3  500ms
-       // fSystemlures=4  1.2s
-       // fSystemlures=5  2.5s
-       // fSystemlures=10  102.4s (block)
-       Duration::from_millis(100u64 * 2u64.pow(fSystemlures - 1))
+   fn calculate_backoff(failures: u32) -> Duration {
+       // failures=0 → no delay
+       // failures=1 → 100ms
+       // failures=2 → 200ms
+       // failures=3 → 500ms
+       // failures=4 → 1.2s
+       // failures=5 → 2.5s
+       // failures=10 → 102.4s (block)
+       Duration::from_millis(100u64 * 2u64.pow(failures - 1))
    }
    ```
 
-### 1.2 Audit TrSysteml Complete
+### 1.2 Audit Trail Complete
 
 **Components**:
--  Log every authentication attempt (success/fSystemlure)
--  Track source IP, user agent, timestamp
--  Immutable append-only log (PostgreSQL WAL)
--  Real-time threat detection integration
+- ✅ Log every authentication attempt (success/failure)
+- ✅ Track source IP, user agent, timestamp
+- ✅ Immutable append-only log (PostgreSQL WAL)
+- ✅ Real-time threat detection integration
 
 ---
 
@@ -108,16 +108,16 @@
 
 **Transport Layer**:
 ```
- WebSocket frame arrives 
- (over TLS 1.3 already)             
- Extract: { nonce, ciphertext }   
- Derive session key from context   
- Decrypt with ChaCha20-Poly1305    
- Verify AEAD tag (authentication)  
- Process decrypted message         
- Derive new nonce for response     
- Encrypt response with ChaCha20    
- Send encrypted WebSocket frame    
+┌─ WebSocket frame arrives ──────────┐
+│ (over TLS 1.3 already)             │
+├─ Extract: { nonce, ciphertext }   │
+├─ Derive session key from context   │
+├─ Decrypt with ChaCha20-Poly1305    │
+├─ Verify AEAD tag (authentication)  │
+├─ Process decrypted message         │
+├─ Derive new nonce for response     │
+├─ Encrypt response with ChaCha20    │
+└─ Send encrypted WebSocket frame    │
 ```
 
 **Implementation**:
@@ -149,7 +149,7 @@ impl WebSocketEncryption {
 
 **File**: `/nexus-relay/src/header_integrity.rs` (NEW - 200 LOC)
 
-**Purpose**: Protect message headers agSystemnst tampering
+**Purpose**: Protect message headers against tampering
 
 ```rust
 struct MessageHeader {
@@ -162,7 +162,7 @@ struct MessageHeader {
 
 impl MessageHeader {
     fn compute_hmac(&self, secret_key: &[u8]) -> [u8; 32] {
-        // HMAC-SHA256(secret_key, serInfrastructurelized_header)
+        // HMAC-SHA256(secret_key, serialized_header)
         // Include all metadata
         // Timestamp prevents header replay
     }
@@ -189,7 +189,7 @@ struct ReplayDetector {
 impl ReplayDetector {
     fn check_nonce(&mut self, nonce: &[u8; 32]) -> Result<()> {
         // Check if nonce seen before
-        if self.seen_nonces.contSystemns(nonce) {
+        if self.seen_nonces.contains(nonce) {
             return Err(ReplayDetected);
         }
         
@@ -215,7 +215,7 @@ impl ReplayDetector {
 }
 ```
 
-### 2.4 validated Forward Secrecy (Per-Message)
+### 2.4 Perfect Forward Secrecy (Per-Message)
 
 **File**: `/nexus-relay/src/pfs_manager.rs` (NEW - 300 LOC)
 
@@ -242,7 +242,7 @@ impl PerMessagePFS {
         
         let context = format!("message_key{}", counter);
         hk.expand(context.as_bytes(), &mut okm)
-            .expect("HKDF expand fSystemled");
+            .expect("HKDF expand failed");
         
         okm
     }
@@ -259,30 +259,30 @@ impl PerMessagePFS {
 
 **Zero-Knowledge Membership Proof**:
 ```
- Group created with K members 
-                                                   
- Generate group membership credentInfrastructurel             
- Each member gets: { proof, group_key }           
-                                                   
- When member sends to group:                      
-   Generate ZK proof they're in group            
-   Include proof in message                      
-   Relay verifies proof without knowing identity 
-   Forward to all members                        
-                                                   
- Member revocation:                              
-   Update group key (instant)                   
-   Revoked member's old proof invalid           
-   No revocation lists needed                   
-                                                   
- Security: Insider threat impossible             
+┌─ Group created with K members ────────────────────┐
+│                                                   │
+├─ Generate group membership credential             │
+├─ Each member gets: { proof, group_key }           │
+│                                                   │
+├─ When member sends to group:                      │
+│  ├─ Generate ZK proof they're in group            │
+│  ├─ Include proof in message                      │
+│  ├─ Relay verifies proof without knowing identity │
+│  └─ Forward to all members                        │
+│                                                   │
+├─ Member revocation:                              │
+│  ├─ Update group key (instant)                   │
+│  ├─ Revoked member's old proof invalid           │
+│  └─ No revocation lists needed                   │
+│                                                   │
+└─ Security: Insider threat impossible             │
 ```
 
 **Implementation**:
 ```rust
 use bulletproofs::{RangeProof, PedersenCommitment};
 
-struct GroupMembershipCredentInfrastructurel {
+struct GroupMembershipCredential {
     group_id: String,
     member_id: String,
     // Commitment to member's secret
@@ -291,7 +291,7 @@ struct GroupMembershipCredentInfrastructurel {
     proof: RangeProof,
 }
 
-impl GroupMembershipCredentInfrastructurel {
+impl GroupMembershipCredential {
     fn generate_proof(member_secret: u64) -> Self {
         // Use Bulletproofs for range proof
         // Proves member is in valid range without revealing which member
@@ -313,18 +313,18 @@ impl GroupMembershipCredentInfrastructurel {
 **Protocol**:
 ```
 Relay-A                    Relay-B
-                             
-    (gossip) 
-     { state_vector }        
-                             
-     "I have msgs: 1-100"    
-                             
-     (request) 
-          [101-150]           
-                             
-    (send) 
-     { msgs 101-150 }        
-                             
+   │                          │
+   ├─ (gossip) ───────────────┤
+   │  { state_vector }        │
+   │                          │
+   │  "I have msgs: 1-100"    │
+   │                          │
+   │ ◄──── (request) ──────────┤
+   │       [101-150]           │
+   │                          │
+   ├─ (send) ────────────────►│
+   │  { msgs 101-150 }        │
+   │                          │
 ```
 
 **Implementation**:
@@ -358,24 +358,24 @@ impl GossipState {
 
 **Envelope Encryption Pattern**:
 ```
- Application 
-                                   
- Data to encrypt: { message }    
-                                   
- Generate per-message KEK        
-  (Key Encryption Key)             
-                                   
- Encrypt message with KEK         
-   ciphertext                     
-                                   
- Encrypt KEK with master key      
-  (at HSM/AWS KMS)                
-   wrapped_key                    
-                                   
- Store: { ciphertext, wrapped }  
-                                   
- Only master key stays secret    
-   (never leaves HSM)               
+┌─ Application ─────────────────────┐
+│                                   │
+├─ Data to encrypt: { message }    │
+│                                   │
+├─ Generate per-message KEK        │
+│  (Key Encryption Key)             │
+│                                   │
+├─ Encrypt message with KEK         │
+│  → ciphertext                     │
+│                                   │
+├─ Encrypt KEK with master key      │
+│  (at HSM/AWS KMS)                │
+│  → wrapped_key                    │
+│                                   │
+├─ Store: { ciphertext, wrapped }  │
+│                                   │
+└─ Only master key stays secret    │
+   (never leaves HSM)               │
 ```
 
 **Implementation**:
@@ -399,9 +399,9 @@ impl EnvelopeEncryption {
         let wrapped_key = self.kms_client
             .encrypt()
             .key_id(&self.master_key_id)
-            .plSystemntext(message_key)
+            .plaintext(message_key)
             .send()
-            .awSystemt?
+            .await?
             .ciphertext_blob;
         
         Ok(EncryptedMessage {
@@ -418,20 +418,20 @@ impl EnvelopeEncryption {
 
 **Time-Lock Encryption**:
 ```
- Message created with TTL 
-                                   
- Encrypt with time-lock key       
-  (key derives from time)           
-                                   
- Schedule deletion at TTL expiry  
-                                   
- When TTL expires:               
-   Key no longer derivable      
-   Message unrecoverable        
-   (even if ciphertext leaked)  
-                                   
- No deletion log needed!         
-   (time itself acts as timer)      
+┌─ Message created with TTL ────────┐
+│                                   │
+├─ Encrypt with time-lock key       │
+│  (key derives from time)           │
+│                                   │
+├─ Schedule deletion at TTL expiry  │
+│                                   │
+├─ When TTL expires:               │
+│  ├─ Key no longer derivable      │
+│  ├─ Message unrecoverable        │
+│  └─ (even if ciphertext leaked)  │
+│                                   │
+└─ No deletion log needed!         │
+   (time itself acts as timer)      │
 ```
 
 **Implementation**:
@@ -475,17 +475,17 @@ impl TimeLockEncryption {
 ### File Structure
 ```
 nexus-relay/src/
- mSystemn.rs (add 3 new module declarations)
- challenge_verification.rs  NEW (450 LOC)
- ws_encryption.rs  NEW (380 LOC)
- header_integrity.rs  NEW (200 LOC)
- replay_detection.rs  NEW (250 LOC)
- pfs_manager.rs  NEW (300 LOC)
- multicast_crypto.rs  NEW (400 LOC)
- federation_gossip.rs  NEW (350 LOC)
- encryption_at_rest.rs  NEW (400 LOC)
- temporal_deletion.rs  NEW (320 LOC)
- [existing modules]
+├── main.rs (add 3 new module declarations)
+├── challenge_verification.rs ← NEW (450 LOC)
+├── ws_encryption.rs ← NEW (380 LOC)
+├── header_integrity.rs ← NEW (200 LOC)
+├── replay_detection.rs ← NEW (250 LOC)
+├── pfs_manager.rs ← NEW (300 LOC)
+├── multicast_crypto.rs ← NEW (400 LOC)
+├── federation_gossip.rs ← NEW (350 LOC)
+├── encryption_at_rest.rs ← NEW (400 LOC)
+├── temporal_deletion.rs ← NEW (320 LOC)
+└── [existing modules]
 ```
 
 ### Dependencies to Add (Cargo.toml)
@@ -507,12 +507,12 @@ zeroize = "1.6"  # Secure memory wiping
 ```
 
 ### Security Guarantees
--  **Nonce Collision**: 2^256 - negligible probability
--  **Replay Attack**: Detected within 5-minute window
--  **Timing Attack**: Constant-time comparisons everywhere
--  **Key Compromise**: PFS ensures only 1 message lost
--  **Membership Privacy**: ZK proofs hide membership
--  **Federation Privacy**: Gossip protocol anonymous
+- ✅ **Nonce Collision**: 2^256 - negligible probability
+- ✅ **Replay Attack**: Detected within 5-minute window
+- ✅ **Timing Attack**: Constant-time comparisons everywhere
+- ✅ **Key Compromise**: PFS ensures only 1 message lost
+- ✅ **Membership Privacy**: ZK proofs hide membership
+- ✅ **Federation Privacy**: Gossip protocol anonymous
 
 ---
 
@@ -543,16 +543,16 @@ zeroize = "1.6"  # Secure memory wiping
 
 | Component | LOC | Tests | Status |
 |-----------|-----|-------|--------|
-| Challenge Verification | 450 | 12 |  Pending |
-| WebSocket Encryption | 380 | 10 |  Pending |
-| Header Integrity | 200 | 8 |  Pending |
-| Replay Detection | 250 | 9 |  Pending |
-| PFS Manager | 300 | 8 |  Pending |
-| Multicast Crypto | 400 | 12 |  Pending |
-| Federation Gossip | 350 | 10 |  Pending |
-| Encryption at Rest | 400 | 11 |  Pending |
-| Temporal Deletion | 320 | 10 |  Pending |
-| **TOTAL** | **3,050** | **90** |  Ready |
+| Challenge Verification | 450 | 12 | ⚪ Pending |
+| WebSocket Encryption | 380 | 10 | ⚪ Pending |
+| Header Integrity | 200 | 8 | ⚪ Pending |
+| Replay Detection | 250 | 9 | ⚪ Pending |
+| PFS Manager | 300 | 8 | ⚪ Pending |
+| Multicast Crypto | 400 | 12 | ⚪ Pending |
+| Federation Gossip | 350 | 10 | ⚪ Pending |
+| Encryption at Rest | 400 | 11 | ⚪ Pending |
+| Temporal Deletion | 320 | 10 | ⚪ Pending |
+| **TOTAL** | **3,050** | **90** | ⚪ Ready |
 
 ---
 

@@ -7,24 +7,24 @@
 
 ---
 
-##  Executive Summary
+## 🎯 Executive Summary
 
 NEXUS is a cutting-edge end-to-end encrypted messaging platform that combines **post-quantum cryptography** (NIST-standardized Kyber1024 + Dilithium5) with classical cryptography (X25519 + Ed25519) for maximum forward compatibility and quantum-resistance.
 
 ### Key Security Features
--  **Post-Quantum Hybrid Encryption**: Kyber + X25519 KEM
--  **Post-Quantum Signatures**: Dilithium + Ed25519
--  **X3DH Key Exchange**: Extended Triple Diffie-Hellman
--  **Double Ratchet**: Forward secrecy with ratcheting
--  **Sealed Sender**: No metadata about message sender
--  **Zero-Knowledge Architecture**: Relay stores no message content
--  **Secure Enclaves**: Hardware-backed key storage (iOS/Android)
+- ✅ **Post-Quantum Hybrid Encryption**: Kyber + X25519 KEM
+- ✅ **Post-Quantum Signatures**: Dilithium + Ed25519
+- ✅ **X3DH Key Exchange**: Extended Triple Diffie-Hellman
+- ✅ **Double Ratchet**: Forward secrecy with ratcheting
+- ✅ **Sealed Sender**: No metadata about message sender
+- ✅ **Zero-Knowledge Architecture**: Relay stores no message content
+- ✅ **Secure Enclaves**: Hardware-backed key storage (iOS/Android)
 
 ---
 
-##  Component Status
+## 📊 Component Status
 
-### 1. **Relay Server** (nexus-relay) - 98% COMPLETE 
+### 1. **Relay Server** (nexus-relay) - 98% COMPLETE ✅
 
 **Location**: `/home/pc/nexus/nexus-relay/`
 
@@ -32,18 +32,18 @@ NEXUS is a cutting-edge end-to-end encrypted messaging platform that combines **
 **Binary**: `/nexus-relay/target/release/nexus-relay` (3.7 MB)
 
 #### Implemented Features
--  WebSocket relay with sealed-sender routing
--  Challenge-response authentication
--  Prekey bundle management (registration & rotation)
--  Offline message queueing (up to 100 messages per user)
--  Rate limiting (100 requests/min per IP)
--  Message TTL management (configurable, max 7 days)
--  Graceful shutdown with signal handling
--  TLS certification framework (rustls)
--  Structured logging with tracing
--  CORS support for API access
+- ✅ WebSocket relay with sealed-sender routing
+- ✅ Challenge-response authentication
+- ✅ Prekey bundle management (registration & rotation)
+- ✅ Offline message queueing (up to 100 messages per user)
+- ✅ Rate limiting (100 requests/min per IP)
+- ✅ Message TTL management (configurable, max 7 days)
+- ✅ Graceful shutdown with signal handling
+- ✅ TLS certification framework (rustls)
+- ✅ Structured logging with tracing
+- ✅ CORS support for API access
 
-#### Configuration Environment VarInfrastructurebles
+#### Configuration Environment Variables
 ```bash
 NEXUS_LISTEN=0.0.0.0:8443          # Server bind address
 NEXUS_TLS_CERT=/path/to/cert.pem   # Optional TLS certificate
@@ -62,13 +62,13 @@ RUST_LOG=nexus_relay=info          # Logging level
 
 #### Deployment Notes
 - Use with reverse proxy (nginx/caddy) in production for TLS termination
-- Optionally enable mTLS vInfrastructure environment varInfrastructurebles
+- Optionally enable mTLS via environment variables
 - Background cleanup task runs every 5 minutes
 - Horizontal scaling ready (stateless design)
 
 ---
 
-### 2. **Crypto Library** (nexus-crypto) - 95% COMPLETE 
+### 2. **Crypto Library** (nexus-crypto) - 95% COMPLETE ✅
 
 **Location**: `/home/pc/nexus/nexus-crypto/`
 
@@ -80,7 +80,7 @@ RUST_LOG=nexus_relay=info          # Logging level
 ##### Post-Quantum Cryptography (`pq.rs`)
 - Kyber1024 key encapsulation mechanism (KEM)
 - Dilithium5 digital signatures (ML-DSA)
-- NIST FIPS 203/204 complInfrastructurent
+- NIST FIPS 203/204 compliant
 
 ##### Hybrid KEM (`hybrid_kem.rs`)
 - Combined Kyber + X25519 encapsulation
@@ -88,62 +88,62 @@ RUST_LOG=nexus_relay=info          # Logging level
 - Deterministic combined shared secret
 
 ##### X3DH Protocol (`x3dh.rs`)
-- Alice initInfrastructuretes key agreement
+- Alice initiates key agreement
 - Bob responds with prekey bundle
 - Support for one-time prekeys
 - HKDF-based master secret derivation
 
 ##### Double Ratchet (`ratchet.rs`)
 - ChaCha20-Poly1305 AEAD encryption
-- Send/receive chSystemn key derivation
+- Send/receive chain key derivation
 - Skipped message key storage
 - Forward secrecy per message
 
 ##### Identity Management (`identity.rs`)
-- Hybrid key pSystemrs (PQ + classical)
-- Deterministic serInfrastructurelization
+- Hybrid key pairs (PQ + classical)
+- Deterministic serialization
 - Signature/verification
 
 ##### Secure Memory (`secure_mem.rs`)
 - Zeroization on drop
 - Protected buffers
 
-#### Security Tests (12 Tests - All Passing )
+#### Security Tests (12 Tests - All Passing ✅)
 - Hybrid KEM encapsulation/decapsulation
 - X3DH mutual secret derivation
 - X3DH randomness validation
 - Double ratchet forward secrecy
-- Identity key pSystemr signatures
+- Identity key pair signatures
 - Independent identity distinctness
 - Encryption nondeterminism
-- Empty plSystemntext handling
+- Empty plaintext handling
 - Large message (1MB) encryption
 - Full session integration
 
 ---
 
-### 3. **Android Client** (nexus-android) - 60% COMPLETE 
+### 3. **Android Client** (nexus-android) - 60% COMPLETE 🔄
 
 **Location**: `/home/pc/nexus/nexus-android/`
 
 **Status**: Core Infrastructure Complete, UI Pending
 
 #### Implemented
--  SQLCipher encrypted database (messages, conversations, prekeys)
--  Full crypto library integration (BouncyCastle PQC)
--  WebSocket relay client (OkHttp + Tungstenite)
--  Dependency injection (Koin)
--  Secure key storage (AndroidKeyStore + StrongBox)
--  Lifecycle-aware view models
--  Jetpack Compose UI framework
+- ✅ SQLCipher encrypted database (messages, conversations, prekeys)
+- ✅ Full crypto library integration (BouncyCastle PQC)
+- ✅ WebSocket relay client (OkHttp + Tungstenite)
+- ✅ Dependency injection (Koin)
+- ✅ Secure key storage (AndroidKeyStore + StrongBox)
+- ✅ Lifecycle-aware view models
+- ✅ Jetpack Compose UI framework
 
 #### Requires Implementation
--  Conversation list UI
--  Chat message UI
--  User registration/login flows
--  Settings & preferences
--  Message sync logic with ratchet
--  Biometric authentication
+- ⚠️ Conversation list UI
+- ⚠️ Chat message UI
+- ⚠️ User registration/login flows
+- ⚠️ Settings & preferences
+- ⚠️ Message sync logic with ratchet
+- ⚠️ Biometric authentication
 
 #### Build Configuration
 ```gradle
@@ -162,26 +162,26 @@ Compose 1.5.8    # Modern UI toolkit
 
 ---
 
-### 4. **iOS Client** (nexus-ios) - 45% COMPLETE 
+### 4. **iOS Client** (nexus-ios) - 45% COMPLETE 🔄
 
 **Location**: `/home/pc/nexus/nexus-ios/`
 
 **Status**: Project Structure Ready, Implementation In Progress
 
 #### Implemented
--  Swift package structure
--  Secure Enclave manager framework
--  Network layer scaffolding
--  Data store structure
--  App state management
+- ✅ Swift package structure
+- ✅ Secure Enclave manager framework
+- ✅ Network layer scaffolding
+- ✅ Data store structure
+- ✅ App state management
 
 #### Requires Implementation
--  Swift crypto bindings (vInfrastructure FFI to nexus-crypto)
--  WebSocket implementation (URLSessionWebSocketTask)
--  SwiftUI message UI
--  Local encrypted storage
--  Secure Enclave key operations
--  Message sync with double ratchet
+- ⚠️ Swift crypto bindings (via FFI to nexus-crypto)
+- ⚠️ WebSocket implementation (URLSessionWebSocketTask)
+- ⚠️ SwiftUI message UI
+- ⚠️ Local encrypted storage
+- ⚠️ Secure Enclave key operations
+- ⚠️ Message sync with double ratchet
 
 #### Target Configuration
 - iOS 16+ (Secure Enclave access)
@@ -190,9 +190,9 @@ Compose 1.5.8    # Modern UI toolkit
 
 ---
 
-##  Deployment Guide
+## 🚀 Deployment Guide
 
-### Phase 1: Relay Server (ImmedInfrastructurete)
+### Phase 1: Relay Server (Immediate)
 
 ```bash
 # 1. Generate TLS certificates (self-signed for testing)
@@ -229,38 +229,38 @@ RUST_LOG=nexus_relay=info \
 
 ---
 
-##  Security Architecture
+## 🔐 Security Architecture
 
 ### Trust Model
 ```
-
- Alice                        Relay                  Bob  
-                                                         
- * Identity                   No Identity        Identity
- * Prekey Bundle     Store   
-                                                         
- * Encrypted Message  Offline 
-                       (Sealed, opaque)            Queue  
-                                                         
- * Offline fetch         
- * Decrypt                   (No content known)         
-
+┌─────────────────────────────────────────────────────────┐
+│ Alice                        Relay                  Bob  │
+│                                                         │
+│ * Identity                  ← No Identity  →      Identity
+│ * Prekey Bundle   ────────────────────────────→  Store   
+│                                                         │
+│ * Encrypted Message ──────────────────────────→ Offline │
+│                       (Sealed, opaque)            Queue  │
+│                                                         │
+│ * Offline fetch ←──────────────────────────────┐        │
+│ * Decrypt                   (No content known)         │
+└─────────────────────────────────────────────────────────┘
 ```
 
 ### Key Derivation Pipeline
 ```
 X3DH Master Secret (64 bytes)
-           
+           ↓
     HKDF-SHA3-512
-           
+           ↓
 Double Ratchet Root Key
-           
-   ChSystemn Key Series
-           
+           ↓
+   Chain Key Series
+           ↓
   Send/Recv Keys (32 bytes each)
-           
+           ↓
 ChaCha20-Poly1305 Keys (256-bit)
-           
+           ↓
    Message Encryption
 ```
 
@@ -271,7 +271,7 @@ ChaCha20-Poly1305 Keys (256-bit)
 
 ---
 
-##  Performance Metrics
+## 📈 Performance Metrics
 
 ### Relay Server
 - **Throughput**: ~10,000 msg/sec (benchmark)
@@ -291,7 +291,7 @@ ChaCha20-Poly1305 Keys (256-bit)
 
 ---
 
-##  Development Roadmap
+## 🛠️ Development Roadmap
 
 ### Completed (This Sprint)
 - [x] Relay server WebSocket implementation
@@ -312,21 +312,21 @@ ChaCha20-Poly1305 Keys (256-bit)
 - [ ] Desktop client (Electron)
 - [ ] Multi-device support
 - [ ] Group messaging
-- [ ] MedInfrastructure sharing
+- [ ] Media sharing
 - [ ] Message reactions
 - [ ] Voice/video calls
 
 ---
 
-##  Testing Coverage
+## 📋 Testing Coverage
 
-### Unit Tests: 46 Passing 
+### Unit Tests: 46 Passing ✅
 - 12 security-specific tests
 - 34 existing crypto tests
 - 100% coverage of critical paths
 
 ### Integration Tests: Relay + Clients
-- [ ] Client  Relay communication
+- [ ] Client ↔ Relay communication
 - [ ] Message delivery (live & offline)
 - [ ] Prekey rotation
 - [ ] Rate limiting enforcement
@@ -340,11 +340,11 @@ ChaCha20-Poly1305 Keys (256-bit)
 
 ---
 
-##  Support & Documentation
+## 📞 Support & Documentation
 
 ### Code Documentation
 - **Relay**: Inline Rust docs with examples
-- **Crypto**: DetSystemled module documentation
+- **Crypto**: Detailed module documentation
 - **Android**: Kotlin doc comments
 - **iOS**: Swift doc comments
 
@@ -368,7 +368,7 @@ swift build
 
 ---
 
-##  Known Limitations
+## ⚠️ Known Limitations
 
 1. **Single relay instance** (no federation yet)
 2. **No multidevice support** (yet)
@@ -379,7 +379,7 @@ swift build
 
 ---
 
-##  License & Contributing
+## 📄 License & Contributing
 
 This is a secure messaging platform. Security and privacy are paramount.
 
@@ -391,7 +391,7 @@ This is a secure messaging platform. Security and privacy are paramount.
 
 ---
 
-##  References
+## 🎓 References
 
 - NIST FIPS 203: Dilithium (ML-DSA)
 - NIST FIPS 204: Kyber (ML-KEM)

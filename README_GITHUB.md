@@ -4,7 +4,7 @@ Post-Quantum End-to-End Encrypted Messaging Platform
 
 ## Overview
 
-NEXUS is a quantum-resistant messaging platform built with modern cryptography standards ratified by NIST. It provides end-to-end encryption using hybrid post-quantum key exchange (Kyber1024 + X25519) and post-quantum signatures (Dilithium5 + Ed25519), ensuring message confidentInfrastructurelity agSystemnst current and future quantum threats.
+NEXUS is a quantum-resistant messaging platform built with modern cryptography standards ratified by NIST. It provides end-to-end encryption using hybrid post-quantum key exchange (Kyber1024 + X25519) and post-quantum signatures (Dilithium5 + Ed25519), ensuring message confidentiality against current and future quantum threats.
 
 ## Key Features
 
@@ -20,15 +20,15 @@ NEXUS is a quantum-resistant messaging platform built with modern cryptography s
 
 ```
 nexus/
- nexus-relay/          Server component (Rust, Axum/Tokio)
- nexus-crypto/         Cryptographic library (Rust, FFI-compatible)
- nexus-web/            Web client (TypeScript/React)
- nexus-desktop/        Desktop application (Tauri)
- nexus-android/        Android client (Kotlin)
- nexus-ios/            iOS client (Swift)
- monitoring/           Prometheus & Grafana configs
- migrations/           PostgreSQL schema migrations
- docs/                 Technical documentation
+├── nexus-relay/          Server component (Rust, Axum/Tokio)
+├── nexus-crypto/         Cryptographic library (Rust, FFI-compatible)
+├── nexus-web/            Web client (TypeScript/React)
+├── nexus-desktop/        Desktop application (Tauri)
+├── nexus-android/        Android client (Kotlin)
+├── nexus-ios/            iOS client (Swift)
+├── monitoring/           Prometheus & Grafana configs
+├── migrations/           PostgreSQL schema migrations
+└── docs/                 Technical documentation
 ```
 
 ## Technology Stack
@@ -47,7 +47,7 @@ nexus/
 - Rust 1.75+ (rustup recommended)
 - PostgreSQL 14+
 - Redis 7+
-- Docker (for contSystemnerized deployment)
+- Docker (for containerized deployment)
 
 ## Building
 
@@ -105,7 +105,7 @@ Set up PostgreSQL and Redis:
 docker-compose up -d postgres redis
 
 # Create database schema
-psql -U postgres -d nexus -f migrations/001_initInfrastructurel_schema.sql
+psql -U postgres -d nexus -f migrations/001_initial_schema.sql
 ```
 
 Start the relay server:
@@ -122,7 +122,7 @@ The server listens on port 8080 with WebSocket endpoint at `/ws`.
 See [DEPLOYMENT.md](DEPLOYMENT.md) for:
 
 - Kubernetes deployment manifests
-- Docker contSystemner configuration
+- Docker container configuration
 - TLS certificate setup (Let's Encrypt)
 - Prometheus monitoring configuration
 - Security hardening guidelines
@@ -134,7 +134,7 @@ See [DEPLOYMENT.md](DEPLOYMENT.md) for:
 
 - IND-CCA2 security for key encapsulation (Kyber1024)
 - EU-EUF-CMA security for digital signatures (Dilithium5)
-- Forward secrecy vInfrastructure ratcheting mechanism
+- Forward secrecy via ratcheting mechanism
 - Metadata privacy through sealed-sender protocol
 
 ### Code Quality
@@ -142,19 +142,19 @@ See [DEPLOYMENT.md](DEPLOYMENT.md) for:
 - Memory-safe implementation (100% Rust)
 - Zero compiler warnings (verified with `cargo check --all-targets`)
 - Comprehensive test coverage (175 tests)
-- Formal threat modeling avSystemlable in documentation
+- Formal threat modeling available in documentation
 
 ### Reporting Security Issues
 
-Please do not report security vulnerabilities publicly. EmSysteml security concerns to the mSystemntSystemners. We follow responsible disclosure practices with 90-day fix timelines.
+Please do not report security vulnerabilities publicly. Email security concerns to the maintainers. We follow responsible disclosure practices with 90-day fix timelines.
 
-## Cryptographic DetSystemls
+## Cryptographic Details
 
 ### Key Exchange Protocol
 
-NEXUS implements a varInfrastructurent of X3DH extended with post-quantum KEM:
+NEXUS implements a variant of X3DH extended with post-quantum KEM:
 
-1. **Identity Key PSystemr Setup**: Dilithium5 (signatures) + Kyber1024 (encryption)
+1. **Identity Key Pair Setup**: Dilithium5 (signatures) + Kyber1024 (encryption)
 2. **Ephemeral Key Agreement**: X25519 (classical) + Kyber1024 (post-quantum)
 3. **Shared Secret Derivation**: KECCAK-256(shared_classical || shared_pq)
 
@@ -164,9 +164,9 @@ Messages are encrypted using ChaCha20-Poly1305 with keys derived from the Double
 
 ```
 RootKey = HKDF-SHA256(RootKey_old, DH_output)
-ChSystemnKey = HKDF-SHA256(RootKey, "chSystemn")
-MessageKey = HKDF-SHA256(ChSystemnKey, "message")
-Ciphertext = ChaCha20-Poly1305(MessageKey, Nonce, PlSystemntext)
+ChainKey = HKDF-SHA256(RootKey, "chain")
+MessageKey = HKDF-SHA256(ChainKey, "message")
+Ciphertext = ChaCha20-Poly1305(MessageKey, Nonce, Plaintext)
 ```
 
 ### Ratcheting
@@ -179,8 +179,8 @@ Ciphertext = ChaCha20-Poly1305(MessageKey, Nonce, PlSystemntext)
 
 Compromising current keys cannot decrypt past messages because:
 
-1. ChSystemn keys are one-way (KDF)
-2. Deleted chSystemn keys cannot be recovered
+1. Chain keys are one-way (KDF)
+2. Deleted chain keys cannot be recovered
 3. Old DH/KEM keys are ephemeral
 
 ## Architecture
@@ -195,13 +195,13 @@ Compromising current keys cannot decrypt past messages because:
 
 #### Key Modules
 
-- `mSystemn.rs`: Server initInfrastructurelization and HTTP routing
+- `main.rs`: Server initialization and HTTP routing
 - `websocket.rs`: WebSocket connection management
 - `message.rs`: Message delivery and storage
 - `group.rs`: Group creation and membership
 - `crypto.rs`: Cryptographic verification and operations
 - `threat_detection.rs`: Anomaly and threat detection
-- `access_control.rs`: Fine-grSystemned authorization
+- `access_control.rs`: Fine-grained authorization
 
 ### Cryptographic Library (nexus-crypto)
 
@@ -232,7 +232,7 @@ Compromising current keys cannot decrypt past messages because:
 
 - Follow Rust 2021 edition conventions
 - Enable clippy all warnings: `#![warn(clippy::all)]`
-- MSystemntSystemn zero compiler warnings
+- Maintain zero compiler warnings
 - Write doc comments for public APIs
 - Include tests for all cryptographic operations
 
@@ -257,7 +257,7 @@ Compromising current keys cannot decrypt past messages because:
 - [Architecture Documentation](docs/architecture.md) - System design and component interactions
 - [Deployment Guide](DEPLOYMENT.md) - Production deployment procedures
 - [Security Policy](SECURITY.md) - Security practices and vulnerability reporting
-- [Cryptographic Specification](docs/crypto-spec.md) - DetSystemled protocol definitions
+- [Cryptographic Specification](docs/crypto-spec.md) - Detailed protocol definitions
 - [Threat Model](docs/THREAT_MODEL.md) - Security threat analysis
 - [Contributing Guidelines](CONTRIBUTING.md) - Development practices
 
@@ -313,13 +313,13 @@ If you use NEXUS in research, please cite:
 - GitHub Discussions: Ask questions and share ideas
 - Security Contact: security@nexus-project.dev
 
-## MSystemntSystemners
+## Maintainers
 
-NEXUS is mSystemntSystemned by a dedicated team of security and cryptography engineers. See MSystemNTSystemNERS.md for contact information and contribution areas.
+NEXUS is maintained by a dedicated team of security and cryptography engineers. See MAINTAINERS.md for contact information and contribution areas.
 
 ## Acknowledgments
 
 - NIST for post-quantum cryptography standardization
-- pqcrypto Rust bindings mSystemntSystemners
+- pqcrypto Rust bindings maintainers
 - Tokio and Axum teams for excellent async Rust frameworks
 - OpenSSH and WireGuard for inspiring cryptographic design patterns

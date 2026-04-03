@@ -1,6 +1,6 @@
 # NEXUS Relay - Production Deployment Guide
 
-##  Quick Start (Development)
+## 🚀 Quick Start (Development)
 
 ### 1. Prerequisites
 ```bash
@@ -34,7 +34,7 @@ make docker-logs
 
 ### 3. Verify Deployment
 ```bash
-# WSystemt for services to be healthy (30-60 seconds)
+# Wait for services to be healthy (30-60 seconds)
 curl http://localhost:3000/health
 
 # Expected response:
@@ -47,7 +47,7 @@ curl http://localhost:3000/health
 ```
 
 ### 4. Access Service Dashboards
-| Service | URL | CredentInfrastructurels |
+| Service | URL | Credentials |
 |---------|-----|-------------|
 | **NEXUS Relay** | http://localhost:3000 | No auth |
 | **Prometheus** | http://localhost:9091 | No auth |
@@ -56,7 +56,7 @@ curl http://localhost:3000/health
 
 ---
 
-##  Production Deployment
+## 🏗️ Production Deployment
 
 ### 1. Kubernetes Deployment
 
@@ -105,7 +105,7 @@ max_client_conn = 2000
 pool_mode = transaction
 ```
 
-#### Redis Cluster (Optional, for high avSystemlability)
+#### Redis Cluster (Optional, for high availability)
 ```bash
 # Redis Sentinel configuration
 # sentinel.conf
@@ -121,13 +121,13 @@ sentinel auth-pass nexus-master ${REDIS_PASSWORD}
 # Using Let's Encrypt with Certbot
 certbot certonly --dns-cloudflare -d relay.nexus-messaging.io
 
-# Mount into contSystemner
+# Mount into container
 docker run -v /etc/letsencrypt:/etc/nexus/certs nexus-relay
 ```
 
 #### Configure HTTPS
 ```rust
-// Will be automatically detected in mSystemn.rs
+// Will be automatically detected in main.rs
 // From environment: TLS_CERT_PATH and TLS_KEY_PATH
 ```
 
@@ -160,7 +160,7 @@ Auto-provisioned from `monitoring/grafana/dashboards/`
 
 #### PostgreSQL Automatic Backups
 ```bash
-# DSystemly backups to S3
+# Daily backups to S3
 aws s3 sync /var/lib/postgresql/backups s3://nexus-backups/
 
 # Point-in-time recovery
@@ -176,7 +176,7 @@ appendfsync everysec
 
 ---
 
-##  Security Hardening
+## 🔐 Security Hardening
 
 ### 1. Network Security
 ```bash
@@ -225,7 +225,7 @@ resources:
 
 ---
 
-##  Testing & Validation
+## 🧪 Testing & Validation
 
 ### 1. Unit Tests
 ```bash
@@ -258,7 +258,7 @@ kubectl get pods -n nexus -w
 
 ---
 
-##  Observability
+## 📊 Observability
 
 ### 1. Health Checks
 ```bash
@@ -270,7 +270,7 @@ livenessProbe:
   httpGet:
     path: /health
     port: 3000
-  initInfrastructurelDelaySeconds: 10
+  initialDelaySeconds: 10
   periodSeconds: 10
 ```
 
@@ -298,7 +298,7 @@ journalctl -u nexus-relay -f
 
 ---
 
-##  MSystemntenance & Updates
+## 🔄 Maintenance & Updates
 
 ### 1. Rolling Updates
 ```bash
@@ -313,7 +313,7 @@ kubectl rollout status deployment/nexus-relay -n nexus
 
 ### 2. Database Migrations
 ```bash
-# Automatic vInfrastructure migration job
+# Automatic via migration job
 kubectl apply -f k8s/migration-job.yaml
 
 # Manual if needed
@@ -331,7 +331,7 @@ certbot renew --dns-cloudflare
 
 ---
 
-##  Troubleshooting
+## 🚨 Troubleshooting
 
 ### Service won't start
 ```bash
@@ -370,7 +370,7 @@ redis-cli info stats | grep evicted
 
 ---
 
-##  Support & Escalation
+## 📞 Support & Escalation
 
 For production support:
 - **Security Issues**: security@nexus-messaging.io
