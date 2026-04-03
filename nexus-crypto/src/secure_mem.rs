@@ -69,7 +69,7 @@ impl<const N: usize> std::fmt::Debug for SecretBytes<N> {
 pub struct SecretVec(Vec<u8>);
 
 impl SecretVec {
-    /// Create a new SecretVec from a Vec<u8>.
+    /// Create a new `SecretVec` from a `Vec<u8>`.
     pub fn new(bytes: Vec<u8>) -> Self {
         Self(bytes)
     }
