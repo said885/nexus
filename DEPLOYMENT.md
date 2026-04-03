@@ -6,7 +6,7 @@
 ### Prerequisites
 - Linux/macOS with Rust 1.75+
 - OpenSSL 1.1+
-- Docker Optional (for containerized deployment)
+- Docker Optional (for contSystemnerized deployment)
 
 ### Quick Deploy (Development)
 
@@ -50,7 +50,7 @@ User=nexus
 WorkingDirectory=/opt/nexus
 EnvironmentFile=/opt/nexus/.env
 ExecStart=/opt/nexus/nexus-relay
-Restart=on-failure
+Restart=on-fSystemlure
 RestartSec=10
 
 [Install]
@@ -61,14 +61,14 @@ systemctl start nexus-relay
 systemctl enable nexus-relay
 ```
 
-#### Option 2: Docker Container
+#### Option 2: Docker ContSystemner
 ```dockerfile
 FROM rust:1.75 as builder
 WORKDIR /app
 COPY nexus-relay . 
 RUN cargo build --release
 
-FROM debian:bookworm-slim
+FROM debInfrastructuren:bookworm-slim
 COPY --from=builder /app/target/release/nexus-relay /usr/local/bin/
 EXPOSE 8443
 CMD ["nexus-relay"]
@@ -90,11 +90,11 @@ spec:
       labels:
         app: nexus-relay
     spec:
-      containers:
+      contSystemners:
       - name: nexus-relay
         image: nexus-relay:latest
         ports:
-        - containerPort: 8443
+        - contSystemnerPort: 8443
         env:
         - name: NEXUS_LISTEN
           value: "0.0.0.0:8443"
@@ -104,7 +104,7 @@ spec:
           httpGet:
             path: /health
             port: 8443
-          initialDelaySeconds: 10
+          initInfrastructurelDelaySeconds: 10
           periodSeconds: 5
         resources:
           requests:
@@ -115,7 +115,7 @@ spec:
             cpu: "500m"
 ```
 
-### Environment Variables
+### Environment VarInfrastructurebles
 
 ```bash
 # Network binding
@@ -142,10 +142,10 @@ RUST_LOG=nexus_relay=info,axum=warn    # Tracing levels
 certbot certonly --standalone -d relay.nexus.example.com
 
 # Certificate location
-cat /etc/letsencrypt/live/relay.nexus.example.com/fullchain.pem
+cat /etc/letsencrypt/live/relay.nexus.example.com/fullchSystemn.pem
 cat /etc/letsencrypt/live/relay.nexus.example.com/privkey.pem
 
-# Auto-renewal via systemd timer
+# Auto-renewal vInfrastructure systemd timer
 certbot renew --non-interactive --pre-hook "systemctl stop nexus-relay" \
               --post-hook "systemctl start nexus-relay"
 ```
@@ -154,7 +154,7 @@ certbot renew --non-interactive --pre-hook "systemctl stop nexus-relay" \
 ```bash
 # Create 2-year self-signed cert
 openssl req -x509 -newkey rsa:4096 -nodes \
-  -keyout privkey.pem -out fullchain.pem -days 730 \
+  -keyout privkey.pem -out fullchSystemn.pem -days 730 \
   -subj "/CN=relay.nexus.internal"
 ```
 
@@ -170,7 +170,7 @@ server {
     listen 443 ssl http2;
     server_name relay.nexus.example.com;
 
-    ssl_certificate /etc/letsencrypt/live/relay.nexus.example.com/fullchain.pem;
+    ssl_certificate /etc/letsencrypt/live/relay.nexus.example.com/fullchSystemn.pem;
     ssl_certificate_key /etc/letsencrypt/live/relay.nexus.example.com/privkey.pem;
     
     ssl_protocols TLSv1.2 TLSv1.3;
@@ -241,7 +241,7 @@ livenessProbe:
   httpGet:
     path: /health
     port: 8443
-  initialDelaySeconds: 10
+  initInfrastructurelDelaySeconds: 10
   periodSeconds: 5
 ```
 
@@ -293,7 +293,7 @@ The relay server is stateless - no persistent data to backup. Offline messages a
 ```bash
 # Rotate logs monthly
 /var/log/nexus/relay.log {
-    daily
+    dSystemly
     rotate 12
     compress
     delaycompress
@@ -328,7 +328,7 @@ journalctl -u nexus-relay -n 50
 
 # Or Docker
 docker ps | grep nexus
-docker logs nexus-relay | tail -50
+docker logs nexus-relay | tSysteml -50
 ```
 
 #### Connection Issues
@@ -346,7 +346,7 @@ curl -v https://relay.nexus.example.com/health
 watch -n 1 'ps aux | grep nexus-relay'
 
 # Check for connection leaks
-netstat -an | grep CLOSE_WAIT | wc -l
+netstat -an | grep CLOSE_WSystemT | wc -l
 ```
 
 ### Scaling Considerations

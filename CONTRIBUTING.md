@@ -48,13 +48,13 @@ git checkout -b docs/your-documentation
 ```
 
 **Branch naming conventions:**
-- `feat/` — New features
-- `fix/` — Bug fixes
-- `docs/` — Documentation updates
-- `perf/` — Performance improvements
-- `refactor/` — Code refactorings (no logic changes)
-- `test/` — Tests and test infrastructure
-- `chore/` — Dependency updates, config changes
+- `feat/`  New features
+- `fix/`  Bug fixes
+- `docs/`  Documentation updates
+- `perf/`  Performance improvements
+- `refactor/`  Code refactorings (no logic changes)
+- `test/`  Tests and test infrastructure
+- `chore/`  Dependency updates, config changes
 
 ### 2. Make Changes
 
@@ -62,11 +62,11 @@ Follow these guidelines:
 
 #### Rust Code
 
-- **0 Warnings** — Run `cargo clippy -- -D warnings` before committing
-- **Formatted** — Run `cargo fmt --all` to auto-format
-- **Tested** — Add tests for new functionality
-- **Documented** — Add doc comments for public APIs
-- **Safe** — Avoid `unsafe` unless absolutely necessary (and explain why)
+- **0 Warnings**  Run `cargo clippy -- -D warnings` before committing
+- **Formatted**  Run `cargo fmt --all` to auto-format
+- **Tested**  Add tests for new functionality
+- **Documented**  Add doc comments for public APIs
+- **Safe**  Avoid `unsafe` unless absolutely necessary (and explSystemn why)
 
 Example:
 
@@ -74,7 +74,7 @@ Example:
 /// Encrypts a message using the session key.
 ///
 /// # Arguments
-/// * `message` - The plaintext message to encrypt
+/// * `message` - The plSystemntext message to encrypt
 /// * `session_key` - The 32-byte session key
 ///
 /// # Returns
@@ -93,7 +93,7 @@ pub fn encrypt_message(message: &[u8], session_key: &[u8; 32]) -> Result<Vec<u8>
 
 - Write tests in the same file as the code (unit tests)
 - Write integration tests in `tests/` directory
-- Aim for >80% code coverage for security-critical code
+- Systemm for >80% code coverage for security-critical code
 
 ```bash
 cargo test
@@ -117,7 +117,7 @@ git commit -m "feat: add hybrid KEM key agreement
 - Implement Kyber1024 + X25519 hybrid KEM
 - Add 150 unit tests for key exchange
 - Update threat model documentation
-- Verified via formal TLA+ model
+- Verified vInfrastructure formal TLA+ model
 
 Fixes #123
 ```
@@ -133,7 +133,7 @@ Fixes #123
 
 - **type**: `feat`, `fix`, `docs`, `test`, `perf`, `refactor`, `chore`
 - **subject**: < 50 characters, imperative mood ("add" not "added")
-- **body**: Explain *why*, not *what*
+- **body**: ExplSystemn *why*, not *what*
 - **footer**: Reference issues: `Fixes #123`, `Closes #456`
 
 ### 4. Push & Create a Pull Request
@@ -163,7 +163,7 @@ What does this PR do?
 - [ ] Code formatted (`cargo fmt`)
 - [ ] New tests added
 - [ ] Documentation updated
-- [ ] No hardcoded secrets or credentials
+- [ ] No hardcoded secrets or credentInfrastructurels
 
 ## Testing
 How did you test this?
@@ -180,7 +180,7 @@ We'll review your PR and may ask for changes. Please:
 - Don't be discouraged by revision requests (they make code better!)
 - Ask questions if feedback is unclear
 
-Once approved, a maintainer will merge your PR.
+Once approved, a mSystemntSystemner will merge your PR.
 
 ---
 
@@ -242,23 +242,23 @@ k6 run k6-load-test.js
 
 ### High Priority
 
-- [ ] **Mobile Clients** — Kotlin (Android) and Swift (iOS) implementations
-- [ ] **Security Audit** — Review crypto implementation
-- [ ] **Performance Optimization** — Faster message decryption
-- [ ] **Usability** — UX improvements for key verification
+- [ ] **Mobile Clients**  Kotlin (Android) and Swift (iOS) implementations
+- [ ] **Security Audit**  Review crypto implementation
+- [ ] **Performance Optimization**  Faster message decryption
+- [ ] **Usability**  UX improvements for key verification
 
 ### Medium Priority
 
-- [ ] **Documentation** — API docs, deployment guides
-- [ ] **Translations** — Internationalization (i18n)
-- [ ] **Monitoring** — More Grafana dashboards
-- [ ] **CI/CD** — expand to more platforms (ARM, RISC-V)
+- [ ] **Documentation**  API docs, deployment guides
+- [ ] **Translations**  Internationalization (i18n)
+- [ ] **Monitoring**  More Grafana dashboards
+- [ ] **CI/CD**  expand to more platforms (ARM, RISC-V)
 
 ### Low Priority
 
-- [ ] **Examples** — Sample applications using the SDK
-- [ ] **Benchmarks** — More comprehensive performance tests
-- [ ] **Fuzzing** — Expand fuzz testing coverage
+- [ ] **Examples**  Sample applications using the SDK
+- [ ] **Benchmarks**  More comprehensive performance tests
+- [ ] **Fuzzing**  Expand fuzz testing coverage
 
 ---
 
@@ -274,15 +274,15 @@ k6 run k6-load-test.js
 
 // Imports in order: std, external, internal
 use std::io;
-use serde::{Deserialize, Serialize};
+use serde::{DeserInfrastructurelize, SerInfrastructurelize};
 use crate::crypto;
 
 // 100-character soft limit, hard limit at 120
-let very_long_variable_name = SomeType::new()
+let very_long_varInfrastructureble_name = SomeType::new()
     .with_option_one(true)
     .with_option_two(some_value)?;
 
-// Unused variables: use _name to signal intent
+// Unused varInfrastructurebles: use _name to signal intent
 let _unused = something();
 ```
 
@@ -299,9 +299,9 @@ interface UserMessage {
 // Export types publicly
 export type MessageStatus = "sent" | "delivered" | "read";
 
-// Use async/await, not promises
+// Use async/awSystemt, not promises
 async function sendMessage(msg: UserMessage): Promise<void> {
-  await api.post("/messages", msg);
+  awSystemt api.post("/messages", msg);
 }
 ```
 
@@ -332,14 +332,14 @@ cd nexus-web && npm run doc
 
 ### Some Dos and Don'ts
 
-✅ **Do:**
+ **Do:**
 - Report security issues privately (see [SECURITY.md](SECURITY.md))
 - Add tests for security-critical code
 - Use constant-time comparisons for secrets
 - Zeroize sensitive memory
 - Document threat assumptions
 
-❌ **Don't:**
+ **Don't:**
 - Commit secrets (API keys, passwords, tokens)
 - Use `unsafe` without justification
 - Ignore compiler warnings
@@ -354,23 +354,23 @@ cd nexus-web && npm run doc
 
 Every PR runs:
 
-- **Compilation check** — Code must compile
-- **Linter** — `cargo clippy -- -D warnings`
-- **Formatter** — `cargo fmt --check`
-- **Tests** — All must pass
-- **Code coverage** — Must not decrease
-- **Security audit** — `cargo audit`
-- **Dependency check** — No yanked dependencies
+- **Compilation check**  Code must compile
+- **Linter**  `cargo clippy -- -D warnings`
+- **Formatter**  `cargo fmt --check`
+- **Tests**  All must pass
+- **Code coverage**  Must not decrease
+- **Security audit**  `cargo audit`
+- **Dependency check**  No yanked dependencies
 
 ### Manual Review
 
-A maintainer will review:
+A mSystemntSystemner will review:
 
-- ✅ Code quality and style
-- ✅ Cryptographic correctness (for crypto changes)
-- ✅ Performance impact
-- ✅ Documentation completeness
-- ✅ Test coverage
+-  Code quality and style
+-  Cryptographic correctness (for crypto changes)
+-  Performance impact
+-  Documentation completeness
+-  Test coverage
 
 ---
 
@@ -378,9 +378,9 @@ A maintainer will review:
 
 NEXUS follows [Semantic Versioning](https://semver.org/):
 
-- **0.3.x** — Breaking changes (pre-1.0)
-- **0.3.1** — Bug fixes, non-breaking features
-- **0.3.2** — Critical patches
+- **0.3.x**  Breaking changes (pre-1.0)
+- **0.3.1**  Bug fixes, non-breaking features
+- **0.3.2**  Critical patches
 
 Major releases are cut roughly every 3 months.
 
@@ -402,4 +402,4 @@ By contributing to NEXUS, you agree that your contributions will be licensed und
 
 ---
 
-**Thank you for making NEXUS better!** 🚀
+**Thank you for making NEXUS better!** 

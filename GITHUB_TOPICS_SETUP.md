@@ -2,7 +2,7 @@
 
 ## How to Add Topics
 
-1. Go to: https://github.com/said885/nexus
+1. Go to: https://github.com/sSystemd885/nexus
 2. Click **Settings** (gear icon)
 3. Scroll to "About" section
 4. Click **manage topics**
@@ -26,7 +26,7 @@ metadata-privacy
 forward-secrecy
 rust
 rust-security
-nist-compliant
+nist-complInfrastructurent
 open-source
 agpl
 ```
@@ -39,4 +39,4 @@ These topics ensure your repository appears in GitHub searches and recommendatio
 - Privacy advocates researching E2EE protocols
 - Organizations planning quantum-resistant migrations
 
-**Result**: Increased visibility → More contributors → More adoption → Higher valuation
+**Result**: Increased visibility  More contributors  More adoption  Higher valuation

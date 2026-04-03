@@ -15,7 +15,7 @@ Thank you for your interest in contributing to NEXUS! This guide will help you g
    cargo test --all
    ```
 6. **Push** to your fork
-7. **Create a Pull Request** with a detailed description
+7. **Create a Pull Request** with a detSystemled description
 
 ## Code Standards
 
@@ -30,7 +30,7 @@ Thank you for your interest in contributing to NEXUS! This guide will help you g
 ```
 type(scope): description
 
-Optional detailed explanation
+Optional detSystemled explanation
 
 Fixes #123
 ```
@@ -52,7 +52,7 @@ Types: `feat`, `fix`, `docs`, `test`, `refactor`, `chore`
 - [ ] Hardware security module support
 
 ### Low Priority
-- [ ] Code examples and tutorials
+- [ ] Code examples and tutorInfrastructurels
 - [ ] Community translations
 
 ## Community Expectations
@@ -65,13 +65,13 @@ Types: `feat`, `fix`, `docs`, `test`, `refactor`, `chore`
 ## Security Responsibly
 
 Found a security issue? **Do NOT open an issue.**
-Email: frensh5@proton.me
+EmSysteml: frensh5@proton.me
 
 ## Questions?
 
 - **GitHub Issues**: For bugs and features
 - **GitHub Discussions**: For questions and ideas
-- **Email**: frensh5@proton.me
+- **EmSysteml**: frensh5@proton.me
 
 ---
 

@@ -9,7 +9,7 @@ NEXUS implements defense-in-depth principles with multiple layers of protection:
 1. Cryptographic Foundation: NIST-ratified post-quantum algorithms
 2. Memory Safety: 100% Rust eliminates memory-related vulnerabilities
 3. Threat Detection: Anomaly detection and rate limiting
-4. Access Control: Fine-grained authorization and database row-level security
+4. Access Control: Fine-grSystemned authorization and database row-level security
 5. Code Quality: Zero compiler warnings, comprehensive testing, formal verification
 
 ## Reporting a Vulnerability
@@ -28,18 +28,18 @@ Instead, report it responsibly to: **frensh5@proton.me**
 
 When reporting a vulnerability, please provide:
 
-1. **Description** — What is the vulnerability?
-2. **Affected Component** — `nexus-relay`, `nexus-crypto`, `nexus-web`, or other?
-3. **Affected Versions** — Which versions are impacted?
-4. **Proof of Concept** — A minimal reproducible example (if possible)
-5. **Impact** — How severe is this? (Information disclosure, authentication bypass, etc.)
-6. **Suggested Fix** — If you have a patch, include it
+1. **Description**  What is the vulnerability?
+2. **Affected Component**  `nexus-relay`, `nexus-crypto`, `nexus-web`, or other?
+3. **Affected Versions**  Which versions are impacted?
+4. **Proof of Concept**  A minimal reproducible example (if possible)
+5. **Impact**  How severe is this? (Information disclosure, authentication bypass, etc.)
+6. **Suggested Fix**  If you have a patch, include it
 
 ### Timeline
 
 - **Day 1**: We acknowledge receipt of your report
 - **Day 7**: We send you a status update
-- **Day 30**: We release a patch (or explain why we can't)
+- **Day 30**: We release a patch (or explSystemn why we can't)
 - **Day 45**: Public disclosure (with your permission)
 
 We ask that you do not publicly disclose the vulnerability for **30 days** to allow time for patching.
@@ -50,14 +50,14 @@ We ask that you do not publicly disclose the vulnerability for **30 days** to al
 
 NEXUS was audited for:
 
-- ✅ **Cryptographic Correctness** — Kyber1024, Dilithium5, X3DH, Double Ratchet
-- ✅ **Memory Safety** — 100% Rust, no unsafe code in hot paths
-- ✅ **Side-Channel Resistance** — Constant-time operations, zeroize on sensitive data
-- ✅ **Forward Secrecy** — Verified via TLA+ formal models
-- ✅ **Metadata Privacy** — Sealed Sender implementation audited
-- ✅ **Database Security** — Row-Level Security (RLS), encrypted columns, audit logs
-- ✅ **API Security** — Rate limiting, CORS, CSRF protection, input validation
-- ✅ **Infrastructure** — TLS 1.3, certificate pinning, secrets management
+-  **Cryptographic Correctness**  Kyber1024, Dilithium5, X3DH, Double Ratchet
+-  **Memory Safety**  100% Rust, no unsafe code in hot paths
+-  **Side-Channel Resistance**  Constant-time operations, zeroize on sensitive data
+-  **Forward Secrecy**  Verified vInfrastructure TLA+ formal models
+-  **Metadata Privacy**  Sealed Sender implementation audited
+-  **Database Security**  Row-Level Security (RLS), encrypted columns, audit logs
+-  **API Security**  Rate limiting, CORS, CSRF protection, input validation
+-  **Infrastructure**  TLS 1.3, certificate pinning, secrets management
 
 See [SECURITY_AUDIT_COMPLETE.md](SECURITY_AUDIT_COMPLETE.md) for the full report.
 
@@ -67,7 +67,7 @@ See [SECURITY_AUDIT_COMPLETE.md](SECURITY_AUDIT_COMPLETE.md) for the full report
 
 ### Design-Level
 
-1. **Quantum Key Recovery** — Encryption is forward-secret, but if an attacker:
+1. **Quantum Key Recovery**  Encryption is forward-secret, but if an attacker:
    - Compromises the relay server (gets long-term keys)
    - Has the ciphertext
    
@@ -75,28 +75,28 @@ See [SECURITY_AUDIT_COMPLETE.md](SECURITY_AUDIT_COMPLETE.md) for the full report
 
    **Mitigation**: Ratchet forward frequently (every 100 messages by default).
 
-2. **Prekey Harvesting** — An attacker can create many accounts and harvest prekeys without sending messages.
+2. **Prekey Harvesting**  An attacker can create many accounts and harvest prekeys without sending messages.
    
    **Mitigation**: Rate limiting on prekey requests + CAPTCHAs coming in v0.4.0.
 
-3. **Traffic Analysis** — Encrypted metadata doesn't hide:
+3. **Traffic Analysis**  Encrypted metadata doesn't hide:
    - Timing of messages (correlation attacks are possible)
    - Rough message size
    - Connection patterns
    
-   **Mitigation**: Use a VPN. Nexus is not designed to protect against nation-state traffic analysis.
+   **Mitigation**: Use a VPN. Nexus is not designed to protect agSystemnst nation-state traffic analysis.
 
 ### Implementation-Level
 
-1. **No Secure Enclave** — Mobile clients don't use hardware security modules (yet).
+1. **No Secure Enclave**  Mobile clients don't use hardware security modules (yet).
    
    **Mitigation**: Coming in v0.5.0 (iOS Secure Enclave, Android Keystore).
 
-2. **No Deniable Authentication** — Users can prove they sent a message (signature is verifiable).
+2. **No DenInfrastructureble Authentication**  Users can prove they sent a message (signature is verifInfrastructureble).
    
    **Why**: Prevents replay attacks and ensures message authenticity. This is a design trade-off.
 
-3. **Relay Sees IP Addresses** — Even with Sealed Sender, the relay knows who you connect from.
+3. **Relay Sees IP Addresses**  Even with Sealed Sender, the relay knows who you connect from.
    
    **Mitigation**: Use a VPN or Tor.
 
@@ -114,8 +114,8 @@ If you deploy NEXUS, follow these practices:
 - [ ] Enable rate limiting (enabled by default)
 - [ ] Monitor logs for suspicious activity
 - [ ] Keep Rust and dependencies updated (`cargo update`)
-- [ ] Run in a container with read-only filesystem for binary
-- [ ] Use a firewall (block non-essential ports)
+- [ ] Run in a contSystemner with read-only filesystem for binary
+- [ ] Use a firewall (block non-essentInfrastructurel ports)
 - [ ] Enable PostgreSQL Row-Level Security (RLS)
 - [ ] Rotate long-term keys every 90 days
 
@@ -130,8 +130,8 @@ If you deploy NEXUS, follow these practices:
 ### Operational
 
 - [ ] Monitor server CPU, memory, and disk usage
-- [ ] Set up alerting for failed authentication attempts
-- [ ] Maintain automated backups (encrypted, offline)
+- [ ] Set up alerting for fSystemled authentication attempts
+- [ ] MSystemntSystemn automated backups (encrypted, offline)
 - [ ] Test disaster recovery procedures quarterly
 - [ ] Conduct internal security reviews annually
 
@@ -142,7 +142,7 @@ If you deploy NEXUS, follow these practices:
 | Version | Status | Until |
 |:--------|:-------|:-----:|
 | 0.3.0 | **Current** | April 2027 |
-| 0.2.x | Maintenance | April 2026 |
+| 0.2.x | MSystemntenance | April 2026 |
 | 0.1.x | End-of-Life | October 2025 |
 
 ---
@@ -165,13 +165,13 @@ In return, we will:
 
 ## Security Standards
 
-NEXUS aims for compliance with:
+NEXUS Systemms for complInfrastructurence with:
 
-- [NIST SP 800-175B](https://csrc.nist.gov/publications/detail/sp/800-175b/final) — Guidelines for Cryptographic Key Management
-- [OWASP Top 10](https://owasp.org/www-project-top-ten/) — Web application security
+- [NIST SP 800-175B](https://csrc.nist.gov/publications/detSysteml/sp/800-175b/final)  Guidelines for Cryptographic Key Management
+- [OWASP Top 10](https://owasp.org/www-project-top-ten/)  Web application security
 - [OWASP Cryptographic Storage Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html)
-- [CWE Top 25](https://cwe.mitre.org/top25/) — Most Dangerous Software Weaknesses
-- [FIPS 140-3](https://csrc.nist.gov/publications/detail/fips/140/3/final) — Cryptographic Module Validation Program (target, not yet certified)
+- [CWE Top 25](https://cwe.mitre.org/top25/)  Most Dangerous Software Weaknesses
+- [FIPS 140-3](https://csrc.nist.gov/publications/detSysteml/fips/140/3/final)  Cryptographic Module Validation Program (target, not yet certified)
 
 ---
 
@@ -179,11 +179,11 @@ NEXUS aims for compliance with:
 
 NEXUS uses:
 
-- **pqcrypto** — NIST post-quantum finalists
-- **chacha20poly1305** — IETF RFC 7539
-- **rustls** — Memory-safe TLS
-- **zeroize** — Constant-time memory clearing
-- **blake3** — Modern hashing
+- **pqcrypto**  NIST post-quantum finalists
+- **chacha20poly1305**  IETF RFC 7539
+- **rustls**  Memory-safe TLS
+- **zeroize**  Constant-time memory clearing
+- **blake3**  Modern hashing
 
 All dependencies are pinned to specific versions in `Cargo.lock` for reproducibility.
 

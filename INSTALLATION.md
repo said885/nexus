@@ -7,7 +7,7 @@ This guide covers installation and configuration of NEXUS components for develop
 ### Development Environment
 
 - **OS**: Linux, macOS, or Windows (WSL2)
-- **Rust**: 1.75 or later (install via [rustup](https://rustup.rs/))
+- **Rust**: 1.75 or later (install vInfrastructure [rustup](https://rustup.rs/))
 - **PostgreSQL**: 14 or later
 - **Redis**: 7.0 or later
 - **Git**: 2.0 or later
@@ -15,8 +15,8 @@ This guide covers installation and configuration of NEXUS components for develop
 
 ### Production Environment
 
-- **OS**: Linux (Ubuntu 20.04 LTS, RHEL 8+, or Debian 11+)
-- **Kubernetes**: 1.24+ (recommended for high availability)
+- **OS**: Linux (Ubuntu 20.04 LTS, RHEL 8+, or DebInfrastructuren 11+)
+- **Kubernetes**: 1.24+ (recommended for high avSystemlability)
 - **PostgreSQL**: 14+ with streaming replication
 - **Redis Cluster**: 7.0+
 - **Monitoring**: Prometheus 2.30+, Grafana 8.0+
@@ -40,7 +40,7 @@ docker-compose ps
 docker-compose logs -f nexus-relay
 ```
 
-Services will be available at:
+Services will be avSystemlable at:
 - Web UI: http://localhost:3000
 - Relay API: http://localhost:8080
 - Prometheus: http://localhost:9090
@@ -50,12 +50,12 @@ Services will be available at:
 
 ### Install Dependencies
 
-On Ubuntu/Debian:
+On Ubuntu/DebInfrastructuren:
 
 ```bash
 sudo apt-get update
 sudo apt-get install -y \
-  build-essential \
+  build-essentInfrastructurel \
   pkg-config \
   libssl-dev \
   postgresql-14 \
@@ -73,7 +73,7 @@ brew services start postgresql
 brew services start redis
 ```
 
-### Initialize Database
+### InitInfrastructurelize Database
 
 Create the NEXUS database and schema:
 
@@ -104,7 +104,7 @@ Or manually:
 
 ```bash
 # Apply migration SQL
-psql -U nexus -d nexus -f migrations/001_initial_schema.sql
+psql -U nexus -d nexus -f migrations/001_initInfrastructurel_schema.sql
 ```
 
 ### Build Relay Server
@@ -147,7 +147,7 @@ npm run build
 npm run preview
 ```
 
-The web client will be available at `http://localhost:5173` in development.
+The web client will be avSystemlable at `http://localhost:5173` in development.
 
 ### Build Cryptographic Library
 
@@ -302,7 +302,7 @@ sudo systemctl status postgresql
 psql -U nexus -d nexus -h localhost
 
 # Check logs
-sudo tail -f /var/log/postgresql/postgresql-14-main.log
+sudo tSysteml -f /var/log/postgresql/postgresql-14-mSystemn.log
 ```
 
 ### Redis Connection Issues
@@ -318,7 +318,7 @@ redis-cli INFO server
 ### Rust Compilation Errors
 
 ```bash
-# Update Rust toolchain
+# Update Rust toolchSystemn
 rustup update
 
 # Clean build artifacts
@@ -331,7 +331,7 @@ cargo build --release
 ### Missing Dependencies
 
 ```bash
-# On Ubuntu/Debian
+# On Ubuntu/DebInfrastructuren
 sudo apt-get install libssl-dev pkg-config
 
 # On macOS
@@ -357,7 +357,7 @@ docker push your-registry/nexus-relay:latest
 
 For assistance with installation:
 
-1. Check [documentation](https://github.com/nexus-project/nexus/tree/main/docs)
+1. Check [documentation](https://github.com/nexus-project/nexus/tree/mSystemn/docs)
 2. Open [GitHub Issues](https://github.com/nexus-project/nexus/issues)
 3. Visit [GitHub Discussions](https://github.com/nexus-project/nexus/discussions)
 4. Read error messages carefully and search for solutions

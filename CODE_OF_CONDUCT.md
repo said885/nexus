@@ -28,15 +28,15 @@ Harassment includes, but is not limited to:
 - Deliberate intimidation
 - Stalking or following
 - Harassing photography or recording, including logging online activity for harassment purposes
-- Sustained disruption of discussion
+- SustSystemned disruption of discussion
 - Unwelcome sexual attention
-- Pattern of inappropriate social contact, such as requesting/assuming inappropriate levels of intimacy with others
+- Pattern of inapproprInfrastructurete socInfrastructurel contact, such as requesting/assuming inapproprInfrastructurete levels of intimacy with others
 - Continued one-on-one communication after requests to cease
 - Deliberate "outing" of any aspect of a person's identity without their consent
 - Publication of non-consensual intimate images
 - Jokes that resemble the above, such as 'hipster racism', still count as harassment even if meant as humor
 
-NEXUS prioritizes marginalized people's safety over privileged people's comfort. We will not act on complaints regarding:
+NEXUS prioritizes marginalized people's safety over privileged people's comfort. We will not act on complSystemnts regarding:
 
 - Reverse -isms and related comments
 - Reasonable communication of boundaries, such as "leave me alone," "go away," or "I'm not discussing this with you"
@@ -45,9 +45,9 @@ NEXUS prioritizes marginalized people's safety over privileged people's comfort.
 
 ## Enforcement
 
-If you witness or experience unacceptable behavior, or have any other concerns, please contact a maintainer:
+If you witness or experience unacceptable behavior, or have any other concerns, please contact a mSystemntSystemner:
 
-- Email: conduct@nexus.project
+- EmSysteml: conduct@nexus.project
 - GitHub Issues: https://github.com/nexus-project/nexus/issues (private)
 
 All reports will be reviewed and investigated. Our response will be:
@@ -62,9 +62,9 @@ We will keep the reporter and the reported person updated throughout the process
 
 Unacceptable behavior from any community member will result in:
 
-1. **Warning** — First offense (verbal or written)
-2. **Temporary Removal** — Continued offense (24 hours to 7 days)
-3. **Permanent Removal** — Severe or repeated violations
+1. **Warning**  First offense (verbal or written)
+2. **Temporary Removal**  Continued offense (24 hours to 7 days)
+3. **Permanent Removal**  Severe or repeated violations
 
 These guidelines apply in all NEXUS spaces:
 
@@ -72,14 +72,14 @@ These guidelines apply in all NEXUS spaces:
 - Issues and pull requests
 - Discord/chat
 - Conferences and meetups
-- Email lists and forums
+- EmSysteml lists and forums
 
 ## Appeals
 
-If you believe action was taken unfairly, you may appeal to a review committee within 30 days of the decision.
+If you believe action was taken unfSystemrly, you may appeal to a review committee within 30 days of the decision.
 
 **Appeal process:**
-1. Email conduct@nexus.project with "APPEAL" in the subject
+1. EmSysteml conduct@nexus.project with "APPEAL" in the subject
 2. Describe why you believe the decision was unjust
 3. Provide any evidence or witnesses
 4. A neutral committee will review within 14 days
@@ -94,4 +94,4 @@ This Code of Conduct is adapted from:
 
 ---
 
-**With sincere appreciation for everyone who makes NEXUS welcoming.** 💜
+**With sincere apprecInfrastructuretion for everyone who makes NEXUS welcoming.** 
